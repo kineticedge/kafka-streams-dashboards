@@ -1,0 +1,12 @@
+#!/bin/sh
+
+BOOTSTRAP_SERVER=localhost:19092
+KEY_DESERIALIZER=io.kineticedge.ksd.tools.serde.SessionDeserializer
+
+kafka-console-consumer \
+        --bootstrap-server ${BOOTSTRAP_SERVER} \
+        --property print.partition=true \
+        --property print.key=true \
+        --property key.separator=\| \
+        --key-deserializer=${KEY_DESERIALIZER} \
+	$@

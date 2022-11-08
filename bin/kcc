@@ -1,0 +1,11 @@
+#!/bin/sh
+
+BOOTSTRAP_SERVER=localhost:19092
+
+kafka-console-consumer \
+        --bootstrap-server ${BOOTSTRAP_SERVER} \
+        --property print.partition=true \
+        --property print.key=true \
+        --property key.separator=\| \
+	--key-deserializer=org.apache.kafka.common.serialization.BytesDeserializer  \
+	$@

@@ -1,0 +1,17 @@
+[
+  {
+    "targets": [
+      "ksda-stream-1:7071",
+      "ksda-stream-2:7071",
+      "ksda-stream-3:7071",
+      "ksda-stream-4:7071",
+      "ksda-stream-5:7071",
+      "ksda-stream-6:7071"
+    ],
+    "labels": {
+      "job": "streams",
+      "cluster_type": "streams",
+      "cluster_id": "streams"
+    }
+  }
+]

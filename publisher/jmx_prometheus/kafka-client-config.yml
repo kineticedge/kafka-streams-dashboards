@@ -1,0 +1,10 @@
+gowercaseOutputName: true
+rules:
+  - pattern: java.lang<type=(.*)>
+#  - pattern: (.*)
+#  - pattern: (.*)<type=(.*)>
+  - pattern: (.*)<type=(.*)><>(.*)
+  - pattern: kafka.streams<type=stream-thread-metrics, thread-id=(.+), task-id=(.+)><>(.*)
+  - pattern: kafka.streams<type=stream-task-metrics, thread-id=(.+)><>(.*)
+  - pattern: kafka.consumer.*<client-id=(.+)><>(.*)
+  - pattern: kafka.producer.*<client-id=(.+)><>(.*)

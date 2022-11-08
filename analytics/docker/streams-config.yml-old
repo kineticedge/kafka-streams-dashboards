@@ -1,0 +1,59 @@
+lowercaseOutputName: true
+rules:
+- pattern: java.lang<type=(.*)>
+#- pattern: application(.*)
+#- pattern: application<type=(.*)>
+- pattern: "application<type=streams><>(.+): (.+)"
+  name: application_streams
+  value: 1
+  labels:
+    foo: $1
+    bar: $2
+    select: "$1:$2"
+#kafka_streams_stream_state_metrics_put_all_latency_avg{thread_id="streams-canonical-agg-v0-b19daf58-db84-49e9-ac0f-18669473e2b9-StreamThread-1",task_id="48_20",rocksdb_state_id="hcp-aggregate",} NaN
+- pattern: kafka.streams<type=stream-task-metrics, thread-id=(.*), task-id=(.+)_(.+)><>(.+):.+
+  name: kafka_streams_stream_task_metrics_$4
+  labels:
+    thread_id: "$1"
+    task_id: "$2"
+    partition_id: "$3"
+- pattern: kafka.streams<type=stream-record-cache-metrics, thread-id=(.+), task-id=(.+), record-cache-id=(.+)><>(.+):.+
+  name: kafka_streams_stream_record_cache_metrics
+  labels:
+    thread_id: "$1"
+    task_id: "$2"
+    store_name: "$3"
+    metric: "$4"
+- pattern: kafka.streams<type=stream-state-metrics, thread-id=(.+), task-id=(.+), rocksdb-state-id=(.+)><>(.+):.+
+  name: kafka_streams_stream_state_metrics
+  labels:
+    thread_id: "$1"
+    task_id: "$2"
+    state_id: "$3"
+    metric: "$4"
+- pattern: kafka.streams<type=stream-thread-metrics, thread-id=(.+)><>(.+):.+
+  name: kafka_streams_stream_thread_metrics_$2
+  labels:
+    thread_id: "$1"
+- pattern: kafka.streams<type=stream-task-metrics, thread-id=(.*), task-id=(.+)_(.+)><>(.+):.+
+  name: kafka_streams_stream_task_metrics_$4
+  labels:
+    thread_id: "$1"
+    task_id: "$2"
+    partition_id: "$3"
+- pattern: kafka.streams<type=stream-processor-node-metrics, thread-id=(.*), task-id=(.+)_(.+), processor-node-id=(.+)><>(.+):.+
+  name: kafka_streams_stream_processor_node_metrics_$5
+  labels:
+    thread_id: "$1"
+    task_id: "$2"
+    partition_id: "$3"
+    processor_node_id: "$4"
+- pattern: kafka.producer<type=producer-metrics, client-id=(.+)><>(.+):.+
+  name: kafka_producer_producer_metrics_$2
+  labels:
+    client_id: "$1"
+- pattern: kafka.consumer<type=consumer-metrics, client-id=(.+)><>(.+):.+
+  name: kafka_consumer_consumer_metrics_$2
+  labels:
+    client_id: "$1"
+- pattern: kafka.(.*)

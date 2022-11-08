@@ -1,0 +1,13 @@
+.DS_Store
+.idea
+.gradle
+grafana.db
+build
+.classpath.sh
+/tmp
+.settings
+.classpath
+.project
+/applications/stores/*
+
+/statestore-ui/node_modules

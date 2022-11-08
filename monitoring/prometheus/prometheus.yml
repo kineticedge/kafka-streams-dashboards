@@ -1,0 +1,59 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: zookeeper
+    static_configs:
+      - targets:
+          - zookeeper:7071
+        labels:
+          cluster_type: "zookeeper"
+          cluster_id: "kafka-zookeeper"
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        target_label: instance
+        replacement: '$1'
+  - job_name: kafka
+    static_configs:
+      - targets:
+        - broker-1:7071
+        - broker-2:7071
+        - broker-3:7071
+        - broker-4:7071
+        labels:
+          cluster_type: "kafka"
+          cluster_id: "kafka-core"
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        target_label: instance
+        replacement: '$1'
+  - job_name: kafka-sr
+    static_configs:
+      - targets:
+          - schema-registry:7071
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        target_label: instance
+        replacement: '$1'
+  - job_name: kafka_exporter
+    static_configs:
+      - targets:
+        - kafka-exporter:9308
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        target_label: instance
+        replacement: '$1'
+  - job_name: kafka-streams
+    scrape_interval: 2s
+    file_sd_configs:
+      - files:
+          - /etc/prometheus/*.json
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        target_label: instance
+        replacement: '$1'

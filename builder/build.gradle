@@ -1,0 +1,9 @@
+
+dependencies {
+    implementation project(':common')
+    implementation group: 'org.apache.commons', name: 'commons-csv', version: apache_commons_csv_version
+}
+
+application {
+    mainClass = "io.kineticedge.ksd.${project.name}.Main"
+}

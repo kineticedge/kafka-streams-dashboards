@@ -1,0 +1,114 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+volumes:
+  prometheus: {}
+  grafana: {}
+
+services:
+
+  prometheus:
+    image: prom/prometheus:v2.39.1
+    hostname: prometheus
+    container_name: ksd-prometheus
+    healthcheck:
+      test: wget --spider http://localhost:9090/ || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    privileged: true
+    # web: enable-admin-api and enable-lifecycle
+    # other command options are the default (but need to be supplied in full to add the others)
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-admin-api'
+      - '--web.enable-lifecycle'
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/application_streams.json:/etc/prometheus/application_streams.json
+      - ./prometheus/application_analytics.json:/etc/prometheus/application_analytics.json
+
+  grafana:
+    image: grafana/grafana:main
+    #image: grafana/grafana:9.2.2
+    hostname: grafana
+    container_name: ksd-grafana
+    healthcheck:
+      test: wget --spider http://localhost:3000/ || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      #grafana-piechart-panel, grafana-worldmap-panel
+      GF_INSTALL_PLUGINS: "grafana-piechart-panel"
+    volumes:
+      - grafana:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/prometheus.yml:/etc/grafana/provisioning/datasources/prometheus.yml
+      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+
+#  kowl:
+#    image: quay.io/cloudhut/kowl:v1.5.0
+#    hostname: kowl
+#    container_name: ksd-kowl
+#    healthcheck:
+#      test: wget --spider http://localhost:8080/ || exit 1
+#      start_period: 5s
+#      interval: 5s
+#      timeout: 5s
+#      retries: 3
+#    volumes:
+#      - ./kowl/config.yaml:/etc/kowl/config.yaml
+#    ports:
+#      - "8080:8080"
+#    entrypoint: ./kowl --config.filepath=/etc/kowl/config.yaml
+
+#  akhq:
+#    image: tchiotludo/akhq:latest
+#    container_name: akhq
+#    volumes:
+#      - ./akhq/application.yml:/app/application.yml
+#    ports:
+#      - "8080:8080"
+
+#  control-center:
+#    image: confluentinc/cp-enterprise-control-center:7.2.1
+#    hostname: control-center
+#    container_name: control-center
+#    healthcheck:
+#      test: curl --fail http://localhost:9021 || exit 1
+#      interval: 5s
+#      timeout: 5s
+#      retries: 20
+#      start_period: 15s
+#    ports:
+#      - "9021:9021"
+#    environment:
+#      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker-1:9092,broker-2:9092,broker-3:9092'
+#      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+#      CONTROL_CENTER_CONNECT_CONNECT_CLUSTER: 'connect:8083'
+#      ##CONTROL_CENTER_KSQL_KSQLDB1_URL: "http://ksqldb-server:8088"
+#      ##CONTROL_CENTER_KSQL_KSQLDB1_ADVERTISED_URL: "http://localhost:8088"
+#      CONTROL_CENTER_REPLICATION_FACTOR: 1
+#      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
+#      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
+#      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
+#      PORT: 9021

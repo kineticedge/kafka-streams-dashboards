@@ -1,0 +1,53 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then 
+ echo ""
+ echo "usage: $0 tumbling|hopping|sliding|session"
+ exit
+fi
+
+window_type=$1
+shift
+
+BASEDIR=$(dirname $0)
+
+# column_family is 'default' for session store 'keyValueWithTimestamp' for others
+
+column_family=keyValueWithTimestamp
+parser=${BASEDIR}/rocksdb_window_parser
+
+if [ "${window_type}" == "session" ]; then
+  column_family=default
+  parser=${BASEDIR}/rocksdb_session_parser
+fi
+
+# need to export since rocksdb() is being called from a bash subprocess
+export column_family
+export parser
+
+rocksdb() {
+  base=$(dirname $1)
+  ts=${base##*.}
+  task=$(echo ${base} | grep -Eow "[0-9]+_[0-9]+")
+
+  epoch=$(expr $ts / 1000)
+
+  echo "-----------------------------------------------------------------------------------------"
+  echo "Database     : ${base##*/}"
+  echo "Epoch        : $(date -u -r $epoch) ($(date -r $epoch))"
+  echo "Subtopology  : ${task%%_*}"
+  echo "Partition    : ${task##*_}"
+  echo ""
+
+  rocksdb_ldb --db=$base --column_family=${column_family} --hex scan  | $parser
+}
+
+# export function so we can call it from xargs
+export -f rocksdb
+
+# todo generalize this to not be to this specific application structure
+DIR=./applications/stores/analytics_${window_type}/
+
+find ${DIR} -name CURRENT -print0 | xargs -0 -n1 -I {} bash -c 'rocksdb "$@"' _ {}
+
+

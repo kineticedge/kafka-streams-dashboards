@@ -1,0 +1,9 @@
+dependencies {
+    implementation project(':common')
+    implementation group: 'io.undertow', name: 'undertow-servlet', version: undertow_version
+}
+
+application {
+    mainClass = "io.kineticedge.ksd.${project.name}.Main"
+}
+

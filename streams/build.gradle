@@ -1,0 +1,29 @@
+
+apply plugin: 'distribution'
+
+dependencies {
+    implementation project(':common')
+    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: kafka_version
+}
+
+application {
+    mainClass = "io.kineticedge.ksd.${project.name}.Main"
+    //applicationDefaultJvmArgs = ['-javaagent:./jmx_prometheus/jmx_prometheus_javaagent.jar=7071:./docker/streams-config.yml']
+}
+
+task buildDockerImage(type: Exec) {
+    inputs.files 'Dockerfile'
+    commandLine 'docker', 'rmi', "ksd_${project.name}:latest"
+    commandLine 'docker', 'build', '-t', "ksd_${project.name}:latest", '.'
+}
+
+build.finalizedBy buildDockerImage
+
+//distributions {
+//    main {
+//        distributionBaseName = 'streams'
+//        contents {
+//            from 'src/readme'
+//        }
+//    }
+//}

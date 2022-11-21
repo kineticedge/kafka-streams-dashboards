@@ -12,6 +12,9 @@
     <logger name="org.apache.kafka.clients.consumer.internals" level="WARN"/>
     <logger name="org.apache.kafka.clients.producer.internals" level="WARN"/>
 
+    <!-- set to debug to validate see full shutdown information -->
+    <logger name="org.apache.kafka.streams.KafkaStreams" level="DEBUG"/>
+
     <logger name="io.kineticedge.ksd" level="DEBUG"/>
 
     <root level="WARN">

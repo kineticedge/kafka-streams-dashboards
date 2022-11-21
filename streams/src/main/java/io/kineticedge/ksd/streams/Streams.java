@@ -1,16 +1,19 @@
 package io.kineticedge.ksd.streams;
 
-import io.kineticedge.ksd.tools.config.CommonConfigs;
 import io.kineticedge.ksd.common.domain.Product;
 import io.kineticedge.ksd.common.domain.PurchaseOrder;
 import io.kineticedge.ksd.common.domain.Store;
 import io.kineticedge.ksd.common.domain.User;
 import io.kineticedge.ksd.common.metrics.StreamsMetrics;
+import io.kineticedge.ksd.streams.reporter.KafkaMetricsReporter;
+import io.kineticedge.ksd.tools.config.CommonConfigs;
 import io.kineticedge.ksd.tools.serde.JsonSerde;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.metrics.JmxReporter;
 import org.apache.kafka.common.metrics.Sensor;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
@@ -18,7 +21,9 @@ import org.apache.kafka.streams.*;
 import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler;
 import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
 import org.apache.kafka.streams.kstream.*;
-import org.apache.kafka.streams.processor.ProcessorContext;
+import org.apache.kafka.streams.processor.api.FixedKeyProcessor;
+import org.apache.kafka.streams.processor.api.FixedKeyProcessorContext;
+import org.apache.kafka.streams.processor.api.FixedKeyRecord;
 import org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl;
 import org.apache.kafka.streams.state.KeyValueStore;
 
@@ -57,20 +62,33 @@ public class Streams {
                 Map.entry(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, options.getAutoOffsetReset()),
                 Map.entry(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true"),
                 Map.entry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100),
+//                Map.entry(CommonClientConfigs.SESSION_TIMEOUT_MS_CONFIG, 10_000),
                 Map.entry(StreamsConfig.CLIENT_ID_CONFIG, options.getClientId()),
-                Map.entry(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE),
                 Map.entry(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class),
+                Map.entry(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE),
                 //Map.entry("topology.optimization", "all"),
                 Map.entry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, "DEBUG"),
-                //          Map.entry("built.in.metrics.version", "0.10.0-2.4"),
+                //Map.entry("built.in.metrics.version", "0.10.0-2.4"),
                 //Map.entry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 2),
-                //Map.entry(StreamsConfig.METRIC_REPORTER_CLASSES_CONFIG, JmxReporter.class.getName() + "," + KafkaMetricsReporter.class.getName()),
+
+                Map.entry(StreamsConfig.METRIC_REPORTER_CLASSES_CONFIG, JmxReporter.class.getName() + "," + KafkaMetricsReporter.class.getName()),
                 Map.entry(CommonConfigs.METRICS_REPORTER_CONFIG, options.getCustomMetricsTopic())
 
         );
 
 
         final Map<String, Object> map = new HashMap<>(defaults);
+
+        //
+        // If set the consumer is treated as a static member; this ID must be unique for every member in the group.
+        //
+        // * if you look at docker/entrypoint.sh it uses the numerical value within docker to ensure a uniqe instance.
+        //
+        // * if you are running stand-alone, you need to set this uniquely for every instance you plan on running.
+        //
+        if (options.getGroupInstanceId() != null) {
+            map.put(CommonClientConfigs.GROUP_INSTANCE_ID_CONFIG, options.getGroupInstanceId());
+        }
 
 
         try {
@@ -130,7 +148,7 @@ public class Streams {
         final KafkaStreams streams = new KafkaStreams(topology, p);
 
         streams.setUncaughtExceptionHandler(e -> {
-            log.error("unhandled streams exception, shutting down.", e);
+            log.error("unhandled streams exception, shutting down (a warning of 'Detected that shutdown was requested. All clients in this app will now begin to shutdown' will repeat every 100ms for the duration of session timeout).", e);
             return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_APPLICATION;
         });
 
@@ -139,9 +157,32 @@ public class Streams {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             log.info("Runtime shutdown hook, state={}", streams.state());
             if (streams.state().isRunningOrRebalancing()) {
-                streams.close(SHUTDOWN);
+
+                // New to Kafka Streams 3.3, you can have the application leave the group on shutting down (when member.id / static memebership is used).
+                //
+                // There are reasons to do this and not to do it; from a development standpoint this makes starting/stopping
+                // the application a lot easier reducing the time needed to rejoin the group.
+                boolean leaveGroup = true;
+
+                log.info("closing KafkaStreams with leaveGroup={}", leaveGroup);
+
+                KafkaStreams.CloseOptions closeOptions = new KafkaStreams.CloseOptions().timeout(SHUTDOWN).leaveGroup(leaveGroup);
+
+                boolean isClean = streams.close(closeOptions);
+                if (!isClean) {
+                    System.out.println("KafkaStreams was not closed cleanly");
+                }
+
+            } else if (streams.state().isShuttingDown()) {
+                log.info("Kafka Streams is already shutting down with state={}, will wait {} to ensure proper shutdown.", streams.state(), SHUTDOWN);
+                boolean isClean = streams.close(SHUTDOWN);
+                if (!isClean) {
+                    System.out.println("KafkaStreams was not closed cleanly");
+                }
+                System.out.println("final KafkaStreams state=" + streams.state());
             }
         }));
+
     }
 
     private StreamsBuilder streamsBuilder(final Options options) {
@@ -177,13 +218,15 @@ public class Streams {
 
 
         builder.<String, PurchaseOrder>stream(options.getPurchaseTopic(), Consumed.as("purchase-order-source"))
-                .transformValues(() -> new ValueTransformerWithKey<String, PurchaseOrder, PurchaseOrder>() {
+                .processValues(() -> new FixedKeyProcessor<String, PurchaseOrder, PurchaseOrder>() { // transformValues deprecated, changed to this.
 
                     private Sensor sensor;
 
-                    @Override
-                    public void init(ProcessorContext context) {
+                    private FixedKeyProcessorContext<String, PurchaseOrder> context;
 
+                    @Override
+                    public void init(FixedKeyProcessorContext<String, PurchaseOrder> context) {
+                        this.context = context;
                         sensor = createSensor(
                                 Thread.currentThread().getName(),
                                 context.taskId().toString(),
@@ -192,9 +235,9 @@ public class Streams {
                     }
 
                     @Override
-                    public PurchaseOrder transform(String readOnlyKey, PurchaseOrder value) {
-                        sensor.record(value.getItems().size());
-                        return value;
+                    public void process(FixedKeyRecord<String, PurchaseOrder> record) {
+                        sensor.record(record.value().getItems().size());
+                        context.forward(record);
                     }
 
                     @Override
@@ -214,6 +257,7 @@ public class Streams {
                         );
                         return sensor;
                     }
+
                 }, Named.as("purchase-order-lineitem-counter"))
                 .selectKey((k, v) -> {
                     return v.getUserId();

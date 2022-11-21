@@ -55,6 +55,9 @@ public class KafkaMetricsReporter implements MetricsReporter {
     private String groupId;
     private String clientId;
 
+    //
+    // TODO eventually allow for separate broker for metrics.
+    //
     @Override
     public void configure(final Map<String, ?> configs) {
 
@@ -74,10 +77,7 @@ public class KafkaMetricsReporter implements MetricsReporter {
 
         clientId += "-reporter";
 
-        log.debug("applicationId={}", applicationId);
-        log.debug("groupId={}", groupId);
-        log.debug("clientId={}", clientId);
-        log.debug("topic={}", topic);
+        log.debug("applicationId={}, groupId={}, clientId={}, topic={}", applicationId, groupId, clientId, topic);
     }
 
 

@@ -10,6 +10,7 @@ IP_ADDRESS=$(ifconfig eth0 | grep 'inet ' | awk '{print $2}')
 #
 INSTANCE_ID=$(dig -x $IP_ADDRESS +short | sed -E "s/(.*)-([0-9]+)\.(.*)/\2/")
 
+export GROUP_INSTANCE_ID=${INSTANCE_ID}
 export CLIENT_ID=${CLIENT_ID_PREFIX:-}-${INSTANCE_ID}
 
 # RUN THE COMMAND, be sure to use exec so signals are properly handled

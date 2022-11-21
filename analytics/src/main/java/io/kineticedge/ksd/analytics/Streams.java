@@ -466,6 +466,7 @@ public class Streams {
     }
 
     private static ProductAnalyticOut minimize(final ProductAnalytic productAnalytic) {
+
         if (productAnalytic == null) {
             return null;
         }

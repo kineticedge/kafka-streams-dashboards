@@ -12,8 +12,21 @@ application {
 
 task buildDockerImage(type: Exec) {
     inputs.files 'Dockerfile'
-    commandLine 'docker', 'rmi', "ksd_${project.name}:latest"
     commandLine 'docker', 'build', '-t', "ksd_${project.name}:latest", '.'
+
+    doFirst {
+        exec {
+            ignoreExitValue = true
+            commandLine 'docker', 'tag', "ksd_${project.name}:latest", "ksd_${project.name}:prev"
+        }
+    }
+
+    doLast {
+        exec {
+            ignoreExitValue = true
+            commandLine 'docker', 'rmi', "ksd_${project.name}:prev"
+        }
+    }
 }
 
 build.finalizedBy buildDockerImage

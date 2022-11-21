@@ -1,6 +1,6 @@
 FROM openjdk:17-jdk-slim AS build
 
-WORKDIR /
+#WORKDIR /
 
 RUN \
     apt-get update && \
@@ -10,7 +10,7 @@ RUN \
 
 FROM openjdk:17-jdk-slim
 
-WORKDIR /
+#WORKDIR /
 
 RUN \
     apt-get update && \
@@ -20,21 +20,13 @@ ENV \
     ENVIRONMENT="" \
     JAVA_OPTS="-javaagent:/jmx_prometheus_javaagent.jar=7071:/streams-config.yml -javaagent:/jolokia-agent.jar=port=7072,host=*"
 
-COPY ./build/distributions/*.tar .
-COPY ./docker/streams-config.yml /
-#COPY ./docker/entrypoint.sh /
-COPY ./docker/healthcheck.sh /
-
-COPY --from=build /jmx_prometheus_javaagent.jar /
-COPY --from=build /jolokia-agent.jar /
+COPY ./build/distributions/*.tar ./docker/streams-config.yml ./docker/healthcheck.sh /
+COPY --from=build /jmx_prometheus_javaagent.jar /jolokia-agent.jar /
 
 RUN \
 	tar xfvp /analytics-1.0.tar
 
 EXPOSE 7071/tcp 7072/tcp 8080/tcp
-
-#ENTRYPOINT ["java"]
-#ENTRYPOINT  ["/entrypoint.sh"]
 
 CMD ["/analytics-1.0/bin/analytics"]
 

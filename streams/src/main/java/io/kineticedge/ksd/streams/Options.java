@@ -19,6 +19,9 @@ public class Options extends BaseOptions  {
     @Parameter(names = { "--client-id" }, description = "client id")
     private String clientId = "s-" + UUID.randomUUID();
 
+    @Parameter(names = { "--group-instance-id" }, description = "group instance id")
+    private String groupInstanceId;
+
     @Parameter(names = { "--auto-offset-reset" }, description = "where to start consuming from if no offset is provided")
     private String autoOffsetReset = "earliest";
 

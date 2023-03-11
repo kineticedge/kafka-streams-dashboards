@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -21,89 +24,63 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1641154316184,
   "links": [],
   "liveNow": false,
   "panels": [
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": {
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 19,
-        "w": 17,
+        "w": 16,
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 30,
-    "interval" : "2s",
-    "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
+      "interval": "2s",
+      "legend": {
+        "avg": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.3.0-85205pre",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
-          "expr": "sum without(partition_id,task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", partition_id=~\"${partition}\", state_id=~\"${state}\", task_id=~\"${task}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "expr": "sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", job=~\"${job}\", store_type=~\"${store_type}\"})",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -113,8 +90,37 @@
           "refId": "A"
         }
       ],
+      "thresholds": [],
+      "timeRegions": [],
       "title": "$metric",
-      "type": "timeseries"
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:34",
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:35",
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
     },
     {
       "datasource": {
@@ -138,13 +144,13 @@
       },
       "gridPos": {
         "h": 19,
-        "w": 7,
-        "x": 17,
+        "w": 8,
+        "x": 16,
         "y": 0
       },
       "id": 41,
-    "interval" : "2s",
-    "links": [],
+      "interval": "2s",
+      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -160,10 +166,14 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.3.0-85205pre",
       "targets": [
         {
-          "expr": "sort_desc(sum without(partition_id,thread_id,instance,job,task_id) (kafka_streams_stream_state_metrics{metric=\"${metric}\", partition_id=~\"${partition}\", state_id=~\"${state}\", task_id=~\"${task}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"}))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "expr": "sort_desc(sum without(thread_id,instance,job,task_id) (kafka_streams_stream_state_metrics{metric=\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", job=~\"${job}\", store_type=~\"${store_type}\"}))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -183,7 +193,8 @@
       "type": "stat"
     }
   ],
-  "refresh": "2s",  "schemaVersion": 34,
+  "refresh": "5s",
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "streams"
@@ -191,162 +202,10 @@
   "templating": {
     "list": [
       {
-        "allValue": ".+",
         "current": {
           "selected": true,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
-        },
-        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "cluster",
-        "multi": false,
-        "name": "cluster",
-        "options": [],
-        "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
-        },
-        "definition": "label_values(jvm_info{cluster_type=\"streams\", cluster_id=~\"$cluster\"}, instance)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "instance",
-        "multi": false,
-        "name": "instance",
-        "options": [],
-        "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\", cluster_id=~\"$cluster\"}, instance)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
-        },
-        "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "thread",
-        "multi": false,
-        "name": "thread",
-        "options": [],
-        "query": {
-          "query": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
-        },
-        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "task",
-        "multi": false,
-        "name": "task",
-        "options": [],
-        "query": {
-          "query": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 3,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": "",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
-        },
-        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"${cluster}\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, partition_id)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "partition",
-        "multi": false,
-        "name": "partition",
-        "options": [],
-        "query": {
-          "query": "label_values(kafka_streams_stream_task_metrics_process_rate{instance=~\"${instance}\",thread_id=~\"${thread}\"}, partition_id)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 3,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
+          "text": "rocksdb-state",
+          "value": "rocksdb-state"
         },
         "datasource": {
           "type": "prometheus",
@@ -354,7 +213,7 @@
         },
         "definition": "kafka_streams_stream_state_metrics",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "multi": false,
         "name": "store_type",
         "options": [],
@@ -374,8 +233,37 @@
       {
         "current": {
           "selected": true,
-          "text": "put-rate",
-          "value": "put-rate"
+          "text": "bytes-read-rate",
+          "value": "bytes-read-rate"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(kafka_streams_stream_state_metrics{}, metric)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "metric",
+        "options": [],
+        "query": {
+          "query": "label_values(kafka_streams_stream_state_metrics{}, metric)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/(bytes-written-rate|bytes-read-rate|memtable-bytes-flushed-rate|memtable-hit-ratio|block-cache-data-hit-ratio|block-cache-index-hit-ratio|block-cache-filter-hit-ratio|write-stall-duration-avg|write-stall-duration-total|bytes-read-compaction-rate|number-open-files|number-file-errors-total)$/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "prometheus",
@@ -383,18 +271,139 @@
         },
         "definition": "kafka_streams_stream_state_metrics",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "multi": false,
-        "name": "metric",
+        "name": "job",
         "options": [],
         "query": {
           "query": "kafka_streams_stream_state_metrics",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
-        "regex": "/.*metric=\"((?!bytes-written-rate|bytes-written-total|bytes-written-compaction-rate|bytes-read-rate|bytes-read-total|memtable-bytes-flushed-rate|memtable-bytes-flushed-total|memtable-hit-ratio|block-cache-data-hit-ratio|block-cache-index-hit-ratio|block-cache-filter-hit-ratio|write-stall-duration-avg|write-stall-duration-total|bytes-read-compaction-rate|number-open-files|number-file-errors-total|num-immutable-mem-table|cur-size-active-mem-table|cur-size-all-mem-tables|size-all-mem-tables|num-entries-active-mem-table|num-entries-imm-mem-tables|num-deletes-active-mem-table|num-deletes-imm-mem-tables|mem-table-flush-pending|num-running-flushes|compaction-pending|num-running-compactions|estimate-pending-compaction-bytes|total-ss-files-size|total-sst-files-size|live-sst-files-size|num-live-versions|block-cache-capacity|block-cache-usage|block-cache-pinned-usage|estimate-num-keys|estimate-table-readers-mem|background-errors).*)\",partition.*$/",
+        "regex": "/job=\\\"(.*)\\\",metric/",
         "skipUrlSync": false,
         "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "kafka_streams_stream_state_metrics",
+        "hide": 0,
+        "includeAll": true,
+        "label": "instance",
+        "multi": false,
+        "name": "instance",
+        "options": [],
+        "query": {
+          "query": "kafka_streams_stream_thread_metrics_poll_rate{job=~\"$job\"}",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/.*instance=\"(.*)\",job.*$/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "kafka_streams_stream_state_metrics{instance=~\"${instance}\"}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "thread",
+        "multi": false,
+        "name": "thread",
+        "options": [],
+        "query": {
+          "query": "kafka_streams_stream_state_metrics{instance=~\"${instance}\"}",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/.*thread_id=\"(.*)\"}$/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(kafka_streams_stream_state_metrics{instance=~\"${instance}\", thread_id=~\"${thread}\"}, task_id)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "task",
+        "multi": false,
+        "name": "task",
+        "options": [],
+        "query": {
+          "query": "label_values(kafka_streams_stream_state_metrics{instance=~\"${instance}\", thread_id=~\"${thread}\"}, task_id)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/^(.*)_.*$/",
+        "skipUrlSync": false,
+        "sort": 3,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(kafka_streams_stream_state_metrics{instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "partition",
+        "multi": false,
+        "name": "partition",
+        "options": [],
+        "query": {
+          "query": "label_values(kafka_streams_stream_state_metrics{instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/^.*_(.*)$/",
+        "skipUrlSync": false,
+        "sort": 3,
         "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query",
@@ -411,7 +420,7 @@
           "type": "prometheus",
           "uid": "P1809F7CD0C75ACF3"
         },
-        "definition": "kafka_streams_stream_state_metrics{task_id=~\"${task}\",instance=~\"${instance}\",thread_id=~\"${thread}\"}",
+        "definition": "kafka_streams_stream_state_metrics{task_id=~\"${task}_${partition}\",instance=~\"${instance}\",thread_id=~\"${thread}\"}",
         "hide": 0,
         "includeAll": true,
         "label": "state",
@@ -419,7 +428,7 @@
         "name": "state",
         "options": [],
         "query": {
-          "query": "kafka_streams_stream_state_metrics{task_id=~\"${task}\",instance=~\"${instance}\",thread_id=~\"${thread}\"}",
+          "query": "kafka_streams_stream_state_metrics{task_id=~\"${task}_${partition}\",instance=~\"${instance}\",thread_id=~\"${thread}\"}",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -451,7 +460,6 @@
       "1d"
     ],
     "time_options": [
-      "1m",
       "5m",
       "15m",
       "1h",
@@ -464,8 +472,8 @@
     ]
   },
   "timezone": "",
-  "title": "07 - Streams - StateStore",
-  "uid": "07_streams_statestore",
-  "version": 1,
+  "title": "BB - Streams StateStore RocksDB Statistics",
+  "uid": "bb_streams_statestore_rocksdb_stats",
+  "version": 2,
   "weekStart": ""
 }

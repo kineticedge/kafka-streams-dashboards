@@ -17,6 +17,7 @@ scrape_configs:
   - job_name: kafka
     static_configs:
       - targets:
+        - controller-0:7071
         - broker-1:7071
         - broker-2:7071
         - broker-3:7071
@@ -57,3 +58,54 @@ scrape_configs:
         regex: '(.*):(.*)'
         target_label: instance
         replacement: '$1'
+
+#  - job_name: XXXX
+#    dns_sd_configs:
+#      - names: ["127.0.0.11"] # https://prometheus.io/docs/prometheus/latest/configuration/configuration/#dns_sd_config
+#        port: 8001
+#        type: A
+#        refresh_interval: 5s
+
+#  - job_name: "ping"
+#    docker_sd_configs:
+#      - host: unix:///var/run/docker.sock # You can also use http/https to connect to the Docker daemon.
+##        filters:
+##          - name: label
+##            values: ["app=webserver"]
+#        refresh_interval: 2s
+#    metrics_path: /probe
+#    params:
+#      module: [icmp]  # Look for a HTTP 200 response.
+#    relabel_configs:
+#      - source_labels: [__meta_docker_container_label_com_docker_compose_service]
+#        target_label: container_service
+#      - source_labels: [__meta_docker_container_name]
+#        target_label: container_name
+#      - source_labels: [__meta_docker_network_ip]
+#        target_label: __param_target
+#      - source_labels: [__param_target]
+#        target_label: instance
+#      - target_label: __address__
+#        replacement: blackbox_exporter:9115  # The blackbox exporter's real hostname:port.
+
+#  - job_name: kafka-streams-docker
+#    docker_sd_configs:
+#      - host: unix:///var/run/docker.sock
+#        refresh_interval: 2s
+#        filters:
+#          - name: name
+#            values: [NAME]
+#    relabel_configs:
+#      # For more labels, see
+#      # https://github.com/grafana/loki/blob/main/docs/sources/clients/promtail/configuration.md#docker_sd_config
+#      - source_labels: ['__meta_docker_container_name']
+#        regex: '/(.*)'
+#        target_label: 'instance'
+
+#    scrape_interval: 2s
+#    docker_sd_config:
+#    relabel_configs:
+#      - source_labels: [__address__]
+#        regex: '(.*):(.*)'
+#        target_label: instance
+#        replacement: '$1'

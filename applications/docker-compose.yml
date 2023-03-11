@@ -6,12 +6,12 @@ networks:
 services:
 
   stream:
-    image: ksd_streams:latest
+    image: ksd_app:latest
     #hostname: stream
     #container_name: stream
     stop_grace_period: 120s
     healthcheck:
-      test: /healthcheck.sh || exit 1
+      test: /healthcheck-streams.sh || exit 1
       start_period: 10s
       interval: 10s
       timeout: 5s
@@ -22,109 +22,126 @@ services:
     cap_add:
       - NET_ADMIN
     volumes:
+      - ./streams-1.0.tar:/app.tar
       - ./streams.properties:/streams.properties
       - ./scripts:/scripts
+#      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       CLIENT_ID_PREFIX: "stream"
 
   analytics_sliding:
-    image: ksd_analytics:latest
+    image: ksd_app:latest
     hostname: analytics_sliding
     stop_grace_period: 120s
     healthcheck:
-      test: /healthcheck.sh || exit 1
+      test: /healthcheck-streams.sh || exit 1
       start_period: 10s
       interval: 10s
       timeout: 5s
       retries: 3
+    deploy:
+      replicas: 1
     volumes:
+      - ./analytics-1.0.tar:/app.tar
       - ./scripts:/scripts
       - ./stores:/tmp/kafka-streams
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       APPLICATION_ID: 'analytics_sliding'
-      CLIENT_ID: 'analytics_sliding'
+      CLIENT_ID_PREFIX: "analytics_sliding"
       WINDOW_TYPE: SLIDING
       COMMIT_INTERVAL: 100
 
   analytics_tumbling:
-    image: ksd_analytics:latest
+    image: ksd_app:latest
     hostname: analytics_tumbling
     stop_grace_period: 120s
     healthcheck:
-      test: /healthcheck.sh || exit 1
+      test: /healthcheck-streams.sh || exit 1
       start_period: 10s
       interval: 10s
       timeout: 5s
       retries: 3
+    deploy:
+      replicas: 1
     volumes:
+      - ./analytics-1.0.tar:/app.tar
       - ./scripts:/scripts
       - ./stores:/tmp/kafka-streams
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       APPLICATION_ID: 'analytics_tumbling'
-      CLIENT_ID: 'analytics_tumbling'
+      CLIENT_ID_PREFIX: 'analytics_tumbling'
       WINDOW_TYPE: TUMBLING
       COMMIT_INTERVAL: 100
 
   analytics_hopping:
-    image: ksd_analytics:latest
+    image: ksd_app:latest
     hostname: analytics_hopping
     stop_grace_period: 120s
     healthcheck:
-      test: /healthcheck.sh || exit 1
+      test: /healthcheck-streams.sh || exit 1
       start_period: 10s
       interval: 10s
       timeout: 5s
       retries: 3
+    deploy:
+      replicas: 1
     volumes:
+      - ./analytics-1.0.tar:/app.tar
       - ./scripts:/scripts
       - ./stores:/tmp/kafka-streams
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       APPLICATION_ID: 'analytics_hopping'
-      CLIENT_ID: 'analytics_hopping'
+      CLIENT_ID_PREFIX: 'analytics_hopping'
       WINDOW_TYPE: HOPPING
       COMMIT_INTERVAL: 100
 
   analytics_session:
-    image: ksd_analytics:latest
+    image: ksd_app:latest
     hostname: analytics_session
     stop_grace_period: 120s
     healthcheck:
-      test: /healthcheck.sh || exit 1
+      test: /healthcheck-streams.sh || exit 1
       start_period: 10s
       interval: 10s
       timeout: 5s
       retries: 3
+    deploy:
+      replicas: 1
     volumes:
+      - ./analytics-1.0.tar:/app.tar
       - ./scripts:/scripts
       - ./stores:/tmp/kafka-streams
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       APPLICATION_ID: 'analytics_session'
-      CLIENT_ID: 'analytics_session'
+      CLIENT_ID_PREFIX: 'analytics_session'
       WINDOW_TYPE: SESSION
       COMMIT_INTERVAL: 100
 
   analytics_none:
-    image: ksd_analytics:latest
+    image: ksd_app:latest
     hostname: analytics_none
     stop_grace_period: 120s
     healthcheck:
-      test: /healthcheck.sh || exit 1
+      test: /healthcheck-streams.sh || exit 1
       start_period: 10s
       interval: 10s
       timeout: 5s
       retries: 3
+    deploy:
+      replicas: 1
     volumes:
+      - ./analytics-1.0.tar:/app.tar
       - ./scripts:/scripts
       - ./stores:/tmp/kafka-streams
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       APPLICATION_ID: 'analytics_none'
-      CLIENT_ID: 'analytics_none'
+      CLIENT_ID_PREFIX: 'analytics_none'
       WINDOW_TYPE: NONE
       COMMIT_INTERVAL: 100
 

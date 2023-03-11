@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -21,7 +24,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1641155652383,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -36,6 +38,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -88,25 +92,32 @@
         "y": 0
       },
       "id": 37,
-    "interval" : "2s",
-    "links": [],
+      "interval": "2s",
+      "links": [],
       "options": {
         "legend": {
           "calcs": [
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "avg without(partition_id, processor_node_id, thread_id) ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{partition_id=~\"${partition}\", task_id=~\"${task}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\", instance=~\"${instance}\"}) >=0)",
+          "expr": "avg without(processor_node_id, thread_id) ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\", instance=~\"${instance}\"}) >=0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -146,8 +157,8 @@
         "y": 8
       },
       "id": 43,
-    "interval" : "2s",
-    "links": [],
+      "interval": "2s",
+      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -163,15 +174,16 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.3.0-85205pre",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "P1809F7CD0C75ACF3"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "sort (avg without(partition_id, processor_node_id, thread_id) ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{partition_id=~\"${partition}\", task_id=~\"${task}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}) >=0))",
+          "expr": "sort (avg without(processor_node_id, thread_id) ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}) >=0))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -212,8 +224,8 @@
         "y": 14
       },
       "id": 44,
-    "interval" : "2s",
-    "links": [],
+      "interval": "2s",
+      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -229,15 +241,16 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.3.0-85205pre",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "P1809F7CD0C75ACF3"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "sort (avg without(partition_id, processor_node_id, thread_id, instance) ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{partition_id=~\"${partition}\", task_id=~\"${task}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}) >=0))",
+          "expr": "sort (avg without(processor_node_id, thread_id, instance) ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}) >=0))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -252,7 +265,8 @@
       "type": "stat"
     }
   ],
-  "refresh": "2s",  "schemaVersion": 34,
+  "refresh": "2s",
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "streams"
@@ -323,7 +337,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -354,8 +368,8 @@
       {
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "1",
+          "value": "1"
         },
         "datasource": {
           "type": "prometheus",
@@ -367,48 +381,16 @@
         "label": "task",
         "multi": false,
         "name": "task",
-        "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": false,
-            "text": "1",
-            "value": "1"
-          },
-          {
-            "selected": false,
-            "text": "2",
-            "value": "2"
-          },
-          {
-            "selected": false,
-            "text": "3",
-            "value": "3"
-          },
-          {
-            "selected": false,
-            "text": "4",
-            "value": "4"
-          },
-          {
-            "selected": false,
-            "text": "5",
-            "value": "5"
-          }
-        ],
+        "options": [],
         "query": {
           "query": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
           "refId": "StandardVariableQuery"
         },
-        "refresh": 0,
-        "regex": "",
+        "refresh": 2,
+        "regex": "/^(.*)_.*$/",
         "skipUrlSync": false,
         "sort": 3,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -416,7 +398,7 @@
       {
         "allValue": "",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -424,7 +406,7 @@
           "type": "prometheus",
           "uid": "P1809F7CD0C75ACF3"
         },
-        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"${cluster}\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, partition_id)",
+        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
         "hide": 0,
         "includeAll": true,
         "label": "partition",
@@ -432,18 +414,16 @@
         "name": "partition",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_task_metrics_process_rate{instance=~\"${instance}\",thread_id=~\"${thread}\"}, partition_id)",
+          "query": "label_values(kafka_streams_stream_task_metrics_process_rate{instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
-        "regex": "",
+        "regex": "/^.*_(.*)$/",
         "skipUrlSync": false,
         "sort": 3,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
-        "type": "query",
-        "useTags": true
+        "type": "query"
       }
     ]
   },
@@ -478,8 +458,8 @@
     ]
   },
   "timezone": "",
-  "title": "03 - Streams - Task 2E2",
-  "uid": "03_streams_task_e2e",
-  "version": 1,
+  "title": "04 - Streams - Task 2E2",
+  "uid": "04_streams_task_e2e",
+  "version": 2,
   "weekStart": ""
 }

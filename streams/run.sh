@@ -8,4 +8,6 @@ gradle assemble > /dev/null
 
 MAIN="io.kineticedge.ksd.streams.Main"
 
-java -cp "${CP}" $MAIN "$@"
+#JAVA_OPTS="-javaagent:./jolokia-agent.jar=port=7072,host=*"
+
+java -cp "${CP}" ${JAVA_OPTS}  $MAIN "$@"

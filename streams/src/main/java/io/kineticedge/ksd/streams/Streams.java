@@ -69,7 +69,7 @@ public class Streams {
                 //Map.entry("topology.optimization", "all"),
                 Map.entry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, "DEBUG"),
                 //Map.entry("built.in.metrics.version", "0.10.0-2.4"),
-                //Map.entry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 2),
+//                Map.entry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 2),
 
                 Map.entry(StreamsConfig.METRIC_REPORTER_CLASSES_CONFIG, JmxReporter.class.getName() + "," + KafkaMetricsReporter.class.getName()),
                 Map.entry(CommonConfigs.METRICS_REPORTER_CONFIG, options.getCustomMetricsTopic())
@@ -158,7 +158,7 @@ public class Streams {
             log.info("Runtime shutdown hook, state={}", streams.state());
             if (streams.state().isRunningOrRebalancing()) {
 
-                // New to Kafka Streams 3.3, you can have the application leave the group on shutting down (when member.id / static memebership is used).
+                // New to Kafka Streams 3.3, you can have the application leave the group on shutting down (when member.id / static membership is used).
                 //
                 // There are reasons to do this and not to do it; from a development standpoint this makes starting/stopping
                 // the application a lot easier reducing the time needed to rejoin the group.
@@ -206,6 +206,7 @@ public class Streams {
 
         final Materialized<String, PurchaseOrder, KeyValueStore<Bytes, byte[]>> materialized =
                 Materialized.<String, PurchaseOrder, KeyValueStore<Bytes, byte[]>>as("pickup-order-reduce-store");
+
         //.withCachingDisabled();
 
 //        final Materialized<String, PurchaseOrder, WindowStore<Bytes, byte[]>> materializedW =

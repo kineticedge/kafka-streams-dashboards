@@ -6,7 +6,15 @@
       "ksda-stream-3:7071",
       "ksda-stream-4:7071",
       "ksda-stream-5:7071",
-      "ksda-stream-6:7071"
+      "ksda-stream-6:7071",
+      "ksda-stream-7:7071",
+      "ksda-stream-8:7071",
+      "ksda-stream-9:7071",
+      "ksda-stream-10:7071",
+      "ksda-stream-11:7071",
+      "ksda-stream-12:7071",
+      "ksda-stream-13:7071",
+      "ksda-stream-14:7071"
     ],
     "labels": {
       "job": "streams",

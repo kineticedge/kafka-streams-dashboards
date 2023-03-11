@@ -17,6 +17,9 @@ public class Options extends BaseOptions {
     @Parameter(names = { "--pause" }, description = "")
     private Long pause = 1000L;
 
+    @Parameter(names = { "--pauses" }, description = "")
+    private List<Long> pauses;
+
     @Parameter(names = { "--skus" }, description = "")
     private List<Integer> skus;
 

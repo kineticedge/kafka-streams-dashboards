@@ -1789,8 +1789,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "01 - Kafka Cluster - Overview",
-  "uid": "01_kafka_cluster",
+  "title": "00 - Kafka Cluster - Raft",
+  "uid": "00_kafka_cluster_raft",
   "version": 1,
   "weekStart": ""
 }

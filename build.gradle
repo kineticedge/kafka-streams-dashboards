@@ -72,6 +72,21 @@ configure(subprojects.findAll { project -> file("${project.name}/src/main/java")
         useJUnitPlatform()
     }
 
+    // no reason to build both .tar and .zip application distributions, disable zip
+    tasks.getByName("distZip").enabled = false
+
+    // make this part of the docker image.
+    distTar {
+        exclude 'rocksdbjni-6.29.4.1.jar'
+        exclude 'zstd-jni-1.5.2-1.jar'
+        exclude 'lz4-java-1.8.0.jar'
+        exclude 'snappy-java-1.1.8.4.jar'
+        exclude 'jackson-annotations-2.13.3.jar'
+        exclude 'jackson-core-2.13.3.jar'
+        exclude 'jackson-databind-2.13.3.jar'
+        exclude 'kafka-clients-3.3.1.jar'
+        exclude 'kafka-streams-3.3.1.jar'
+    }
 
 }
 

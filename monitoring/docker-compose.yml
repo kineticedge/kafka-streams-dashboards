@@ -11,6 +11,7 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.39.1
+    #image: prom/prometheus:v2.42.0
     hostname: prometheus
     container_name: ksd-prometheus
     healthcheck:
@@ -36,6 +37,7 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/application_streams.json:/etc/prometheus/application_streams.json
       - ./prometheus/application_analytics.json:/etc/prometheus/application_analytics.json
+#      - "/var/run/docker.sock:/var/run/docker.sock"
 
   grafana:
     image: grafana/grafana:main
@@ -56,7 +58,6 @@ services:
     environment:
       GF_SECURITY_ADMIN_PASSWORD: grafana
       GF_AUTH_ANONYMOUS_ENABLED: "true"
-      #grafana-piechart-panel, grafana-worldmap-panel
       GF_INSTALL_PLUGINS: "grafana-piechart-panel"
     volumes:
       - grafana:/var/lib/grafana

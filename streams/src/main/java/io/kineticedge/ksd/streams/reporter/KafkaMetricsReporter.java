@@ -63,6 +63,12 @@ public class KafkaMetricsReporter implements MetricsReporter {
 
         final Map<String, Object> map = new HashMap<>(configs);
         map.putAll(defaults);
+
+        // ensure monitoring interceptors are not part of the metrics reporter.
+        map.remove(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG);
+        map.remove(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG);
+        map.remove("confluent.monitoring.interceptor.bootstrap.servers");
+
         producer = new KafkaProducer<>(map);
 
         applicationId = (String) configs.get(StreamsConfig.APPLICATION_ID_CONFIG);
@@ -74,6 +80,8 @@ public class KafkaMetricsReporter implements MetricsReporter {
         if (clientId == null) {
             clientId = UUID.randomUUID().toString();
         }
+
+
 
         clientId += "-reporter";
 

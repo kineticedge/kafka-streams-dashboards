@@ -28,7 +28,8 @@ if [ "$NETWORK" != "ksd" ]; then
   (docker network create ksd >/dev/null)
 fi
 
-(cd cluster; docker-compose up -d --wait)
+#(cd cluster; docker-compose up -d --wait)
+(cd cluster_zk; docker-compose up -d --wait)
 
 ./gradlew build
 

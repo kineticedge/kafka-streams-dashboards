@@ -109,12 +109,13 @@ public class Producer {
 
         final KafkaProducer<String, PurchaseOrder> kafkaProducer = new KafkaProducer<>(properties(options));
 
+        int count = 0;
         while (true) {
 
             PurchaseOrder purchaseOrder = createPurchaseOrder();
 
             log.info("Sending key={}, value={}", purchaseOrder.getOrderId(), purchaseOrder);
-            kafkaProducer.send(new ProducerRecord<>(options.getPurchaseTopic(), null, purchaseOrder.getOrderId(), purchaseOrder), (metadata, exception) -> {
+            kafkaProducer.send(new ProducerRecord<>(options.getPurchaseTopic(), null, purchaseOrder.getTimestamp().toEpochMilli(), purchaseOrder.getOrderId(), purchaseOrder), (metadata, exception) -> {
                 if (exception != null) {
                     log.error("error producing to kafka", exception);
                 } else {
@@ -123,10 +124,17 @@ public class Producer {
             });
 
             try {
-                Thread.sleep(options.getPause());
+                long pause = options.getPause();
+                if (options.getPauses() != null) {
+                    pause = options.getPauses().get(count % options.getPauses().size());
+                }
+                log.info("pausing for={}", pause);
+                Thread.sleep(pause);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            count++;
         }
 
         // kafkaProducer.close();

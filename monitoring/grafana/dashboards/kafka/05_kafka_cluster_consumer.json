@@ -827,7 +827,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "05 - Kafka Cluster - Consumer Metrics",
+  "title": "05 - Consumer Metrics",
   "uid": "05_kafka_cluster_consumer",
   "version": 1,
   "weekStart": ""

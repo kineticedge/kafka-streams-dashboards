@@ -81,7 +81,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "wps"
         },
         "overrides": []
       },
@@ -99,8 +99,8 @@
           "calcs": [
             "lastNotNull"
           ],
-          "displayMode": "list",
-          "placement": "bottom",
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -117,7 +117,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=\"put-rate\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"})",
+          "expr": "sort (sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=\"put-rate\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\", store_type=~\"$store_type\", state_id=~\"$state\"}))",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -146,7 +146,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "wps"
         },
         "overrides": []
       },
@@ -174,7 +175,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
@@ -183,7 +184,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sort_desc(sum without(thread_id,instance,job,task_id) (kafka_streams_stream_state_metrics{metric=\"put-rate\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}))",
+          "expr": "sort_desc(sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=\"put-rate\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\", store_type=~\"$store_type\", state_id=~\"$state\"}))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -256,7 +257,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "rps"
         },
         "overrides": []
       },
@@ -274,8 +275,8 @@
           "calcs": [
             "lastNotNull"
           ],
-          "displayMode": "list",
-          "placement": "bottom",
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -292,7 +293,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"fetch-rate|get-rate\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"})",
+          "expr": "sort (sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"fetch-rate|get-rate\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\", store_type=~\"$store_type\", state_id=~\"$state\"}))",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -321,7 +322,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "rps"
         },
         "overrides": []
       },
@@ -349,7 +351,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
@@ -358,7 +360,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sort_desc(sum without(thread_id,instance,job,task_id) (kafka_streams_stream_state_metrics{metric=~\"fetch-rate|get-rate\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}))",
+          "expr": "sort_desc(sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"fetch-rate|get-rate\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\", store_type=~\"$store_type\", state_id=~\"$state\"}))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -431,7 +433,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "wps"
         },
         "overrides": []
       },
@@ -449,8 +451,8 @@
           "calcs": [
             "lastNotNull"
           ],
-          "displayMode": "list",
-          "placement": "bottom",
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -467,7 +469,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without(thread_id,instance) (kafka_streams_stream_state_metrics{metric=\"remove-rate\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"})",
+          "expr": "sort (sum without(task_id, thread_id,instance) (kafka_streams_stream_state_metrics{metric=\"remove-rate\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\", store_type=~\"$store_type\", state_id=~\"$state\"}))",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -496,7 +498,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "wps"
         },
         "overrides": []
       },
@@ -524,7 +527,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
@@ -533,7 +536,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sort_desc(sum without(thread_id,instance,job) (kafka_streams_stream_state_metrics{metric=\"remove-rate\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}))",
+          "expr": "sort_desc(sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=\"remove-rate\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\", store_type=~\"$store_type\", state_id=~\"$state\"}))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -565,7 +568,7 @@
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "records",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -580,7 +583,8 @@
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 10,
+              "type": "log"
             },
             "showPoints": "never",
             "spanNulls": true,
@@ -599,10 +603,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -626,7 +626,9 @@
           ],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
@@ -640,8 +642,9 @@
             "type": "prometheus",
             "uid": "P1809F7CD0C75ACF3"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without(partition_id,task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=\"estimate-num-keys\", partition_id=~\"${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"})",
+          "expr": "sort (sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=\"estimate-num-keys\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\", store_type=~\"$store_type\", state_id=~\"$state\"}))",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -670,7 +673,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
@@ -698,7 +702,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
@@ -707,7 +711,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sort_desc(sum without(thread_id,instance,job,task_id) (kafka_streams_stream_state_metrics{metric=\"estimate-num-keys\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}))",
+          "expr": "sort_desc(sum without(thread_id,instance,job,task_id) (kafka_streams_stream_state_metrics{metric=\"estimate-num-keys\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\", store_type=~\"$store_type\", state_id=~\"$state\"}))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -727,8 +731,8 @@
       "type": "stat"
     }
   ],
-  "refresh": "2s",
-  "schemaVersion": 37,
+  "refresh": "5s",
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "streams"
@@ -738,7 +742,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -767,9 +771,9 @@
         "useTags": false
       },
       {
-        "allValue": ".*",
+        "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -777,7 +781,35 @@
           "type": "prometheus",
           "uid": "P1809F7CD0C75ACF3"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"streams\", cluster_id=~\"$cluster\"}, instance)",
+        "definition": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "application",
+        "options": [],
+        "query": {
+          "query": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+        "description": "cannot use .* for all, since then thread is not limited to the application that was selected.",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -785,7 +817,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\", cluster_id=~\"$cluster\"}, instance)",
+          "query": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -818,7 +850,7 @@
           "query": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
           "refId": "StandardVariableQuery"
         },
-        "refresh": 2,
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -848,7 +880,7 @@
           "query": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
           "refId": "StandardVariableQuery"
         },
-        "refresh": 2,
+        "refresh": 1,
         "regex": "/^(.*)_.*$/",
         "skipUrlSync": false,
         "sort": 3,
@@ -861,8 +893,8 @@
         "allValue": "",
         "current": {
           "selected": false,
-          "text": "3",
-          "value": "3"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "prometheus",
@@ -881,6 +913,65 @@
         },
         "refresh": 1,
         "regex": "/^.*_(.*)$/",
+        "skipUrlSync": false,
+        "sort": 3,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\"},store_type)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "store_type",
+        "options": [],
+        "query": {
+          "query": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\"},store_type)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(kafka_streams_stream_state_metrics{task_id=~\"${task}_${partition}\",instance=~\"${instance}\",thread_id=~\"${thread}\"}, state_id)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "state",
+        "multi": false,
+        "name": "state",
+        "options": [],
+        "query": {
+          "query": "label_values(kafka_streams_stream_state_metrics{task_id=~\"${task}_${partition}\",instance=~\"${instance}\",thread_id=~\"${thread}\"}, state_id)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
         "sort": 3,
         "tagValuesQuery": "",
@@ -921,8 +1012,8 @@
     ]
   },
   "timezone": "",
-  "title": "09 - Streams - StateStore (put/fetch)",
-  "uid": "09_streams_statestore_putfetch",
-  "version": 2,
+  "title": "08 - StateStore (put/fetch)",
+  "uid": "08_streams_statestore_putfetch",
+  "version": 9,
   "weekStart": ""
 }

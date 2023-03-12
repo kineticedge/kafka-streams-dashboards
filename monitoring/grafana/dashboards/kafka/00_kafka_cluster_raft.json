@@ -1789,7 +1789,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "00 - Kafka Cluster - Raft",
+  "title": "00 - Raft",
   "uid": "00_kafka_cluster_raft",
   "version": 1,
   "weekStart": ""

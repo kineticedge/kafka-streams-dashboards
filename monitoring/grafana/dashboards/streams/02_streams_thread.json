@@ -1086,9 +1086,9 @@
       {
         "allValue": "",
         "current": {
-          "selected": true,
-          "text": "analytics_session",
-          "value": "analytics_session"
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "prometheus",
@@ -1117,7 +1117,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -1211,8 +1211,8 @@
     ]
   },
   "timezone": "",
-  "title": "02 - Streams - Threads",
+  "title": "02  - Threads",
   "uid": "02_streams_thread",
-  "version": 3,
+  "version": 1,
   "weekStart": ""
 }

@@ -81,7 +81,7 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "editorMode": "code",
-          "expr": "sum without(partition_id,task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", task_id=~\"${task}_${partition}\", state_id=~\"${state}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"})",
+          "expr": "sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"})",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -357,7 +357,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -365,18 +365,18 @@
           "type": "prometheus",
           "uid": "P1809F7CD0C75ACF3"
         },
-        "definition": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\"}, store_type)",
+        "definition": "kafka_streams_stream_state_metrics",
         "hide": 0,
         "includeAll": true,
         "multi": false,
         "name": "store_type",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\"}, store_type)",
+          "query": "kafka_streams_stream_state_metrics",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
-        "regex": "",
+        "regex": "/.*store_type=\"(.*)\",task_id.*$/",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
@@ -387,25 +387,29 @@
       {
         "current": {
           "selected": true,
-          "text": "block-cache-capacity",
-          "value": "block-cache-capacity"
+          "text": [
+            "estimate-num-keys"
+          ],
+          "value": [
+            "estimate-num-keys"
+          ]
         },
         "datasource": {
           "type": "prometheus",
           "uid": "P1809F7CD0C75ACF3"
         },
-        "definition": "label_values(kafka_streams_stream_state_metrics{}, metric)",
+        "definition": "label_values(kafka_streams_stream_state_metrics,metric)",
         "hide": 0,
         "includeAll": false,
-        "multi": false,
+        "multi": true,
         "name": "metric",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_state_metrics{}, metric)",
+          "query": "label_values(kafka_streams_stream_state_metrics,metric)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
-        "regex": "",
+        "regex": "/(num-immutable-mem-table|cur-size-active-mem-table|cur-size-all-mem-tables|size-all-mem-tables|num-entries-active-mem-table|num-entries-imm-mem-tables|num-deletes-active-mem-table|num-deletes-imm-mem-tables|mem-table-flush-pending|num-running-flushes|compaction-pending|num-running-compactions|estimate-pending-compaction-bytes|total-sst-files-size|live-sst-files-size|num-live-versions|block-cache-capacity|block-cache-usage|block-cache-pinned-usage|estimate-num-keys|estimate-table-readers-mem|background-errors)$/",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
@@ -416,7 +420,7 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -424,7 +428,7 @@
           "type": "prometheus",
           "uid": "P1809F7CD0C75ACF3"
         },
-        "definition": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"${instance}\", store_type=~\"$store_type\"}, state_id)",
+        "definition": "label_values(kafka_streams_stream_state_metrics{task_id=~\"${task}_${partition}\",instance=~\"${instance}\",thread_id=~\"${thread}\"}, state_id)",
         "hide": 0,
         "includeAll": true,
         "label": "state",
@@ -432,7 +436,7 @@
         "name": "state",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"${instance}\", store_type=~\"$store_type\"}, state_id)",
+          "query": "label_values(kafka_streams_stream_state_metrics{task_id=~\"${task}_${partition}\",instance=~\"${instance}\",thread_id=~\"${thread}\"}, state_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -477,8 +481,8 @@
     ]
   },
   "timezone": "",
-  "title": "11 - Streams - StateStore RocksDB (status)",
-  "uid": "11_streams_statestore_rocksdb_status",
-  "version": 3,
+  "title": "10 - StateStore RocksDB",
+  "uid": "10_streams_statestore_rocksdb",
+  "version": 1,
   "weekStart": ""
 }

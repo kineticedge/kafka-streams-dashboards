@@ -12,3 +12,4 @@ providers:
     updateIntervalSeconds: 1
     options:
       path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: true

@@ -1789,7 +1789,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "01 - Kafka Cluster - Overview",
+  "title": "01 - Overview",
   "uid": "01_kafka_cluster",
   "version": 1,
   "weekStart": ""

@@ -854,7 +854,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "04 - Kafka Cluster - Producer Metrics",
+  "title": "04 - Producer Metrics",
   "uid": "04_kafka_cluster_producer",
   "version": 1,
   "weekStart": ""

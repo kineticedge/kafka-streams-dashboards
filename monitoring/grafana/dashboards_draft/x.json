@@ -604,7 +604,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "streams",
           "value": "streams"
         },
@@ -662,7 +662,7 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -706,8 +706,8 @@
     ]
   },
   "timezone": "",
-  "title": "01 - Topology",
+  "title": "01 - Streams - Topology",
   "uid": "01_streams_topology",
-  "version": 15,
+  "version": 1,
   "weekStart": ""
 }

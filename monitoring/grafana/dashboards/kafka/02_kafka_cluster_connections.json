@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -23,12 +26,14 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 721,
   "graphTooltip": 0,
-  "iteration": 1638128923089,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -36,6 +41,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -94,15 +101,21 @@
             "last"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.2.5",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
           "exemplar": true,
           "expr": "sum (kafka_server_socket_server_metrics_connection_count{cluster_id=~\"$cluster\", instance=~\"$instance\"}) by (listener)",
           "interval": "",
@@ -111,13 +124,14 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Connection Count / Listener",
       "type": "timeseries"
     },
     {
-      "datasource": "prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -125,6 +139,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -180,43 +196,61 @@
       "options": {
         "legend": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.2.5",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
           "exemplar": true,
           "expr": "sum (kafka_server_socket_server_metrics_connection_creation_rate{cluster_id=~\"$cluster\", instance=~\"$instance\"}) by (listener)",
           "interval": "",
           "legendFormat": "{{listener}}",
           "queryType": "randomWalk",
+          "range": true,
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Connection Rate / Listener",
       "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
       },
-      "datasource": "prometheus",
       "description": "",
-      "fontSize": "80%",
-      "format": "short",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 10,
         "w": 12,
@@ -224,19 +258,37 @@
         "y": 10
       },
       "id": 36,
-      "interval": null,
-      "legend": {
-        "show": true,
-        "values": true
+      "interval": "5s",
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "legendType": "Right side",
-    "interval" : "5s",
-    "links": [],
-      "nullPointMode": "connected",
-      "pieType": "pie",
-      "strokeWidth": 1,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
           "exemplar": true,
           "expr": "sum(kafka_server_socket_server_metrics_connections{cluster_id=~\"$cluster\",instance=~\"$instance\"}) by (clientSoftwareName, clientSoftwareVersion)",
           "interval": "",
@@ -245,15 +297,12 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Client Versions",
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
+      "type": "piechart"
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 32,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "kafka_cluster",
@@ -268,10 +317,11 @@
           "text": "kafka-core",
           "value": "kafka-core"
         },
-        "datasource": "prometheus",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
         "definition": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "cluster",
@@ -298,10 +348,11 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "prometheus",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
         "definition": "label_values(jvm_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -354,7 +405,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "02 - Kafka Cluster - Connections",
+  "title": "02 - Connections",
   "uid": "02_kafka_cluster_connections",
-  "version": 1
+  "version": 1,
+  "weekStart": ""
 }

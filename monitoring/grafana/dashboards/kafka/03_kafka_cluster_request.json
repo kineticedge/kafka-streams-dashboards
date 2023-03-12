@@ -660,7 +660,7 @@
     ]
   },
   "timezone": "",
-  "title": "03 - Kafka Cluster - Request Metrics",
+  "title": "03 - Request Metrics",
   "uid": "03_kafka_cluster_request",
   "version": 1,
   "weekStart": ""

@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -20,17 +23,18 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "datasource": null,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
       "description": "",
       "gridPos": {
-        "h": 10,
+        "h": 16,
         "w": 12,
         "x": 0,
         "y": 0
@@ -47,26 +51,31 @@
           "kafka_cluster"
         ]
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.3.0-85205pre",
       "targets": [
         {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
           "queryType": "randomWalk",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Kafka Cluster",
       "type": "dashlist"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
       "description": "",
       "gridPos": {
-        "h": 13,
+        "h": 19,
         "w": 12,
         "x": 12,
-        "y": 10
+        "y": 0
       },
       "id": 22,
       "options": {
@@ -80,26 +89,31 @@
           "streams"
         ]
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.3.0-85205pre",
       "targets": [
         {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
           "queryType": "randomWalk",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Kafka Streams",
       "type": "dashlist"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
       "description": "",
       "gridPos": {
         "h": 3,
         "w": 12,
         "x": 0,
-        "y": 21
+        "y": 16
       },
       "id": 20,
       "options": {
@@ -113,21 +127,23 @@
           "jvm"
         ]
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.3.0-85205pre",
       "targets": [
         {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
           "queryType": "randomWalk",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "JVM",
       "type": "dashlist"
     }
   ],
   "refresh": "",
-  "schemaVersion": 32,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "home"
@@ -141,13 +157,12 @@
   },
   "timepicker": {
     "hidden": true,
-    "refresh_intervals": [
-    ],
-    "time_options": [
-    ]
+    "refresh_intervals": [],
+    "time_options": []
   },
   "timezone": "",
   "title": "Home",
   "uid": "home",
-  "version": 1
+  "version": 1,
+  "weekStart": ""
 }

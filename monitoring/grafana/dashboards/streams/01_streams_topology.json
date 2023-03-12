@@ -39,7 +39,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": false,
             "inspect": false
           },
@@ -180,7 +182,9 @@
       },
       "id": 44,
       "options": {
+        "cellHeight": "md",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -188,9 +192,10 @@
           "show": false
         },
         "showHeader": true,
+        "showRowNums": false,
         "sortBy": []
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
@@ -323,7 +328,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": false,
             "inspect": false
           },
@@ -452,7 +459,9 @@
       },
       "id": 46,
       "options": {
+        "cellHeight": "md",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -460,6 +469,7 @@
           "show": false
         },
         "showHeader": true,
+        "showRowNums": false,
         "sortBy": [
           {
             "desc": false,
@@ -467,7 +477,7 @@
           }
         ]
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
@@ -476,7 +486,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum (kafka_streams_stream_processor_node_metrics_process_total{cluster_id=~\"${cluster}\"} * on (instance) group_left(application_id) kafka_streams_info{application_id=~\"$application\", instance=~\"$instance\"}) without()",
+          "expr": "sum (kafka_streams_stream_processor_node_metrics_process_total{task_id=~\"([0-9]+)_(.+)\", cluster_id=~\"${cluster}\"} * on (instance) group_left(application_id) kafka_streams_info{application_id=~\"$application\", instance=~\"$instance\"}) without()",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -594,7 +604,7 @@
     }
   ],
   "refresh": "15m",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "streams"
@@ -604,7 +614,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "streams",
           "value": "streams"
         },
@@ -662,7 +672,7 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -708,6 +718,6 @@
   "timezone": "",
   "title": "01 - Topology",
   "uid": "01_streams_topology",
-  "version": 15,
+  "version": 1,
   "weekStart": ""
 }

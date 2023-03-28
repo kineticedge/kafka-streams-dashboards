@@ -46,6 +46,13 @@ rules:
     thread_id: "$1"
     task_id: "$2"
     processor_node_id: "$3"
+- pattern: kafka.streams<type=stream-topic-metrics, thread-id=(.*), task-id=(.+), processor-node-id=(.+), topic=(.+)><>(.+):.+
+  name: kafka_streams_stream_topic_metrics_$5
+  labels:
+    thread_id: "$1"
+    task_id: "$2"
+    topic: "$3"
+    processor_node_id: "$4"
 - pattern: kafka.producer<type=producer-metrics, client-id=(.+)><>(.+):.+
   name: kafka_producer_producer_metrics_$2
   labels:

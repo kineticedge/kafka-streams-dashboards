@@ -199,7 +199,7 @@
       "type": "stat"
     }
   ],
-  "refresh": "5s",
+  "refresh": "2s",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [

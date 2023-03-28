@@ -55,96 +55,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "task_id"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 74
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "instance"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 135
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "cluster_id"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 103
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "partition_id"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 185
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "thread_id"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 198
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "partitions"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 327
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "partition_id (uniqueValues)"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 412
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "partitions_ids"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 120
               }
             ]
           },
@@ -169,6 +85,36 @@
               {
                 "id": "custom.width",
                 "value": 168
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "other"
+            },
+            "properties": [
+              {
+                "id": "custom.inspect",
+                "value": true
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "semi-dark-orange",
+                      "value": null
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -448,6 +394,36 @@
                 "value": 170
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "other"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "semi-dark-orange",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
+              }
+            ]
           }
         ]
       },
@@ -603,7 +579,7 @@
       "type": "table"
     }
   ],
-  "refresh": "15m",
+  "refresh": "1m",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
@@ -614,7 +590,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "streams",
           "value": "streams"
         },
@@ -703,21 +679,39 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-1m",
     "to": "now"
   },
   "timepicker": {
-    "hidden": true,
     "refresh_intervals": [
-      "15m"
+      "2s",
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
     ],
     "time_options": [
-      "15m"
+      "1m",
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
     ]
   },
   "timezone": "",
   "title": "01 - Topology",
   "uid": "01_streams_topology",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

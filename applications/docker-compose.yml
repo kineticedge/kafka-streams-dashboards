@@ -25,7 +25,7 @@ services:
       - ./streams-1.0.tar:/app.tar
       - ./streams.properties:/streams.properties
       - ./scripts:/scripts
-#      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       CLIENT_ID_PREFIX: "stream"

@@ -256,7 +256,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": "2s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
@@ -335,6 +335,7 @@
   },
   "timepicker": {
     "refresh_intervals": [
+      "2s",
       "5s",
       "10s",
       "30s",

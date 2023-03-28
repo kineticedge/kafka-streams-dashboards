@@ -42,6 +42,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 10,
@@ -173,7 +174,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
@@ -196,7 +197,7 @@
     }
   ],
   "refresh": "2s",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "streams"
@@ -237,7 +238,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -478,6 +479,6 @@
   "timezone": "",
   "title": "07 - Record Cache",
   "uid": "07_streams_recordcache",
-  "version": 12,
+  "version": 1,
   "weekStart": ""
 }

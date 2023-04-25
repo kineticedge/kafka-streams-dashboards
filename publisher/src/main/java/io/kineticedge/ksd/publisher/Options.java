@@ -12,7 +12,7 @@ import java.util.List;
 public class Options extends BaseOptions {
 
     @Parameter(names = { "--line-items" }, description = "use x:y for a range, single value for absolute")
-    private String lineItemCount= "1";
+    private String lineItemCount= "2";
 
     @Parameter(names = { "--pause" }, description = "")
     private Long pause = 1000L;

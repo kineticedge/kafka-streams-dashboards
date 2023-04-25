@@ -1,0 +1,201 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+volumes:
+  zk: {}
+  zk_log: {}
+  zk_secrets: {}
+  bk1: {}
+  bk2: {}
+  bk3: {}
+  bk4: {}
+
+services:
+
+  sasl-zookeeper:
+    image: confluentinc/cp-zookeeper:${VERSION}
+    hostname: sasl-zookeeper
+    container_name: ksd-sasl-zookeeper
+    healthcheck:
+      test: echo ruok | nc -w 2 localhost 2181 | grep imok
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - zk:/var/lib/zookeeper/data
+      - zk_log:/var/lib/zookeeper/log
+      - zk_secrets:/etc/zookeeper/secrets
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./secrets:/etc/zookeeper/secrets
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_AUTH_PROVIDER_SASL: org.apache.zookeeper.server.auth.SASLAuthenticationProvider
+      KAFKA_OPTS: >-
+        -Dzookeeper.4lw.commands.whitelist=ruok,stat
+        -Djava.security.auth.login.config=/etc/zookeeper/secrets/zookeeper_jaas.conf
+        -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/zookeeper-config.yml
+      KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
+
+  sasl-broker-1:
+    image: confluentinc/cp-kafka:${VERSION}
+    hostname: sasl-broker-1
+    container_name: ksd-sasl-broker-1
+    stop_grace_period: 120s
+    healthcheck:
+      test: nc -z localhost 9092 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      sasl-zookeeper:
+        condition: service_healthy
+    ports:
+      - "19092:19092"
+    volumes:
+      - bk1:/var/lib/kafka/data
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./secrets:/etc/kafka/secrets/
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'sasl-zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SASL_PLAINTEXT,EXTERNAL_SSL:SASL_SSL,LOCALHOST:SASL_PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://sasl-broker-1:9092,EXTERNAL_SSL://sasl-broker-1:9093,LOCALHOST://localhost:19092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 6
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_SSL_KEYSTORE_FILENAME: sasl-broker-1.keystore.jks
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_KEY_CREDENTIALS: kafka.key
+      KAFKA_SSL_CLIENT_AUTH: none
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
+      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+      KAFKA_SUPER_USERS: User:kafka-admin;User:kafka-broker;User:kafka-broker-v2
+      KAFKA_OPTS: >-
+        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
+        -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
+        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+      KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+      KAFKA_ZOOKEEPER_SSL_CLIENT_ENABLE: 'false'
+      KAFKA_ZOOKEEPER_SASL_ENABLED: 'false'
+      KAFKA_ZOOKEEPER_SET_ACL: 'false'
+
+  sasl-broker-2:
+    image: confluentinc/cp-kafka:${VERSION}
+    hostname: sasl-broker-2
+    container_name: ksd-sasl-broker-2
+    stop_grace_period: 120s
+    healthcheck:
+      test: nc -z localhost 9092 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      sasl-zookeeper:
+        condition: service_healthy
+    ports:
+      - "29092:29092"
+    volumes:
+      - bk2:/var/lib/kafka/data
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./secrets:/etc/kafka/secrets/
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: 'sasl-zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SASL_PLAINTEXT,EXTERNAL_SSL:SASL_SSL,LOCALHOST:SASL_PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://sasl-broker-2:9092,EXTERNAL_SSL://sasl-broker-2:9093,LOCALHOST://localhost:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 6
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_SSL_KEYSTORE_FILENAME: sasl-broker-2.keystore.jks
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_KEY_CREDENTIALS: kafka.key
+      KAFKA_SSL_CLIENT_AUTH: none
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
+      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+      KAFKA_SUPER_USERS: User:kafka-admin;User:kafka-broker
+      KAFKA_OPTS: >-
+        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf 
+        -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
+        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+      KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+      KAFKA_ZOOKEEPER_SSL_CLIENT_ENABLE: 'false'
+      KAFKA_ZOOKEEPER_SASL_ENABLED: 'false'
+      KAFKA_ZOOKEEPER_SET_ACL: 'false'
+
+
+  sasl-broker-3:
+    image: confluentinc/cp-kafka:${VERSION}
+    hostname: sasl-broker-3
+    container_name: ksd-sasl-broker-3
+    stop_grace_period: 120s
+    healthcheck:
+      test: nc -z localhost 9092 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      sasl-zookeeper:
+        condition: service_healthy
+    ports:
+      - "39092:39092"
+    volumes:
+      - bk3:/var/lib/kafka/data
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./secrets:/etc/kafka/secrets/
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: 'sasl-zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SASL_PLAINTEXT,EXTERNAL_SSL:SASL_SSL,LOCALHOST:SASL_PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://sasl-broker-3:9092,EXTERNAL_SSL://sasl-broker-3:9093,LOCALHOST://localhost:39092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 6
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_SSL_KEYSTORE_FILENAME: sasl-broker-3.keystore.jks
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_KEY_CREDENTIALS: kafka.key
+      KAFKA_SSL_CLIENT_AUTH: none
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
+      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+      KAFKA_SUPER_USERS: User:kafka-admin;User:kafka-broker
+      KAFKA_OPTS: >-
+        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf 
+        -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
+        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+      KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+      KAFKA_ZOOKEEPER_SSL_CLIENT_ENABLE: 'false'
+      KAFKA_ZOOKEEPER_SASL_ENABLED: 'false'
+      KAFKA_ZOOKEEPER_SET_ACL: 'false'

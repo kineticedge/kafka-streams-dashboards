@@ -5,15 +5,12 @@ import io.kineticedge.ksd.common.domain.PurchaseOrder;
 import io.kineticedge.ksd.common.domain.Store;
 import io.kineticedge.ksd.common.domain.User;
 import io.kineticedge.ksd.common.metrics.StreamsMetrics;
-import io.kineticedge.ksd.streams.reporter.KafkaMetricsReporter;
-import io.kineticedge.ksd.tools.config.CommonConfigs;
 import io.kineticedge.ksd.tools.serde.JsonSerde;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.metrics.JmxReporter;
 import org.apache.kafka.common.metrics.Sensor;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
@@ -31,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -42,6 +40,7 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
 
 @Slf4j
 public class Streams {
+
 
     private static final Duration SHUTDOWN = Duration.ofSeconds(30);
 
@@ -67,12 +66,12 @@ public class Streams {
                 Map.entry(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class),
                 Map.entry(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE),
                 //Map.entry("topology.optimization", "all"),
-                Map.entry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, "DEBUG"),
+                Map.entry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, "DEBUG")
                 //Map.entry("built.in.metrics.version", "0.10.0-2.4"),
 //                Map.entry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 2),
 
-                Map.entry(StreamsConfig.METRIC_REPORTER_CLASSES_CONFIG, JmxReporter.class.getName() + "," + KafkaMetricsReporter.class.getName()),
-                Map.entry(CommonConfigs.METRICS_REPORTER_CONFIG, options.getCustomMetricsTopic())
+                //Map.entry(StreamsConfig.METRIC_REPORTER_CLASSES_CONFIG, JmxReporter.class.getName() + "," + KafkaMetricsReporter.class.getName()),
+                //Map.entry(CommonConfigs.METRICS_REPORTER_CONFIG, options.getCustomMetricsTopic())
 
         );
 
@@ -90,30 +89,42 @@ public class Streams {
             map.put(CommonClientConfigs.GROUP_INSTANCE_ID_CONFIG, options.getGroupInstanceId());
         }
 
+//        try {
+//            Class.forName("io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor");
+//
+//            log.info("adding confluent interceptors, since package is on the classpath.");
+//
+//            map.put(StreamsConfig.PRODUCER_PREFIX + ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,
+//                    "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor");
+//
+//            map.put(StreamsConfig.PRODUCER_PREFIX + "confluent.monitoring.interceptor.bootstrap.servers",
+//                    options.getBootstrapServers());
+//
+//            //
+//
+//            map.put(StreamsConfig.CONSUMER_PREFIX + ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG,
+//                    "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor");
+//
+//
+//            map.put(StreamsConfig.CONSUMER_PREFIX + "confluent.monitoring.interceptor.bootstrap.servers",
+//                    options.getBootstrapServers());
+//
+//        } catch (Throwable t) {
+//            log.info("confluent interceptors not added, as library is not on the classpath.", t);
+//        }
 
-        try {
-            Class.forName("io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor");
+        //OTEL_SERVICE_NAME
+        //OTEL_TRACES_EXPORTER
 
-            log.info("adding confluent interceptors, since package is on the classpath.");
+//        -Dotel.service.name=my-kafka-service \
+//        -Dotel.traces.exporter=jaeger \
+//        -Dotel.metrics.exporter=none \
 
-            map.put(StreamsConfig.PRODUCER_PREFIX + ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,
-                    "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor");
+        //Class.forName("io.opentelemetry.instrumentation.kafkaclients.v2_6.TracingProducerInterceptor");
+        //Class.forName("io.opentelemetry.instrumentation.kafkaclients.v2_6.TracingConsumerInterceptor");
 
-            map.put(StreamsConfig.PRODUCER_PREFIX + "confluent.monitoring.interceptor.bootstrap.servers",
-                    options.getBootstrapServers());
-
-            //
-
-            map.put(StreamsConfig.CONSUMER_PREFIX + ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG,
-                    "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor");
-
-
-            map.put(StreamsConfig.CONSUMER_PREFIX + "confluent.monitoring.interceptor.bootstrap.servers",
-                    options.getBootstrapServers());
-
-        } catch (Throwable t) {
-            log.info("confluent interceptors not added, as library is not on the classpath.", t);
-        }
+//        map.put(StreamsConfig.PRODUCER_PREFIX + ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, TracingProducerInterceptor.class.getName());
+//        map.put(StreamsConfig.CONSUMER_PREFIX + ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG, TracingConsumerInterceptor.class.getName());
 
         try {
             final Properties properties = new Properties();
@@ -219,6 +230,7 @@ public class Streams {
 
 
         builder.<String, PurchaseOrder>stream(options.getPurchaseTopic(), Consumed.as("purchase-order-source"))
+                .peek((k, v) -> log.info("[purchase-order=source] key={}, timestamp={}", k, LocalDateTime.now()))
                 .processValues(() -> new FixedKeyProcessor<String, PurchaseOrder, PurchaseOrder>() { // transformValues deprecated, changed to this.
 
                     private Sensor sensor;
@@ -267,10 +279,12 @@ public class Streams {
                     purchaseOrder.setUser(user);
                     return purchaseOrder;
                 }, Joined.as("purchase-order-join-user"))
+                .peek((k, v) -> log.info("[purchase-order-join-user] key={}, timestamp={}", k, LocalDateTime.now()))
                 .join(stores, (k, v) -> v.getStoreId(), (purchaseOrder, store) -> {
                     purchaseOrder.setStore(store);
                     return purchaseOrder;
                 }, Named.as("purchase-order-join-store"))
+                .peek((k, v) -> log.info("[purchase-order-join-store] key={}, timestamp={}", k, LocalDateTime.now()))
                 .flatMap((k, v) -> v.getItems().stream().map(item -> KeyValue.pair(item.getSku(), v)).collect(Collectors.toList()),
                         Named.as("purchase-order-products-flatmap"))
                 .join(products, (purchaseOrder, product) -> {
@@ -278,6 +292,7 @@ public class Streams {
                     //pause(RANDOM.nextInt(1000));
                     return purchaseOrder;
                 }, Joined.as("purchase-order-join-product"))
+                .peek((k, v) -> log.info("[purchase-order-join-product] key={}, timestamp={}", k, LocalDateTime.now()))
                 .groupBy((k, v) -> v.getOrderId(), Grouped.as("pickup-order-groupBy-orderId"))
 //                .windowedBy(TimeWindows.of(Duration.ofSeconds(options.getWindowSize()))
 //                        .grace(Duration.ofSeconds(options.getGracePeriod())))
@@ -301,6 +316,7 @@ public class Streams {
                     return v.getItems().stream().allMatch(i -> i.getPrice() != null);
                 }, Named.as("pickup-order-filtered"))
                 .toStream(Named.as("pickup-order-reduce-tostream"))
+                .peek((k, v) -> log.info("[pickup-order-reduce-tostream] key={}, timestamp={}", k, LocalDateTime.now()))
                 .to(options.getPickupTopic(), Produced.as("pickup-orders"));
 
         // e2e

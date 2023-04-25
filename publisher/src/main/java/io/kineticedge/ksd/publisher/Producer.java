@@ -10,6 +10,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.time.Instant;
@@ -145,6 +146,12 @@ public class Producer {
         Map<String, Object> defaults =  Map.ofEntries(
                 Map.entry(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, options.getBootstrapServers()),
                 Map.entry(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "PLAINTEXT"),
+
+//                Map.entry(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092"),
+//                Map.entry(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT"),
+//                Map.entry(SaslConfigs.SASL_MECHANISM, "PLAIN"),
+//                Map.entry(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kafka-admin\" password=\"kafka-admin-secret\";"),
+
                 Map.entry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()),
                 Map.entry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName()),
                 Map.entry(ProducerConfig.ACKS_CONFIG, "all")
@@ -152,6 +159,7 @@ public class Producer {
 
         Map<String, Object> map = new HashMap<>(defaults);
 
+        /*
         try {
             Class.forName("io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor");
 
@@ -166,7 +174,7 @@ public class Producer {
         } catch (Throwable t) {
             log.info("confluent interceptors not added, as library is not on the classpath.", t);
         }
-
+        */
 
         return map;
     }

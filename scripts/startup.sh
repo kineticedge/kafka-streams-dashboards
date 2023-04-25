@@ -28,8 +28,11 @@ if [ "$NETWORK" != "ksd" ]; then
   (docker network create ksd >/dev/null)
 fi
 
+# using the cluster with zookeeper
+(cd cluster-zk; docker-compose up -d --wait)
+
+#(cd cluster-sasl; docker-compose up -d --wait)
 #(cd cluster; docker-compose up -d --wait)
-(cd cluster_zk; docker-compose up -d --wait)
 
 ./gradlew build
 
@@ -37,4 +40,9 @@ fi
 (cd monitoring; docker-compose up -d)
 (cd applications; docker-compose up -d)
 
-(cd publisher; ../gradlew run --args="--max-sku 100")
+#avoid starting the analytic applications
+#(cd applications; docker-compose up -d otel publisher stream)
+
+# to start with a local publisher
+#(cd applications; docker-compose up -d --wait $(docker-compose config --services | grep -v publisher))
+#(cd publisher; ../gradlew run --args="--max-sku 100")

@@ -1,0 +1,2 @@
+
+curl -s http://localhost:7072/jolokia/read/kafka.streams:client-id=stream-1,type=stream-metrics/topology-description | jq -r ".value"

@@ -1,0 +1,57 @@
+
+lowercaseOutputName: true
+rules:
+- pattern: kafka.(.*)
+- pattern: java.lang<type=(.*)>
+- pattern: "kafka.server<type=raft-metrics><>(.+): (.+)"
+  name: kafka_server_raft_metrics
+  labels:
+    name: $1
+- pattern: kafka.cluster<type=Partition, name=UnderReplicated, topic=(.+), partition=(.+)><>Value
+- pattern: kafka.controller<type=KafkaController, name=ActiveControllerCount><>Value
+- pattern: kafka.controller<type=KafkaController, name=OfflinePartitionsCount><>Value
+- pattern: kafka.controller<type=ControllerStats, name=UncleanLeaderElectionsPerSec><>Count
+- pattern: kafka.controller<type=ControllerStats, name=UncleanLeaderElectionsPerSec><>OneMinuteRate
+- pattern: kafka.log<type=Log, name=(.+), topic=(.+), partition=(.+)><>Value
+- pattern: kafka.network<type=RequestMetrics, name=(.+), request=(.+)><>999thPercentile
+- pattern: kafka.network<type=RequestMetrics, name=(.+), request=(.+)><>99thPercentile
+- pattern: kafka.network<type=RequestMetrics, name=(.+), request=(.+)><>95thPercentile
+- pattern: kafka.network<type=RequestMetrics, name=(.+), request=(.+)><>75thPercentile
+- pattern: kafka.network<type=RequestMetrics, name=(.+), request=(.+)><>50thPercentile
+- pattern: kafka.network<type=RequestMetrics, name=(.+), request=(.+), version=(.+)><>Count
+- pattern: kafka.network<type=RequestMetrics, name=(.+), request=(.+), version=(.+)><>OneMinuteRate
+- pattern: kafka.network<type=RequestChannel, name=(.+)><>Value
+- pattern: kafka.network<type=RequestChannel, processor=(.+), name=(.+)><>Value
+- pattern: kafka.server<type=ReplicaManager, name=LeaderCount><>Value
+- pattern: kafka.server<type=ReplicaManager, name=PartitionCount><>Value
+- pattern: kafka.server<type=ReplicaManager, name=UnderReplicatedPartitions><>Value
+- pattern: kafka.server<type=ReplicaManager, name=IsrExpandsPerSec><>Count
+- pattern: kafka.server<type=ReplicaManager, name=IsrExpandsPerSec><>OneMinuteRate
+- pattern: kafka.server<type=ReplicaFetcherManager, name=MaxLag, clientId=(.+)><>Value
+- pattern: kafka.server<type=BrokerTopicMetrics, name=MessagesInPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=MessagesInPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=MessagesOutPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=MessagesOutPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BytesInPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BytesInPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BytesOutPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BytesOutPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=MessagesInPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=MessagesInPerSec, topic=(.+)><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=MessagesOutPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=MessagesOutPerSec, topic=(.+)><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BytesInPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BytesInPerSec, topic=(.+)><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BytesOutPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BytesOutPerSec, topic=(.+)><>OneMinuteRate
+- pattern: kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>Count
+- pattern: kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>OneMinuteRate
+- pattern: kafka.server<type=socket-server-metrics, clientSoftwareName=(.+), clientSoftwareVersion=(.+), listener=(.+), networkProcessor=(.+)><>connections
+- pattern: kafka.server<type=socket-server-metrics, listener=(.+), networkProcessor=(.+)><>(.+)
+- pattern: kafka.server<type=DelayedOperationPurgatory, name=PurgatorySize, delayedOperation=(.+)><>Value
+- pattern: "kafka.server<type=app-info, id=(.+)><>(.*): (.*)"
+  name: kafka_server_app_info_$2
+  labels:
+    kafka_broker: "$1"
+    kafka_version: "$3"
+  value: 1

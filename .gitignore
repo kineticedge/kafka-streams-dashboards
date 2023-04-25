@@ -10,4 +10,8 @@ build
 .project
 /applications/stores/*
 
+/cluster-sasl/certificates/secrets/*
+/cluster-sasl/secrets/*.jks
+/cluster-sasl/secrets/kafka.key
+
 /statestore-ui/node_modules

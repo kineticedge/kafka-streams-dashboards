@@ -39,6 +39,21 @@ scrape_configs:
         regex: '(.*):(.*)'
         target_label: instance
         replacement: '$1'
+  - job_name: sasl-kafka
+    static_configs:
+      - targets:
+        - sasl-broker-1:7071
+        - sasl-broker-2:7071
+        - sasl-broker-3:7071
+        - sasl-broker-4:7071
+        labels:
+          cluster_type: "kafka"
+          cluster_id: "sasl-kafka-core"
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        target_label: instance
+        replacement: '$1'
   - job_name: kafka_exporter
     static_configs:
       - targets:

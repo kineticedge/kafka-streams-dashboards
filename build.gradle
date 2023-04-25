@@ -34,15 +34,18 @@ configure(subprojects.findAll { project -> file("${project.name}/src/main/java")
     sourceCompatibility = JavaVersion.VERSION_14
     targetCompatibility = JavaVersion.VERSION_14
 
-    idea {
-        module {
-            inheritOutputDirs = false
-            outputDir = compileJava.destinationDir
-            testOutputDir = compileTestJava.destinationDir
-        }
-    }
+//    idea {
+//        module {
+//            inheritOutputDirs = false
+//            outputDir = compileJava.destinationDir
+//            testOutputDir = compileTestJava.destinationDir
+//        }
+//    }
 
     dependencies {
+
+//        implementation group: 'io.opentelemetry', name: 'opentelemetry-exporter-jaeger', version: '1.25.0'
+//        implementation group: 'io.opentelemetry.instrumentation', name: 'opentelemetry-kafka-clients-2.6', version: '1.25.0-alpha'
 
         implementation group: 'ch.qos.logback', name: 'logback-classic', version: logback_version
         implementation group: 'com.beust', name: 'jcommander', version: jcommander_version
@@ -77,15 +80,15 @@ configure(subprojects.findAll { project -> file("${project.name}/src/main/java")
 
     // make this part of the docker image.
     distTar {
-        exclude 'rocksdbjni-6.29.4.1.jar'
-        exclude 'zstd-jni-1.5.2-1.jar'
-        exclude 'lz4-java-1.8.0.jar'
-        exclude 'snappy-java-1.1.8.4.jar'
-        exclude 'jackson-annotations-2.13.3.jar'
-        exclude 'jackson-core-2.13.3.jar'
-        exclude 'jackson-databind-2.13.3.jar'
-        exclude 'kafka-clients-3.3.1.jar'
-        exclude 'kafka-streams-3.3.1.jar'
+        exclude 'rocksdbjni-*.jar'
+        exclude 'zstd-jni-*.jar'
+        exclude 'lz4-java-*.jar'
+        exclude 'snappy-java-*.jar'
+        exclude 'jackson-annotations-*.jar'
+        exclude 'jackson-core-*.jar'
+        exclude 'jackson-databind-*.jar'
+        exclude 'kafka-clients-*.jar'
+        exclude 'kafka-streams-*.jar'
     }
 
 }

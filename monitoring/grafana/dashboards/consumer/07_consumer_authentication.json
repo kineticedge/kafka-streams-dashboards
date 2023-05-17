@@ -89,15 +89,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 11,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 38,
+      "id": 40,
       "options": {
         "legend": {
           "calcs": [
+            "mean",
             "last"
           ],
           "displayMode": "table",
@@ -116,15 +117,17 @@
             "type": "prometheus",
             "uid": "P1809F7CD0C75ACF3"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "sum (kafka_server_socket_server_metrics_connection_count{cluster_id=~\"$cluster\", instance=~\"$instance\"}) by (listener)",
+          "expr": "avg (kafka_consumer_consumer_metrics_successful_authentication_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}) by (instance, client_id)",
           "interval": "",
-          "legendFormat": "{{listener}}",
+          "legendFormat": "{{instance}} ({{client_id}})",
           "queryType": "randomWalk",
+          "range": true,
           "refId": "A"
         }
       ],
-      "title": "Connection Count / Listener",
+      "title": "Successful Authentication Rate",
       "type": "timeseries"
     },
     {
@@ -187,16 +190,17 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 11,
         "w": 12,
         "x": 12,
         "y": 0
       },
-      "id": 39,
+      "id": 41,
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "mean",
+            "last"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -216,15 +220,15 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum (kafka_server_socket_server_metrics_connection_creation_rate{cluster_id=~\"$cluster\", instance=~\"$instance\"}) by (listener)",
+          "expr": "avg (kafka_consumer_consumer_metrics_failed_authentication_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}) by (instance, client_id)",
           "interval": "",
-          "legendFormat": "{{listener}}",
+          "legendFormat": "{{instance}} ({{client_id}})",
           "queryType": "randomWalk",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Connection Rate / Listener",
+      "title": "Failed Authentication Rate",
       "type": "timeseries"
     },
     {
@@ -239,73 +243,75 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
           },
-          "decimals": 0,
-          "mappings": [
-            {
-              "options": {
-                "unknown - unknown": {
-                  "index": 0,
-                  "text": "XX"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "unknown - unknown"
-            },
-            "properties": [
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "id": "displayName",
-                "value": "<brokers>"
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
-          }
-        ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 11,
         "w": 12,
         "x": 0,
-        "y": 10
+        "y": 11
       },
-      "id": 36,
-      "interval": "5s",
-      "links": [],
+      "id": 38,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": [
-            "value"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "last"
           ],
-          "fields": "",
-          "values": false
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "datasource": {
@@ -314,30 +320,123 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(kafka_server_socket_server_metrics_connections{cluster_id=~\"$cluster\",instance=~\"$instance\"} > 0) by (clientSoftwareName, clientSoftwareVersion)",
+          "expr": "sum (kafka_consumer_consumer_metrics_successful_authentication_total{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}) by (instance, client_id)",
           "interval": "",
-          "legendFormat": "{{clientSoftwareName}} - {{clientSoftwareVersion}}",
+          "legendFormat": "{{instance}} ({{client_id}})",
           "queryType": "randomWalk",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Client Versions",
-      "transformations": [
+      "title": "Successful Authentication Total",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 12,
+        "y": 11
+      },
+      "id": 39,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
         {
-          "id": "filterByValue",
-          "options": {}
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum (kafka_consumer_consumer_metrics_failed_authentication_total{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}) by (instance, client_id)",
+          "interval": "",
+          "legendFormat": "{{instance}} ({{client_id}})",
+          "queryType": "randomWalk",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "type": "piechart"
+      "title": "Failed Authentication Total",
+      "type": "timeseries"
     }
   ],
   "refresh": "2s",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "kafka_cluster",
-    "kafka"
+    "consumer"
   ],
   "templating": {
     "list": [
@@ -345,23 +444,23 @@
         "allValue": ".+",
         "current": {
           "selected": false,
-          "text": "kafka-core",
-          "value": "kafka-core"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "prometheus",
           "uid": "P1809F7CD0C75ACF3"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
+        "definition": "label_values(jvm_info{cluster_type=~\"streams|consumers|consumers\"},cluster_id)",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "cluster",
         "multi": false,
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
-          "refId": "StandardVariableQuery"
+          "query": "label_values(jvm_info{cluster_type=~\"streams|consumers|consumers\"},cluster_id)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -373,7 +472,7 @@
         "useTags": false
       },
       {
-        "allValue": ".*",
+        "allValue": ".+",
         "current": {
           "selected": false,
           "text": "All",
@@ -383,7 +482,7 @@
           "type": "prometheus",
           "uid": "P1809F7CD0C75ACF3"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+        "definition": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\"},instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -391,8 +490,39 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
-          "refId": "StandardVariableQuery"
+          "query": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".+",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "client-id",
+        "multi": false,
+        "name": "client_id",
+        "options": [],
+        "query": {
+          "query": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -406,7 +536,7 @@
     ]
   },
   "time": {
-    "from": "now-1m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {
@@ -437,8 +567,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "02 - Connections",
-  "uid": "02_kafka_cluster_connections",
+  "title": "07 - Authentication",
+  "uid": "07_consumer_authentication",
   "version": 1,
   "weekStart": ""
 }

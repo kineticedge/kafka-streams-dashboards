@@ -21,10 +21,8 @@
       }
     ]
   },
-  "description": "Apache Kafka resource usage and throughput",
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": 721,
   "graphTooltip": 0,
   "links": [],
   "liveNow": false,
@@ -34,7 +32,6 @@
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -43,7 +40,7 @@
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "requests/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -55,13 +52,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -70,6 +67,7 @@
               "mode": "off"
             }
           },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -84,115 +82,19 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "none"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 12,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 38,
-      "options": {
-        "legend": {
-          "calcs": [
-            "last"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.2.5",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
-          },
-          "exemplar": true,
-          "expr": "sum (kafka_server_socket_server_metrics_connection_count{cluster_id=~\"$cluster\", instance=~\"$instance\"}) by (listener)",
-          "interval": "",
-          "legendFormat": "{{listener}}",
-          "queryType": "randomWalk",
-          "refId": "A"
-        }
-      ],
-      "title": "Connection Count / Listener",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 39,
+      "id": 2,
+      "interval": "5s",
+      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -200,14 +102,16 @@
           ],
           "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
           "datasource": {
@@ -215,16 +119,15 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum (kafka_server_socket_server_metrics_connection_creation_rate{cluster_id=~\"$cluster\", instance=~\"$instance\"}) by (listener)",
-          "interval": "",
-          "legendFormat": "{{listener}}",
-          "queryType": "randomWalk",
+          "expr": "sum without(instance, version) (kafka_network_requestmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"RequestsPerSec\", instance=~\"$instance\"}) ",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{request}}",
           "range": true,
-          "refId": "A"
+          "refId": "C"
         }
       ],
-      "title": "Connection Rate / Listener",
+      "title": "Request Metrics",
       "type": "timeseries"
     },
     {
@@ -232,74 +135,102 @@
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
           },
-          "decimals": 0,
-          "mappings": [
-            {
-              "options": {
-                "unknown - unknown": {
-                  "index": 0,
-                  "text": "XX"
-                }
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
               },
-              "type": "value"
-            }
-          ],
-          "unit": "short"
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
         },
         "overrides": [
           {
+            "__systemRef": "hideSeriesFrom",
             "matcher": {
-              "id": "byName",
-              "options": "unknown - unknown"
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Produce"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "<brokers>"
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 10,
+        "h": 12,
         "w": 12,
-        "x": 0,
-        "y": 10
+        "x": 12,
+        "y": 0
       },
-      "id": 36,
+      "id": 13,
       "interval": "5s",
       "links": [],
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": [
-            "value"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
-          "values": false
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -313,27 +244,20 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum(kafka_server_socket_server_metrics_connections{cluster_id=~\"$cluster\",instance=~\"$instance\"} > 0) by (clientSoftwareName, clientSoftwareVersion)",
-          "interval": "",
-          "legendFormat": "{{clientSoftwareName}} - {{clientSoftwareVersion}}",
-          "queryType": "randomWalk",
+          "expr": " (kafka_network_requestchannel_value{cluster_id=~\"$cluster\", instance=~\"$instance\", processor=\"\"}) ",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "__auto",
           "range": true,
-          "refId": "A"
+          "refId": "C"
         }
       ],
-      "title": "Client Versions",
-      "transformations": [
-        {
-          "id": "filterByValue",
-          "options": {}
-        }
-      ],
-      "type": "piechart"
+      "title": "RequestsPerSec",
+      "type": "timeseries"
     }
   ],
   "refresh": "2s",
-  "schemaVersion": 38,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "kafka_cluster",
@@ -375,7 +299,7 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -406,7 +330,7 @@
     ]
   },
   "time": {
-    "from": "now-1m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -436,9 +360,9 @@
       "30d"
     ]
   },
-  "timezone": "browser",
-  "title": "02 - Connections",
-  "uid": "02_kafka_cluster_connections",
+  "timezone": "",
+  "title": "09 - Request Metrics 2",
+  "uid": "09_kafka_cluster_request_2",
   "version": 1,
   "weekStart": ""
 }

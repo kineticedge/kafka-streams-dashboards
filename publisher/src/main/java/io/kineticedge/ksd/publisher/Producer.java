@@ -154,7 +154,8 @@ public class Producer {
 
                 Map.entry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()),
                 Map.entry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName()),
-                Map.entry(ProducerConfig.ACKS_CONFIG, "all")
+                Map.entry(ProducerConfig.ACKS_CONFIG, "all"),
+                Map.entry(ProducerConfig.COMPRESSION_TYPE_CONFIG, "gzip")
         );
 
         Map<String, Object> map = new HashMap<>(defaults);

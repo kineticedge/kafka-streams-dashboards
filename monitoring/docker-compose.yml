@@ -39,6 +39,7 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/application_streams.json:/etc/prometheus/application_streams.json
       - ./prometheus/application_analytics.json:/etc/prometheus/application_analytics.json
+      - ./prometheus/application_publisher.json:/etc/prometheus/application_publisher.json
 
   grafana:
     image: grafana/grafana:main

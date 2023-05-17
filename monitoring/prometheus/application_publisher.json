@@ -1,0 +1,13 @@
+[
+  {
+    "targets": [
+      "ksda-publisher-1:7071",
+      "ksda-publisher-2:7071"
+    ],
+    "labels": {
+      "job": "publisher",
+      "cluster_type": "producers",
+      "cluster_id": "publisher"
+    }
+  }
+]

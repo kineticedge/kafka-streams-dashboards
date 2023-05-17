@@ -1,21 +1,97 @@
 lowercaseOutputName: true
 rules:
 - pattern: java.lang<type=(.*)>
+#
+# producer metrics
+#
+#- pattern: kafka.producer<type=app-info, client-id=(.+)><>(.+):.+
+#  name: kafka_producer_app_info_$2
+#  labels:
+#    client_id: "$1"
+
+- pattern: "kafka.producer<type=app-info, client-id=(.+)><>start-time-ms: (.*)"
+  name: kafka_producer_app_info_start_time_ms
+  labels:
+    client_id: "$1"
+- pattern: "kafka.producer<type=app-info, client-id=(.+)><>version: (.*)"
+  name: kafka_producer_app_info
+  labels:
+    client_id: "$1"
+    version: "$2"
+  value: 1
+- pattern: kafka.producer<type=kafka-metrics-count, client-id=(.+)><>(.+):.+
+  name: kafka_producer_kafka_metrics_count_$2
+  labels:
+    client_id: "$1"
 - pattern: kafka.producer<type=producer-metrics, client-id=(.+)><>(.+):.+
   name: kafka_producer_producer_metrics_$2
+  labels:
+    client_id: "$1"
+- pattern: kafka.producer<type=producer-topic-metrics, client-id=(.+), topic=(.+)><>(.+):.+
+  name: kafka_producer_producer_topic_metrics_$3
+  labels:
+    client_id: "$1"
+    topic: "$2"
+- pattern: kafka.producer<type=producer-node-metrics, client-id=(.+), node-id=(.+)><>(.+):.+
+  name: kafka_producer_producer_node_metrics_$3
+  labels:
+    client_id: "$1"
+    node_id: "$2"
+#
+# consumer metrics
+#
+- pattern: "kafka.consumer<type=app-info, client-id=(.+)><>start-time-ms: (.*)"
+  name: kafka_consumer_app_info_start_time_ms
+  labels:
+    client_id: "$1"
+- pattern: "kafka.consumer<type=app-info, client-id=(.+)><>version: (.*)"
+  name: kafka_consumer_app_info
+  labels:
+    client_id: "$1"
+    version: "$2"
+  value: 1
+- pattern: kafka.consumer<type=kafka-metrics-count, client-id=(.+)><>(.+):.+
+  name: kafka_consumer_kafka_metrics_count_$2
   labels:
     client_id: "$1"
 - pattern: kafka.consumer<type=consumer-metrics, client-id=(.+)><>(.+):.+
   name: kafka_consumer_consumer_metrics_$2
   labels:
     client_id: "$1"
+- pattern: kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)><>(.+):.+
+  name: kafka_consumer_consumer_coordinator_metrics_$2
+  labels:
+    client_id: "$1"
+- pattern: kafka.consumer<type=consumer-node-metrics, client-id=(.+), node-id=(.+)><>(.+):.+
+  name: kafka_consumer_consumer_node_metrics_$3
+  labels:
+    client_id: "$1"
+    node_id: "$2"
+- pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(.+):.+
+  name: kafka_consumer_consumer_fetch_manager_metrics_$4
+  labels:
+    client_id: "$1"
+    topic: "$2"
+    partition: "$3"
+- pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+)><>(.+):.+
+  name: kafka_consumer_consumer_fetch_manager_metrics_$3
+  labels:
+    client_id: "$1"
+    topic: "$2"
+- pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+)><>(.+):.+
+  name: kafka_consumer_consumer_fetch_manager_metrics_$2
+  labels:
+    client_id: "$1"
+#
+# stream metrics
+#
+- pattern: kafka.streams<type=kafka-metrics-count><>(.+):.+
 - pattern: "kafka.streams<type=stream-metrics, client-id=(.+)><>(.*): (.+)"
   name: kafka_streams_info
   value: 1
   labels:
     client_id: $1
     "$2": "$3"
-- pattern: kafka.streams<type=kafka-metrics-count><>(.+):.+
 - pattern: kafka.streams<type=stream-record-cache-metrics, thread-id=(.+), task-id=(.+), record-cache-id=(.+)><>(.+):.+
   name: kafka_streams_stream_record_cache_metrics
   labels:
@@ -53,14 +129,14 @@ rules:
     task_id: "$2"
     topic: "$3"
     processor_node_id: "$4"
-- pattern: kafka.producer<type=producer-metrics, client-id=(.+)><>(.+):.+
-  name: kafka_producer_producer_metrics_$2
-  labels:
-    client_id: "$1"
-- pattern: kafka.consumer<type=consumer-metrics, client-id=(.+)><>(.+):.+
-  name: kafka_consumer_consumer_metrics_$2
-  labels:
-    client_id: "$1"
+#- pattern: kafka.producer<type=producer-metrics, client-id=(.+)><>(.+):.+
+#  name: kafka_producer_producer_metrics_$2
+#  labels:
+#    client_id: "$1"
+#- pattern: kafka.consumer<type=consumer-metrics, client-id=(.+)><>(.+):.+
+#  name: kafka_consumer_consumer_metrics_$2
+#  labels:
+#    client_id: "$1"
 #- pattern: application(.*)
 #- pattern: application<type=(.*)>
 #- pattern: kafka.(.*)

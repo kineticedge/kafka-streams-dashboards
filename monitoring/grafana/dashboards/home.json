@@ -34,8 +34,8 @@
       },
       "description": "",
       "gridPos": {
-        "h": 16,
-        "w": 12,
+        "h": 17,
+        "w": 8,
         "x": 0,
         "y": 0
       },
@@ -51,7 +51,7 @@
           "kafka_cluster"
         ]
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
@@ -72,9 +72,9 @@
       },
       "description": "",
       "gridPos": {
-        "h": 19,
-        "w": 12,
-        "x": 12,
+        "h": 22,
+        "w": 8,
+        "x": 8,
         "y": 0
       },
       "id": 22,
@@ -89,7 +89,7 @@
           "streams"
         ]
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
@@ -110,10 +110,86 @@
       },
       "description": "",
       "gridPos": {
-        "h": 3,
-        "w": 12,
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 23,
+      "options": {
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "producer"
+        ]
+      },
+      "pluginVersion": "9.5.0-105692pre",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Kafka Producers",
+      "type": "dashlist"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 11
+      },
+      "id": 24,
+      "options": {
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "consumer"
+        ]
+      },
+      "pluginVersion": "9.5.0-105692pre",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Kafka Consumers",
+      "type": "dashlist"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 8,
         "x": 0,
-        "y": 16
+        "y": 17
       },
       "id": 20,
       "options": {
@@ -127,7 +203,7 @@
           "jvm"
         ]
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
@@ -143,7 +219,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "home"

@@ -63,11 +63,11 @@ scrape_configs:
         regex: '(.*):(.*)'
         target_label: instance
         replacement: '$1'
-  - job_name: kafka-streams
+  - job_name: applications
     scrape_interval: 2s
     file_sd_configs:
       - files:
-          - /etc/prometheus/*.json
+          - /etc/prometheus/application_*.json
     relabel_configs:
       - source_labels: [__address__]
         regex: '(.*):(.*)'

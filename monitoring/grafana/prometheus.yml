@@ -33,7 +33,7 @@ datasources:
         datasourceUid: 'prometheus'
 #      search:
 #        hide: false
-#      nodeGraph:
-#        enabled: true
+      nodeGraph:
+        enabled: true
 #      lokiSearch:
 #        datasourceUid: 'loki'

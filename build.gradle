@@ -9,19 +9,12 @@ allprojects {
         maven {
             url "https://packages.confluent.io/maven/"
         }
-        // confluent's schema registry client depends on 'com.github.everit-org.json-schema:org.everit.json.schema'.
-        // the version, for some reason, is not stored on maven central, and mavenrepository.com says it is located
-        // here.
-        maven {
-            url "https://repository.mulesoft.org/nexus/content/repositories/public"
-        }
     }
 }
 
 subprojects {
     version = '1.0'
 }
-
 
 configure(subprojects.findAll { project -> file("${project.name}/src/main/java").exists() }) {
 
@@ -34,19 +27,7 @@ configure(subprojects.findAll { project -> file("${project.name}/src/main/java")
     sourceCompatibility = JavaVersion.VERSION_14
     targetCompatibility = JavaVersion.VERSION_14
 
-//    idea {
-//        module {
-//            inheritOutputDirs = false
-//            outputDir = compileJava.destinationDir
-//            testOutputDir = compileTestJava.destinationDir
-//        }
-//    }
-
     dependencies {
-
-//        implementation group: 'io.opentelemetry', name: 'opentelemetry-exporter-jaeger', version: '1.25.0'
-//        implementation group: 'io.opentelemetry.instrumentation', name: 'opentelemetry-kafka-clients-2.6', version: '1.25.0-alpha'
-
         implementation group: 'ch.qos.logback', name: 'logback-classic', version: logback_version
         implementation group: 'com.beust', name: 'jcommander', version: jcommander_version
         implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jackson_version
@@ -109,5 +90,4 @@ configure(subprojects.findAll { project -> file("${project.name}/run.sh").exists
         }
     }
     build.finalizedBy postBuildScript
-
 }

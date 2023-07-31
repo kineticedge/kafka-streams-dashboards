@@ -15,6 +15,7 @@ scrape_configs:
         target_label: instance
         replacement: '$1'
   - job_name: kafka
+    scrape_interval: 30s
     static_configs:
       - targets:
         - controller-0:7071
@@ -73,6 +74,9 @@ scrape_configs:
         regex: '(.*):(.*)'
         target_label: instance
         replacement: '$1'
+  - job_name: 'opentelemetry'
+    static_configs:
+      - targets: ['otel:9091']
 
 #  - job_name: XXXX
 #    dns_sd_configs:

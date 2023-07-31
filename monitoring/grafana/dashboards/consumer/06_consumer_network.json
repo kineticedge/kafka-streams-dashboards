@@ -31,7 +31,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "Number of times the I/O layer checked for new I/O to perform per second.\n",
       "fieldConfig": {
@@ -116,11 +116,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_metrics_select_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
+          "expr": "kafka_consumer_consumer_metrics_select_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}",
           "format": "time_series",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
@@ -134,7 +134,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "\n",
       "fieldConfig": {
@@ -219,11 +219,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_metrics_io_time_ns_avg{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
+          "expr": "kafka_consumer_consumer_metrics_io_time_ns_avg{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}",
           "format": "time_series",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
@@ -237,7 +237,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "The average length of time the I/O thread spent waiting for a socket ready for reads or writes in nanoseconds.\n",
       "fieldConfig": {
@@ -322,11 +322,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_metrics_io_wait_time_ns_avg{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
+          "expr": "kafka_consumer_consumer_metrics_io_wait_time_ns_avg{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "range": true,
@@ -339,7 +339,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "1 indicates that the consumer is the bottleneck",
       "fieldConfig": {
@@ -423,11 +423,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "avg (1 - kafka_consumer_consumer_metrics_io_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"} - kafka_consumer_consumer_metrics_io_wait_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}) by (instance, client_id)",
+          "expr": "avg (1 - kafka_consumer_consumer_metrics_io_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"} - kafka_consumer_consumer_metrics_io_wait_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}) by (instance, client_id)",
           "interval": "",
           "legendFormat": "{{instance}} ({{client_id}})",
           "queryType": "randomWalk",
@@ -441,7 +441,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "The fraction of time the I/O thread spent doing I/O.\n",
       "fieldConfig": {
@@ -526,11 +526,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_metrics_io_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
+          "expr": "kafka_consumer_consumer_metrics_io_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "range": true,
@@ -543,7 +543,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "The fraction of time the I/O thread spent waiting.\n",
       "fieldConfig": {
@@ -628,11 +628,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_metrics_io_wait_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
+          "expr": "kafka_consumer_consumer_metrics_io_wait_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "range": true,
@@ -660,7 +660,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(jvm_info{cluster_type=~\"streams|consumers|consumers\"},cluster_id)",
         "hide": 0,
@@ -691,7 +691,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\"},instance)",
         "hide": 0,
@@ -716,15 +716,15 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
-        "definition": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
+        "definition": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-StreamThread-[0-9]+-restore-consumer$\"},client_id)",
         "hide": 0,
         "includeAll": true,
         "label": "client-id",
@@ -732,7 +732,7 @@
         "name": "client_id",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
+          "query": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-StreamThread-[0-9]+-restore-consumer$\"},client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -780,6 +780,6 @@
   "timezone": "",
   "title": "06 - Network",
   "uid": "06_consumer_network",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

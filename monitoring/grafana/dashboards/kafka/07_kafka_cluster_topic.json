@@ -30,7 +30,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -91,7 +91,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "sum(max(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"Size\", topic=~ '$topic'}) by (partition))",
           "format": "time_series",
@@ -107,7 +107,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -168,7 +168,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "count(count(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"Size\", topic='$topic'}) by (partition))",
           "format": "time_series",
@@ -184,7 +184,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -246,7 +246,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "sum(max(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogEndOffset\", topic =~ \"$topic\"}) by (partition)) - sum(max(kafka_log_log_value{name=\"LogStartOffset\", topic =~ \"$topic\"}) by (partition))",
           "format": "time_series",
@@ -261,7 +261,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -323,7 +323,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "exemplar": false,
           "expr": "sum (max by(partition) (kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogEndOffset\", topic =~ \"$topic\"}))",
@@ -341,7 +341,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -403,7 +403,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "sum(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"NumLogSegments\", topic=\"$topic\"})",
           "format": "time_series",
@@ -418,7 +418,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -480,7 +480,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "sum (kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogEndOffset\", topic =~ \"$topic\"}) - sum (kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogStartOffset\", topic =~ \"$topic\"})",
           "format": "time_series",
@@ -497,7 +497,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -560,7 +560,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic = \"${topic}\"})",
           "format": "time_series",
@@ -575,7 +575,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -638,7 +638,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesInPerSec\", topic = \"${topic}\"})",
           "format": "time_series",
@@ -653,7 +653,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -716,7 +716,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\", topic=\"${topic}\"})",
           "format": "time_series",
@@ -731,7 +731,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -813,7 +813,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\",topic = \"${topic}\"})",
           "format": "time_series",
@@ -828,7 +828,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -910,7 +910,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "sum without(instance,job)(kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesInPerSec\",topic = \"${topic}\"})",
@@ -927,7 +927,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1009,7 +1009,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "sum without(instance,job)(kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\",topic = \"${topic}\"})",
           "format": "time_series",
@@ -1024,7 +1024,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1087,9 +1087,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
-          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic=\"${topic}\"}[1m]))",
+          "editorMode": "code",
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic=\"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 10,
@@ -1102,7 +1103,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1165,9 +1166,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
-          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesInPerSec\",topic = \"${topic}\"}[1m]))",
+          "editorMode": "code",
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesInPerSec\",topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 10,
@@ -1180,7 +1182,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1243,9 +1245,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
-          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\",topic = \"${topic}\"}[1m]))",
+          "editorMode": "code",
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\",topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 10,
@@ -1258,7 +1261,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1340,9 +1343,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
-          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic = \"${topic}\"}[1m]))",
+          "editorMode": "code",
+          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -1356,7 +1360,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1438,10 +1442,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesInPerSec\", topic = \"${topic}\"}[1m]))",
+          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesInPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -1455,7 +1459,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1537,9 +1541,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
-          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\", topic = \"${topic}\"}[1m]))",
+          "editorMode": "code",
+          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -1569,7 +1574,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
         "hide": 0,
@@ -1593,13 +1598,13 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "orders-purchase",
           "value": "orders-purchase"
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "",
         "hide": 0,

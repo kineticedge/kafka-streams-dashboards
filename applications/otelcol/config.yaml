@@ -32,6 +32,16 @@ exporters:
     endpoint: "http://tempo:4318"
     tls:
       insecure: true
+  prometheus:
+    enable_open_metrics: true
+    endpoint: "0.0.0.0:9091"
+    namespace: otel_scraping
+    const_labels:
+      lable1: value1
+    send_timestamps: true
+    metric_expiration: 180m
+    resource_to_telemetry_conversion:
+      enabled: true
 
 service:
   extensions: [health_check]
@@ -42,4 +52,4 @@ service:
       exporters: [logging, otlphttp]
     metrics:
       receivers: [otlp]
-      exporters: [logging]
+      exporters: [logging, prometheus]

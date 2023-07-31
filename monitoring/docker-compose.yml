@@ -11,8 +11,8 @@ volumes:
 services:
 
   prometheus:
-    image: prom/prometheus:v2.39.1
-    #image: prom/prometheus:v2.42.0
+    #image: prom/prometheus:v2.39.1
+    image: prom/prometheus:v2.46.0
     hostname: prometheus
     container_name: ksd-prometheus
     healthcheck:
@@ -22,6 +22,7 @@ services:
       timeout: 5s
       retries: 3
     privileged: true
+
     # web: enable-admin-api and enable-lifecycle
     # other command options are the default (but need to be supplied in full to add the others)
     command:

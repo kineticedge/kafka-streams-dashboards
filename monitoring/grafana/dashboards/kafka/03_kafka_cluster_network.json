@@ -677,7 +677,7 @@
   },
   "timezone": "browser",
   "title": "03 - Network",
-  "uid": "03_kafka_cluster_network",
+  "uid": "kafka_cluster_network",
   "version": 1,
   "weekStart": ""
 }

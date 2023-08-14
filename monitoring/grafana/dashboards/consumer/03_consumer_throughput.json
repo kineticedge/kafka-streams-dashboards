@@ -575,7 +575,7 @@
   },
   "timezone": "",
   "title": "03 - Throughput",
-  "uid": "03_consumer_throughput",
+  "uid": "consumer_throughput",
   "version": 1,
   "weekStart": ""
 }

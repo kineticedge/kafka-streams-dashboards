@@ -1013,7 +1013,7 @@
   },
   "timezone": "",
   "title": "08 - StateStore (put/fetch)",
-  "uid": "08_streams_statestore_putfetch",
+  "uid": "streams_statestore_putfetch",
   "version": 9,
   "weekStart": ""
 }

@@ -674,7 +674,7 @@
   },
   "timezone": "",
   "title": "02 - Fetch and Commit Metrics",
-  "uid": "02_consumer_fetch_commit",
+  "uid": "consumer_fetch_commit",
   "version": 1,
   "weekStart": ""
 }

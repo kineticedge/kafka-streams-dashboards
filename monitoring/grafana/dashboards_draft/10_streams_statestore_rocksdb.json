@@ -482,7 +482,7 @@
   },
   "timezone": "",
   "title": "10 - StateStore RocksDB",
-  "uid": "10_streams_statestore_rocksdb",
+  "uid": "streams_statestore_rocksdb",
   "version": 1,
   "weekStart": ""
 }

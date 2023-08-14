@@ -543,7 +543,7 @@
   },
   "timezone": "",
   "title": "02 - Throughput",
-  "uid": "02_producer_throughput",
+  "uid": "producer_throughput",
   "version": 1,
   "weekStart": ""
 }

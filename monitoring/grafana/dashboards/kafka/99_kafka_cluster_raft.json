@@ -1791,7 +1791,7 @@
   },
   "timezone": "browser",
   "title": "99 - Raft",
-  "uid": "99_kafka_cluster_raft",
+  "uid": "kafka_cluster_raft",
   "version": 1,
   "weekStart": ""
 }

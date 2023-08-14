@@ -127,8 +127,8 @@ rules:
   labels:
     thread_id: "$1"
     task_id: "$2"
-    topic: "$3"
-    processor_node_id: "$4"
+    processor_node_id: "$3"
+    topic: "$4"
 #- pattern: kafka.producer<type=producer-metrics, client-id=(.+)><>(.+):.+
 #  name: kafka_producer_producer_metrics_$2
 #  labels:

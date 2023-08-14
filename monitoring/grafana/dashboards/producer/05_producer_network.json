@@ -880,7 +880,7 @@
   },
   "timezone": "",
   "title": "05 - Network",
-  "uid": "05_producer_network",
+  "uid": "producer_network",
   "version": 2,
   "weekStart": ""
 }

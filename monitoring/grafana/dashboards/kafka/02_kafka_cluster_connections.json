@@ -438,7 +438,7 @@
   },
   "timezone": "browser",
   "title": "02 - Connections",
-  "uid": "02_kafka_cluster_connections",
+  "uid": "kafka_cluster_connections",
   "version": 1,
   "weekStart": ""
 }

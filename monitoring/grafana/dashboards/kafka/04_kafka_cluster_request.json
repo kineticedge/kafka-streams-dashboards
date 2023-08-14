@@ -662,7 +662,7 @@
   },
   "timezone": "",
   "title": "04 - Request Metrics",
-  "uid": "04_kafka_cluster_request",
+  "uid": "kafka_cluster_request",
   "version": 1,
   "weekStart": ""
 }

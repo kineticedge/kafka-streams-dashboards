@@ -829,7 +829,7 @@
   },
   "timezone": "browser",
   "title": "06 - Consumer Metrics",
-  "uid": "06_kafka_cluster_consumer",
+  "uid": "kafka_cluster_consumer",
   "version": 1,
   "weekStart": ""
 }

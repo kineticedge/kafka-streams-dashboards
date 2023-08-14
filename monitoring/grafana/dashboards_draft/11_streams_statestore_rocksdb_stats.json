@@ -506,7 +506,7 @@
   },
   "timezone": "",
   "title": "11 - StateStore RocksDB (status)",
-  "uid": "11_streams_statestore_rocksdb_status",
+  "uid": "streams_statestore_rocksdb_status",
   "version": 3,
   "weekStart": ""
 }

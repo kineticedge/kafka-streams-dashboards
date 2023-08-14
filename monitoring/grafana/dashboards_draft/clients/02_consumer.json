@@ -1628,7 +1628,7 @@
   },
   "timezone": "",
   "title": "02 - Kafka Consumer",
-  "uid": "02_consumer_old",
+  "uid": "consumer_old",
   "version": 2,
   "weekStart": ""
 }

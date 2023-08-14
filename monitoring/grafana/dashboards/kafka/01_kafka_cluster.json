@@ -1951,7 +1951,7 @@
   },
   "timezone": "browser",
   "title": "01 - Overview",
-  "uid": "01_kafka_cluster",
+  "uid": "kafka_cluster",
   "version": 1,
   "weekStart": ""
 }

@@ -752,7 +752,7 @@
   },
   "timezone": "",
   "title": "03 - Request",
-  "uid": "03_producer_request",
+  "uid": "producer_request",
   "version": 1,
   "weekStart": ""
 }

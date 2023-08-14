@@ -506,7 +506,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-1m",
     "to": "now"
   },
   "timepicker": {
@@ -538,7 +538,7 @@
   },
   "timezone": "browser",
   "title": "08 - Authentications",
-  "uid": "08_kafka_cluster_authentications",
+  "uid": "kafka_cluster_authentications",
   "version": 4,
   "weekStart": ""
 }

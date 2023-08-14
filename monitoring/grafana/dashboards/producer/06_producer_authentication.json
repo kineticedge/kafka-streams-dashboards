@@ -536,7 +536,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-1m",
     "to": "now"
   },
   "timepicker": {
@@ -568,7 +568,7 @@
   },
   "timezone": "browser",
   "title": "06 - Authentication",
-  "uid": "06_producer_authentication",
+  "uid": "producer_authentication",
   "version": 4,
   "weekStart": ""
 }

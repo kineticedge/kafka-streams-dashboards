@@ -776,7 +776,7 @@
   },
   "timezone": "",
   "title": "99 - Kafka Producer Performance",
-  "uid": "99_producer_performance",
+  "uid": "producer_performance",
   "version": 1,
   "weekStart": ""
 }

@@ -751,7 +751,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1m",
     "to": "now"
   },
   "timepicker": {
@@ -783,7 +783,7 @@
   },
   "timezone": "",
   "title": "01 - Overview",
-  "uid": "01_consumer_overview",
+  "uid": "consumer_overview",
   "version": 2,
   "weekStart": ""
 }

@@ -856,7 +856,7 @@
   },
   "timezone": "browser",
   "title": "05 - Producer Metrics",
-  "uid": "05_kafka_cluster_producer",
+  "uid": "kafka_cluster_producer",
   "version": 1,
   "weekStart": ""
 }

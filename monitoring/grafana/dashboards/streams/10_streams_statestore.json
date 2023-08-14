@@ -114,7 +114,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"} > 0)",
+          "expr": "sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"})",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -179,16 +179,17 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sort_desc(sum without(thread_id,instance,job,task_id) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"} > 0))",
+          "expr": "sort_desc(sum without(thread_id,instance,job,task_id) (kafka_streams_stream_state_metrics{metric=\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"}))",
           "format": "time_series",
           "hide": false,
           "instant": true,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{state_id}}/{{metric}}",
+          "legendFormat": "{{state_id}}",
           "refId": "A"
         }
       ],
+      "title": "$metric",
       "transformations": [
         {
           "id": "organize",
@@ -240,7 +241,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -418,7 +419,7 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -448,28 +449,8 @@
       {
         "current": {
           "selected": false,
-          "text": [
-            "bytes-read-rate",
-            "bytes-written-rate",
-            "put-if-absent-rate",
-            "remove-rate",
-            "put-all-rate",
-            "prefix-scan-rate",
-            "get-rate",
-            "delete-rate",
-            "all-rate"
-          ],
-          "value": [
-            "bytes-read-rate",
-            "bytes-written-rate",
-            "put-if-absent-rate",
-            "remove-rate",
-            "put-all-rate",
-            "prefix-scan-rate",
-            "get-rate",
-            "delete-rate",
-            "all-rate"
-          ]
+          "text": "block-cache-capacity",
+          "value": "block-cache-capacity"
         },
         "datasource": {
           "type": "prometheus",
@@ -479,7 +460,7 @@
         "description": "/^(!bytes-written-rate|bytes-written-total|bytes-written-compaction-rate|bytes-read-rate|bytes-read-total|memtable-bytes-flushed-rate|memtable-bytes-flushed-total|memtable-hit-ratio|block-cache-data-hit-ratio|block-cache-index-hit-ratio|block-cache-filter-hit-ratio|write-stall-duration-avg|write-stall-duration-total|bytes-read-compaction-rate|number-open-files|number-file-errors-total|num-immutable-mem-table|cur-size-active-mem-table|cur-size-all-mem-tables|size-all-mem-tables|num-entries-active-mem-table|num-entries-imm-mem-tables|num-deletes-active-mem-table|num-deletes-imm-mem-tables|mem-table-flush-pending|num-running-flushes|compaction-pending|num-running-compactions|estimate-pending-compaction-bytes|total-ss-files-size|total-sst-files-size|live-sst-files-size|num-live-versions|block-cache-capacity|block-cache-usage|block-cache-pinned-usage|estimate-num-keys|estimate-table-readers-mem|background-errors)$/",
         "hide": 0,
         "includeAll": false,
-        "multi": true,
+        "multi": false,
         "name": "metric",
         "options": [],
         "query": {
@@ -530,7 +511,7 @@
   },
   "timezone": "",
   "title": "10 - StateStore",
-  "uid": "10_streams_statestore",
-  "version": 6,
+  "uid": "streams_statestore",
+  "version": 2,
   "weekStart": ""
 }

@@ -330,7 +330,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1m",
     "to": "now"
   },
   "timepicker": {
@@ -362,7 +362,7 @@
   },
   "timezone": "",
   "title": "09 - Request Metrics 2",
-  "uid": "09_kafka_cluster_request_2",
+  "uid": "kafka_cluster_request_2",
   "version": 1,
   "weekStart": ""
 }

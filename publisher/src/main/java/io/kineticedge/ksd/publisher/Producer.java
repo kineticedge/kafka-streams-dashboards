@@ -142,6 +142,60 @@ public class Producer {
 
     }
 
+//    private static final Map<String, Object> defaults =  Map.ofEntries(
+//            Map.entry(ProducerConfig.ACKS_CONFIG, "all"),
+//            Map.entry(ProducerConfig.COMPRESSION_TYPE_CONFIG, "gzip")
+//    );
+//
+//    private static final Map<String, Object> immutables =  Map.ofEntries(
+//            Map.entry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()),
+//            Map.entry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName()),
+//            );
+//
+//    private Map<String, Object> loadOverrides() {
+//        final Map<String, Object> map = new HashMap<>();
+//        //
+//        return map;
+//    }
+//
+//    private Map<String, Object> loadFromEnvironment() {
+//        final Map<String, Object> map = new HashMap<>();
+//        //
+//        return map;
+//    }
+//
+//    private Map<String, Object> clientProperties(final Options options) {
+//
+//
+//        Map<String, Object> map = new HashMap<>(defaults);
+//
+//        map.putAll(PropertiesUtil.load("./app.properties"));
+//
+//        // environment wins
+//        map.putAll(KafkaEnvUtil.to("STREAMS_"));
+//
+//        // Load in the connection settings at the end from a property file. Do not try to build `sasl.jaas.config`,
+//        // instead set the entire string -- less work than building in the means to add username/password and
+//        // allows for changing from sasl PLAIN to OAUTHBEARER w/out any coding changes, just all within these properties.
+//        //
+//        // bootstrap.servers=broker-1:9092,broker-2:9092
+//        // security.protocols=SASL_SSL
+//        // sasl.mechanism=PLAIN
+//        // sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="kafka-admin" password="kafka-admin-secret";
+//        // ssl.truststore.location=/mnt/secrets/truststore.jks
+//        // ssl.truststore.password=truststore_secret
+//        //
+//        map.putAll(PropertiesUtil.load("/mnt/secrets/connection.properties"));
+//
+//        map.putAll(overrides);
+//
+//        map.putAll(secrets);
+//
+//        map.putAll(immutables);
+//
+//        return map;
+//    }
+
     private Map<String, Object> properties(final Options options) {
         Map<String, Object> defaults =  Map.ofEntries(
                 Map.entry(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, options.getBootstrapServers()),

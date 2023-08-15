@@ -28,9 +28,10 @@ services:
       - ct0:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./controller.sh:/tmp/controller.sh
-    command: "bash -c '/tmp/controller.sh && /etc/confluent/docker/run'"
+#      - ./controller.sh:/tmp/controller.sh
+#    command: "bash -c '/tmp/controller.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_LISTENERS: CONTROLLER://:9093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -66,9 +67,10 @@ services:
       - bk1:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./broker.sh:/tmp/broker.sh
-    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
+#      - ./broker.sh:/tmp/broker.sh
+#    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -107,9 +109,10 @@ services:
       - bk2:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./broker.sh:/tmp/broker.sh
-    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
+#      - ./broker.sh:/tmp/broker.sh
+#    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 2
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -147,9 +150,10 @@ services:
       - bk3:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./broker.sh:/tmp/broker.sh
-    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
+#      - ./broker.sh:/tmp/broker.sh
+#    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 3
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -187,9 +191,10 @@ services:
       - bk4:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./broker.sh:/tmp/broker.sh
-    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
+#      - ./broker.sh:/tmp/broker.sh
+#    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 4
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT

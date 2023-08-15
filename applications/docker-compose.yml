@@ -203,7 +203,7 @@ services:
     container_name: ksda-otel
     hostname: otel
     #healthcheck:
-    #  test: /otelcol --version
+    #  test: /otelcol components || exit 1
     #  interval: 5s
     #  timeout: 10s
     #  retries: 5

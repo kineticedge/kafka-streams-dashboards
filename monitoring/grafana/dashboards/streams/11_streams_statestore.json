@@ -51,6 +51,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -87,7 +88,7 @@
       },
       "gridPos": {
         "h": 19,
-        "w": 17,
+        "w": 24,
         "x": 0,
         "y": 0
       },
@@ -96,9 +97,11 @@
       "links": [],
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -114,7 +117,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"} > 0)",
+          "expr": "sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"} > 0) ",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -130,7 +133,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -148,10 +151,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 19,
-        "w": 7,
-        "x": 17,
-        "y": 0
+        "h": 6,
+        "w": 10,
+        "x": 0,
+        "y": 19
       },
       "id": 41,
       "interval": "2s",
@@ -171,7 +174,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "9.5.0-105692pre",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -179,16 +182,17 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sort_desc(sum without(thread_id,instance,job,task_id) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"} > 0))",
+          "expr": "sort_desc(sum without(thread_id,instance,job,task_id) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"}) > 0)",
           "format": "time_series",
           "hide": false,
           "instant": true,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{state_id}}/{{metric}}",
+          "legendFormat": "{{metric}}/{{state_id}}",
           "refId": "A"
         }
       ],
+      "title": "$metric",
       "transformations": [
         {
           "id": "organize",
@@ -240,7 +244,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -418,7 +422,7 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -447,28 +451,12 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
-            "bytes-read-rate",
-            "bytes-written-rate",
-            "put-if-absent-rate",
-            "remove-rate",
-            "put-all-rate",
-            "prefix-scan-rate",
-            "get-rate",
-            "delete-rate",
-            "all-rate"
+            "estimate-num-keys"
           ],
           "value": [
-            "bytes-read-rate",
-            "bytes-written-rate",
-            "put-if-absent-rate",
-            "remove-rate",
-            "put-all-rate",
-            "prefix-scan-rate",
-            "get-rate",
-            "delete-rate",
-            "all-rate"
+            "estimate-num-keys"
           ]
         },
         "datasource": {
@@ -531,6 +519,6 @@
   "timezone": "",
   "title": "11 - StateStore",
   "uid": "streams_statestore",
-  "version": 6,
+  "version": 4,
   "weekStart": ""
 }

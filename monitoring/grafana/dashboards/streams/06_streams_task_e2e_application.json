@@ -28,224 +28,16 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 0,
-        "y": 0
-      },
-      "id": 37,
-      "interval": "2s",
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.4.0-46516pre",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "avg without(processor_node_id, thread_id) ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\", instance=~\"${instance}\"}) >=0)",
-          "format": "time_series",
-          "hide": false,
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{instance}}-{{task_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "e2e latency - all",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 45,
-      "interval": "2s",
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.4.0-46516pre",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "avg without(processor_node_id, thread_id) ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\", instance=~\"${instance}\", processor_node_id=~\".+-sink\"}) >=0)",
-          "format": "time_series",
-          "hide": false,
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{instance}}-{{task_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "e2e latency - all",
-      "type": "timeseries"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 0
       },
-      "id": 82,
+      "id": 114,
       "panels": [],
-      "title": "/ Application",
+      "title": "By Subtopology",
       "type": "row"
     },
     {
@@ -264,25 +56,25 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "ms"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 4.8,
+        "h": 7,
+        "w": 24,
         "x": 0,
-        "y": 6
+        "y": 1
       },
       "id": 70,
       "interval": "2s",
       "links": [],
-      "maxPerRow": 6,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "horizontal",
+        "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -293,9 +85,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "10.2.0-128927pre",
-      "repeat": "application",
-      "repeatDirection": "h",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -310,34 +100,55 @@
           "instant": true,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "sub-topology #{{subtopology}}",
+          "legendFormat": "{{subtopology}}",
           "refId": "A"
         }
       ],
-      "title": "e2e latency - $application",
+      "title": "$application",
       "transformations": [],
       "type": "stat"
     },
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 12
-      },
-      "id": 53,
-      "panels": [],
-      "title": "/ Application / Partition",
-      "type": "row"
-    },
-    {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -345,37 +156,44 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
-          }
+          },
+          "unit": "ms"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 4,
+        "h": 11,
+        "w": 12,
         "x": 0,
-        "y": 13
+        "y": 8
       },
-      "id": 94,
+      "id": 45,
       "interval": "2s",
       "links": [],
+      "maxPerRow": 2,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
+        "legend": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
-          "fields": "",
-          "values": false
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
         },
-        "text": {},
-        "textMode": "value_and_name"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "10.2.0-128927pre",
+      "pluginVersion": "8.4.0-46516pre",
+      "repeat": "task",
+      "repeatDirection": "h",
       "targets": [
         {
           "datasource": {
@@ -383,20 +201,19 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "exemplar": false,
-          "expr": "sort (avg without(task_id, instance, thread_id, processor_node_id) (label_replace(label_replace((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\".+\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\"} >=0)  + on (cluster_type, cluster_id, instance) group_left (application_id) (0 * kafka_streams_info{application_id=~\"$application\"}), \"subtopology\", \"$1\", \"task_id\", \"(.*)_(.*)\"), \"partition\", \"$2\", \"task_id\", \"(.*)_(.*)\")))",
+          "exemplar": true,
+          "expr": "sort (avg without(processor_node_id, thread_id) (label_replace(kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\"${task}_.+\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}, \"subtopology\", \"$1\", \"task_id\", \"(.+)_(.+)\") >= 0))",
           "format": "time_series",
           "hide": false,
-          "instant": true,
+          "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{partition}}",
+          "legendFormat": "{{task_id}}",
           "refId": "A"
         }
       ],
-      "title": "e2e latency - $application",
-      "transformations": [],
-      "type": "stat"
+      "title": "Task $task",
+      "type": "timeseries"
     },
     {
       "collapsed": true,
@@ -404,14 +221,14 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 41
       },
       "id": 54,
       "panels": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "fieldConfig": {
             "defaults": {
@@ -420,22 +237,25 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
-              }
+              },
+              "unit": "ms"
             },
             "overrides": []
           },
           "gridPos": {
             "h": 6,
-            "w": 24,
+            "w": 6,
             "x": 0,
-            "y": 24
+            "y": 2
           },
           "id": 43,
           "interval": "2s",
           "links": [],
+          "maxPerRow": 4,
           "options": {
             "colorMode": "value",
             "graphMode": "area",
@@ -451,9 +271,9 @@
             "text": {},
             "textMode": "value_and_name"
           },
-          "pluginVersion": "10.2.0-128927pre",
+          "pluginVersion": "10.2.0-130592pre",
           "repeat": "partition",
-          "repeatDirection": "v",
+          "repeatDirection": "h",
           "targets": [
             {
               "datasource": {
@@ -468,16 +288,222 @@
               "instant": true,
               "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "{{instance}}-{{task_id}}",
+              "legendFormat": "{{task_id}}",
               "refId": "A"
             }
           ],
-          "title": "e2e latency - all",
+          "title": "Partition $partition",
           "transformations": [],
           "type": "stat"
         }
       ],
-      "title": "Latency By Partition",
+      "title": "By Partition",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "id": 171,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "ms"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 6,
+            "x": 0,
+            "y": 3
+          },
+          "id": 163,
+          "interval": "2s",
+          "links": [],
+          "maxPerRow": 4,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "sortBy": "Last *",
+              "sortDesc": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.4.0-46516pre",
+          "repeat": "partition",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "(avg without(processor_node_id, thread_id) (label_replace(kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\".+_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}, \"subtopology\", \"$1\", \"task_id\", \"(.+)_(.+)\") >= 0))",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "{{task_id}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Partition $partition",
+          "type": "timeseries"
+        }
+      ],
+      "title": "By Partition",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 53,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 0,
+            "y": 4
+          },
+          "id": 95,
+          "interval": "2s",
+          "links": [],
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "value_and_name"
+          },
+          "pluginVersion": "10.2.0-130592pre",
+          "repeat": "partition",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sort (avg without(task_id, processor_node_id, partition) (label_replace((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\".+_$partition\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\"} >=0)  + on (cluster_type, cluster_id, instance) group_left (application_id) (0 * kafka_streams_info{application_id=~\"$application\"}), \"subtopology\", \"$1\", \"task_id\", \"(.*)_(.*)\")))",
+              "format": "time_series",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "{{subtopology}} / ({{instance}}/{{thread_id}})",
+              "refId": "A"
+            }
+          ],
+          "title": "e2e latency - $partition",
+          "transformations": [],
+          "type": "stat"
+        }
+      ],
+      "title": "By Partition",
       "type": "row"
     }
   ],
@@ -523,9 +549,9 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": "pickup-order-handler",
+          "value": "pickup-order-handler"
         },
         "datasource": {
           "type": "prometheus",
@@ -533,7 +559,7 @@
         },
         "definition": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "multi": false,
         "name": "application",
         "options": [],
@@ -560,7 +586,7 @@
         },
         "definition": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
         "description": "cannot use .* for all, since then thread is not limited to the application that was selected.",
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
         "label": "instance",
         "multi": false,
@@ -590,7 +616,7 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
         "label": "thread",
         "multi": false,
@@ -620,7 +646,7 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
         "label": "task",
         "multi": false,
@@ -651,7 +677,7 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
         "label": "partition",
         "multi": false,
@@ -663,36 +689,6 @@
         },
         "refresh": 1,
         "regex": "/^.*_(.*)$/",
-        "skipUrlSync": false,
-        "sort": 3,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query"
-      },
-      {
-        "allValue": "",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
-        "definition": "query_result(label_join(label_replace((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\".+\", thread_id=~\".+\", instance=~\".+\", cluster_id=~\".+\"} >=0)  + on (cluster_type, cluster_id, instance) group_left (application_id) (0 * kafka_streams_info{application_id=~\".+\"}), \"subtopology\", \"$1\", \"task_id\", \"(.*)_(.*)\"), \"application_task\", \":\", \"application_id\", \"subtopology\"))",
-        "hide": 2,
-        "includeAll": true,
-        "label": "application_task",
-        "multi": false,
-        "name": "application_task",
-        "options": [],
-        "query": {
-          "query": "query_result(label_join(label_replace((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{task_id=~\".+\", thread_id=~\".+\", instance=~\".+\", cluster_id=~\".+\"} >=0)  + on (cluster_type, cluster_id, instance) group_left (application_id) (0 * kafka_streams_info{application_id=~\".+\"}), \"subtopology\", \"$1\", \"task_id\", \"(.*)_(.*)\"), \"application_task\", \":\", \"application_id\", \"subtopology\"))",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 1,
-        "regex": "/^.*application_task=\\\"(.+)\\\",cluster_id.*$/",
         "skipUrlSync": false,
         "sort": 3,
         "tagValuesQuery": "",
@@ -732,8 +728,8 @@
     ]
   },
   "timezone": "",
-  "title": "05 - Tasks 2E2",
-  "uid": "streams_task_e2e",
-  "version": 1,
+  "title": "06 - Tasks 2E2 - Application",
+  "uid": "streams_task_e2e_application",
+  "version": 6,
   "weekStart": ""
 }

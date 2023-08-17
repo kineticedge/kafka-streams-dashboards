@@ -1,3 +1,70 @@
+#!/bin/bash
+
+function heading() {
+  tput setaf 2; printf "\n\n$@"; tput sgr 0
+  #pause
+  tput setaf 2; printf "\n\n"; tput sgr 0
+}
+
+function subheading() {
+  tput setaf 3; printf "$@\n"; tput sgr 0
+}
+
+function error_msg() {
+  tput setaf 1; printf "\n$@\n\n"; tput sgr 0
+}
+
+cd "$(dirname -- "$0")/.." || exit
+
+
+CLUSTERS=(
+    "cluster"
+    "cluster-zk"
+    "cluster-sasl"
+    "cluster-lb"
+)
+
+CLUSTER_DESCRIPTIONS=(
+    "cluster       --  4 brokers, 1 raft controller."
+    "cluster-zk    --  4 brokers, 1 zookeeper controller."
+    "cluster-sasl  --  4 brokers with SASL authentication, 1 zookeeper controller."
+    "cluster-lb    --  4 brokers, 1 raft controller, an nginx lb - listener 9092 goes through load-balancer."
+)
+
+display_menu() {
+    heading "Select a cluster:"
+    for ((i=1; i<=${#CLUSTERS[@]}; i++)); do
+        subheading "    $i. ${CLUSTER_DESCRIPTIONS[$i-1]}"
+    done
+    echo ""
+}
+
+if [ $# -eq 0 ]; then
+  display_menu
+  tput setaf 3; printf "Enter the number of your choice: "; tput sgr 0
+  read -p "" choice
+  if [[ $choice -ge 1 && $choice -le ${#CLUSTERS[@]} ]]; then
+    CLUSTER=${CLUSTERS[$choice-1]}
+  else
+    echo "invalid selection"
+    exit
+  fi
+else
+  CLUSTER=$1
+  shift
+fi
+
+
+if [[ ! $CLUSTER == "cluster"* ]]; then
+  error_msg "invalid cluster, $CLUSTER."
+  exit 0 
+fi
+
+if [ ! -d $CLUSTER ]; then
+  error_msg "$CLUSTER does not exist"
+  exit 0
+fi
+
 
 alias d='docker'
 alias docker-compose='docker compose'
@@ -28,13 +95,12 @@ if [ "$NETWORK" != "ksd" ]; then
   (docker network create ksd >/dev/null)
 fi
 
-# using the cluster with zookeeper
-(cd cluster-zk; docker-compose up -d --wait)
+heading "starting kafka cluster $CLUSTER"
 
-#(cd cluster-sasl; docker-compose up -d --wait)
-#(cd cluster; docker-compose up -d --wait)
+(cd $CLUSTER; docker-compose up -d --wait)
 
 ./gradlew build
+
 
 (cd builder; ../gradlew run)
 (cd monitoring; docker-compose up -d)
@@ -44,5 +110,6 @@ fi
 #(cd applications; docker-compose up -d otel publisher stream)
 
 # to start with a local publisher
+# publisher is part of applications
 #(cd applications; docker-compose up -d --wait $(docker-compose config --services | grep -v publisher))
 #(cd publisher; ../gradlew run --args="--max-sku 100")

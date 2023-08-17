@@ -14,6 +14,9 @@ alias dc='docker compose'
 #sasl cluster
 (cd cluster-sasl; dc down -v)
 
+#kraft load-balanced cluster
+(cd cluster-lb; dc down -v)
+
 rm -fr applications/stores/analytics_tumbling
 rm -fr applications/stores/analytics_hopping
 rm -fr applications/stores/analytics_sliding

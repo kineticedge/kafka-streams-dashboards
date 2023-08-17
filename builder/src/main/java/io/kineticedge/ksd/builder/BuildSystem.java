@@ -170,7 +170,12 @@ public class BuildSystem {
     }
 
     private void populateTables() {
-        final KafkaProducer<String, Object> kafkaProducer = new KafkaProducer<>(properties(options));
+
+        Map<String, Object> properties = new HashMap<>(properties(options));
+        properties.put(ProducerConfig.LINGER_MS_CONFIG, 10L);
+        properties.put(ProducerConfig.BATCH_SIZE_CONFIG, 20_000);
+
+        final KafkaProducer<String, Object> kafkaProducer = new KafkaProducer<>(properties);
 
         IntStream.range(0, options.getNumberOfStores()).forEach(i -> {
             Store store = getRandomStore(i);
@@ -185,6 +190,8 @@ public class BuildSystem {
             });
         });
 
+        kafkaProducer.flush();
+
         IntStream.range(0, options.getNumberOfUsers()).forEach(i -> {
             User user = getRandomUser(i);
 
@@ -198,6 +205,7 @@ public class BuildSystem {
             });
         });
 
+        kafkaProducer.flush();
 
         IntStream.range(0, options.getNumberOfProducts()).forEach(i -> {
             Product product = getRandomProduct(i);
@@ -212,8 +220,8 @@ public class BuildSystem {
             });
         });
 
+        kafkaProducer.flush();
         kafkaProducer.close();
-
     }
 
     private Map<String, Object> properties(final Options options) {

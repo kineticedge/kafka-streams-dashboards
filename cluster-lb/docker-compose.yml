@@ -28,8 +28,6 @@ services:
       - ct0:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-#      - ./controller.sh:/tmp/controller.sh
-#    command: "bash -c '/tmp/controller.sh && /etc/confluent/docker/run'"
     environment:
       CLUSTER_ID: "0000000000000000000000"
       KAFKA_LISTENERS: CONTROLLER://:9093
@@ -41,7 +39,6 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_MIN_INSYNC_REPLICAS: 2
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
-      #KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
 
 
@@ -67,15 +64,14 @@ services:
       - bk1:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-#      - ./broker.sh:/tmp/broker.sh
-#    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
       CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-1:9092,PLAINTEXT_HOST://localhost:19092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-1-lb:9092,INTERNAL://broker-1:9094,PLAINTEXT_HOST://localhost:19092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_CONTROLLER_QUORUM_VOTERS: 0@controller-0:9093
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_MIN_INSYNC_REPLICAS: 2
@@ -83,10 +79,9 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
-      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
-
 
   broker-2:
     platform: ${PLATFORM}
@@ -109,15 +104,14 @@ services:
       - bk2:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-#      - ./broker.sh:/tmp/broker.sh
-#    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
       CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 2
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-2:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-2-lb:9092,INTERNAL://broker-2:9094,PLAINTEXT_HOST://localhost:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_CONTROLLER_QUORUM_VOTERS: 0@controller-0:9093
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
@@ -125,7 +119,7 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
 
@@ -150,15 +144,14 @@ services:
       - bk3:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-#      - ./broker.sh:/tmp/broker.sh
-#    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
       CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 3
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-3:9092,PLAINTEXT_HOST://localhost:39092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-3-lb:9092,INTERNAL://broker-3:9094,PLAINTEXT_HOST://localhost:39092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_CONTROLLER_QUORUM_VOTERS: 0@controller-0:9093
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
@@ -166,7 +159,7 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
 
@@ -191,15 +184,14 @@ services:
       - bk4:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-#      - ./broker.sh:/tmp/broker.sh
-#    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
       CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 4
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-4:9092,PLAINTEXT_HOST://localhost:49092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-4-lb:9092,INTERNAL://broker-4:9094,PLAINTEXT_HOST://localhost:49092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_CONTROLLER_QUORUM_VOTERS: 0@controller-0:9093
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
@@ -207,6 +199,79 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
+
+  broker-1-lb:
+    build: ./nginx
+    container_name: broker-1-lb
+    hostname: broker-1-lb
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      broker-1:
+        condition: service_healthy
+    volumes:
+      - ./nginx/broker-1.conf:/etc/nginx/nginx.conf
+
+  broker-2-lb:
+    build: ./nginx
+    container_name: broker-2-lb
+    hostname: broker-2-lb
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      broker-2:
+        condition: service_healthy
+    volumes:
+      - ./nginx/broker-2.conf:/etc/nginx/nginx.conf
+
+  broker-3-lb:
+    build: ./nginx
+    container_name: broker-3-lb
+    hostname: broker-3-lb
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      broker-3:
+        condition: service_healthy
+    volumes:
+      - ./nginx/broker-3.conf:/etc/nginx/nginx.conf
+
+  broker-4-lb:
+    build: ./nginx
+    container_name: broker-4-lb
+    hostname: broker-4-lb
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      broker-4:
+        condition: service_healthy
+    volumes:
+      - ./nginx/broker-4.conf:/etc/nginx/nginx.conf
+

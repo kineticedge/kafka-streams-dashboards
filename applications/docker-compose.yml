@@ -24,8 +24,8 @@ services:
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       CLIENT_ID_PREFIX: "producer"
-      MAX_SKU: 100
-      PAUSE: 100
+      MAX_SKU: 1000
+      PAUSE: 1000
       OTEL_SERVICE_NAME: PUBLISHER
 
   stream:
@@ -68,6 +68,8 @@ services:
       retries: 3
     deploy:
       replicas: 1
+    cap_add:
+      - NET_ADMIN
     volumes:
       - ./analytics-1.0.tar:/app.tar
       - ./scripts:/scripts
@@ -93,6 +95,8 @@ services:
       retries: 3
     deploy:
       replicas: 1
+    cap_add:
+      - NET_ADMIN
     volumes:
       - ./analytics-1.0.tar:/app.tar
       - ./scripts:/scripts
@@ -118,6 +122,8 @@ services:
       retries: 3
     deploy:
       replicas: 1
+    cap_add:
+      - NET_ADMIN
     volumes:
       - ./analytics-1.0.tar:/app.tar
       - ./scripts:/scripts
@@ -143,6 +149,8 @@ services:
       retries: 3
     deploy:
       replicas: 1
+    cap_add:
+      - NET_ADMIN
     volumes:
       - ./analytics-1.0.tar:/app.tar
       - ./scripts:/scripts
@@ -156,29 +164,32 @@ services:
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_SESSION
 
-#  analytics_none:
-#    image: ksd_app:latest
-#    hostname: analytics_none
-#    stop_grace_period: 120s
-#    healthcheck:
-#      test: /healthcheck-streams.sh || exit 1
-#      start_period: 10s
-#      interval: 10s
-#      timeout: 5s
-#      retries: 3
-#    deploy:
-#      replicas: 1
-#    volumes:
-#      - ./analytics-1.0.tar:/app.tar
-#      - ./scripts:/scripts
-#      - ./stores:/tmp/kafka-streams
-#    environment:
-#      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-#      APPLICATION_ID: 'analytics_none'
-#      CLIENT_ID_PREFIX: 'analytics_none'
-#      WINDOW_TYPE: NONE
-#      COMMIT_INTERVAL: 100
-#      OTEL_SERVICE_NAME: ANALYTICS_NONE
+  analytics_none:
+    image: ksd_app:latest
+    hostname: analytics_none
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./scripts:/scripts
+      - ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+    environment:
+      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+      APPLICATION_ID: 'analytics_none'
+      CLIENT_ID_PREFIX: 'analytics_none'
+      WINDOW_TYPE: NONE
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_NONE
 
   nginx:
     image: nginx:latest

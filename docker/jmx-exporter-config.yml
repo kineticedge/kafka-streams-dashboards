@@ -85,6 +85,7 @@ rules:
 #
 # stream metrics
 #
+#- pattern: *:*
 - pattern: kafka.streams<type=kafka-metrics-count><>(.+):.+
 - pattern: "kafka.streams<type=stream-metrics, client-id=(.+)><>(.*): (.+)"
   name: kafka_streams_info

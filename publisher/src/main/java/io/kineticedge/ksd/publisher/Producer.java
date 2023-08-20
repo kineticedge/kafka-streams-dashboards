@@ -106,7 +106,6 @@ public class Producer {
 //            throw new IllegalArgumentException("!=");
 //        }
 
-        System.out.println(">>>");
 
         final KafkaProducer<String, PurchaseOrder> kafkaProducer = new KafkaProducer<>(properties(options));
 

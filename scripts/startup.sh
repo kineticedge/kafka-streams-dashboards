@@ -25,10 +25,10 @@ CLUSTERS=(
 )
 
 CLUSTER_DESCRIPTIONS=(
-    "cluster       --  4 brokers, 1 raft controller."
-    "cluster-zk    --  4 brokers, 1 zookeeper controller."
-    "cluster-sasl  --  4 brokers with SASL authentication, 1 zookeeper controller."
-    "cluster-lb    --  4 brokers, 1 raft controller, an nginx lb - listener 9092 goes through load-balancer."
+    "cluster       --  4 brokers, 1 raft controller"
+    "cluster-zk    --  4 brokers, 1 zookeeper controller"
+    "cluster-sasl  --  4 brokers with SASL authentication, 1 zookeeper controller"
+    "cluster-lb    --  4 brokers, 1 raft controller, an nginx lb (9092)"
 )
 
 display_menu() {

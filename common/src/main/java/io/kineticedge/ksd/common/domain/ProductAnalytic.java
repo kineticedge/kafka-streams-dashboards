@@ -28,10 +28,12 @@ public class ProductAnalytic {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "UTC")
     private Instant timestamp;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "UTC")
+    private Instant created = Instant.now();
+
     public void addOrderId(final String orderId) {
         orderIds.add(orderId);
     }
-
 
     @JsonIgnore
     public String timestamp() {

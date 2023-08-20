@@ -2,14 +2,15 @@
 package io.kineticedge.ksd.analytics;
 
 import org.apache.kafka.streams.state.RocksDBConfigSetter;
-import org.rocksdb.BlockBasedTableConfig;
-import org.rocksdb.CompressionType;
-import org.rocksdb.MemTableConfig;
 import org.rocksdb.Options;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 public class RocksDBConfig implements RocksDBConfigSetter {
+
+    private static final Logger log = LoggerFactory.getLogger(RocksDBConfig.class);
 
     // This object should be a member variable so it can be closed in RocksDBConfigSetter#close.
     // Block cache caches uncompressed blocks.
@@ -20,7 +21,7 @@ public class RocksDBConfig implements RocksDBConfigSetter {
     @Override
     public void setConfig(final String storeName, final Options options, final Map<String, Object> configs) {
 
-        System.out.println(">>> " + storeName);
+        log.info("RocksDBConfig for storeName={}", storeName);
 
         options.setWriteBufferSize(1);
 //        options.setMaxWriteBufferNumber(0);

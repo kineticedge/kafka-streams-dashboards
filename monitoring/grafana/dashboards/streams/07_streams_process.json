@@ -72,8 +72,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -140,8 +139,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -237,8 +235,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -305,8 +302,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -402,8 +398,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -470,8 +465,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -527,7 +521,7 @@
     }
   ],
   "refresh": "2s",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "streams"
@@ -568,7 +562,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -725,7 +719,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_processor_node_metrics_process_rate{cluster_type=\"streams\",cluster_id=~\"${cluster}\",instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}, processor_node_id)",
+        "definition": "query_result(kafka_streams_stream_processor_node_metrics_process_rate{cluster_type=\"streams\",cluster_id=~\"${cluster}\",instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"} or kafka_streams_stream_processor_node_metrics_suppression_emit_rate{cluster_type=\"streams\",cluster_id=~\"${cluster}\",instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"})",
         "hide": 0,
         "includeAll": true,
         "label": "process",
@@ -733,11 +727,11 @@
         "name": "process",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_processor_node_metrics_process_rate{cluster_type=\"streams\",cluster_id=~\"${cluster}\",instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}, processor_node_id)",
-          "refId": "StandardVariableQuery"
+          "query": "query_result(kafka_streams_stream_processor_node_metrics_process_rate{cluster_type=\"streams\",cluster_id=~\"${cluster}\",instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"} or kafka_streams_stream_processor_node_metrics_suppression_emit_rate{cluster_type=\"streams\",cluster_id=~\"${cluster}\",instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"})",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
-        "regex": "",
+        "regex": "/^.*processor_node_id=\\\"(.*)\\\",task_id.*$/",
         "skipUrlSync": false,
         "sort": 3,
         "tagValuesQuery": "",
@@ -780,6 +774,6 @@
   "timezone": "",
   "title": "07 - Processes",
   "uid": "streams_process",
-  "version": 2,
+  "version": 17,
   "weekStart": ""
 }

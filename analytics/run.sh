@@ -8,6 +8,6 @@ gradle assemble > /dev/null
 
 MAIN="io.kineticedge.ksd.analytics.Main"
 
-export JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005
+#export JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005
 
 java $JAVA_OPTS  -cp "${CP}" $MAIN "$@"

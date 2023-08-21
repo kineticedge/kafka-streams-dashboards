@@ -4,18 +4,21 @@ import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.streams.processor.api.FixedKeyRecord;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class FixedKeyRecordFactory {
 
-  private static final Constructor<?> constructor;
+  // generic erasure, K and V are objects.
+  private static final Class<?>[] ARGUMENTS = {Object.class, Object.class, Long.TYPE, Headers.class};
 
+  private static final Constructor<?> constructor;
   static {
-    final Constructor<?>[] constructors = FixedKeyRecord.class.getDeclaredConstructors();
-    if (constructors.length != 1) {
-      throw new IllegalStateException("Unexpected number of constructors (expected 1, got %d)".formatted(constructors.length));
+    try {
+      constructor = FixedKeyRecord.class.getDeclaredConstructor(ARGUMENTS);
+      constructor.setAccessible(true);
+    } catch (NoSuchMethodException e) {
+      throw new RuntimeException("unable to get the needed constructor from FixedKeyRecord.", e);
     }
-    constructors[0].setAccessible(true);
-    constructor = constructors[0];
   }
 
   private FixedKeyRecordFactory() {
@@ -25,9 +28,9 @@ public class FixedKeyRecordFactory {
   public static <K, V> FixedKeyRecord<K, V> create(final K key, final V value, final long timestamp, final Headers headers) {
     try {
       return (FixedKeyRecord<K, V>) constructor.newInstance(key, value, timestamp, headers);
-    } catch (Exception e) {
-      throw new RuntimeException("Failed to create instance of %s".formatted(FixedKeyRecord.class.getName()), e);
+    } catch (InstantiationException | IllegalAccessException |
+             InvocationTargetException e) {
+      throw new RuntimeException("unable to create FixedKeyRecord", e);
     }
   }
-
 }

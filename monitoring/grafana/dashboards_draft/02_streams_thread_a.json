@@ -302,7 +302,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -350,9 +350,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "editorMode": "code",
           "exemplar": true,
-          "expr": "avg (kafka_streams_stream_thread_metrics_${measurement}_rate{cluster_id=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\"})",
+          "expr": "sum (kafka_streams_stream_thread_metrics_${measurement}_rate{cluster_id=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -471,7 +470,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -519,8 +518,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "editorMode": "code",
-          "expr": "avg (rate(kafka_streams_stream_thread_metrics_${measurement}_total{thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}[$__rate_interval]))",
+          "expr": "sum (rate(kafka_streams_stream_thread_metrics_${measurement}_total{thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}[$__rate_interval]))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -704,7 +702,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -790,7 +788,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "avg without(job,instance,thread) (kafka_streams_stream_thread_metrics_${measurement}_latency_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"})",
+          "editorMode": "code",
+          "expr": "avg without(job,instance,thread) ((kafka_streams_stream_thread_metrics_${measurement}_latency_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >= 0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -806,7 +805,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -854,7 +853,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "avg (kafka_streams_stream_thread_metrics_${measurement}_latency_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"})",
+          "editorMode": "code",
+          "expr": "avg ((kafka_streams_stream_thread_metrics_${measurement}_latency_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >= 0)",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -967,7 +967,7 @@
           "refId": "A"
         }
       ],
-      "title": "records ${measurement} / iteration (avg)",
+      "title": "${measurement} records (avg)",
       "type": "timeseries"
     },
     {
@@ -1031,8 +1031,151 @@
           "refId": "A"
         }
       ],
-      "title": "records ${measurement} / iteration (avg)",
+      "title": "${measurement} records (avg)",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 20,
+        "x": 0,
+        "y": 42
+      },
+      "id": 42,
+      "interval": "2s",
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.0-46516pre",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg without(cluster_id,instance,thread) ((kafka_streams_stream_thread_metrics_commit_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{thread_id}} (commit)",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "expr": "avg without(cluster_id,instance,thread) ((kafka_streams_stream_thread_metrics_poll_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{thread_id}} (poll)",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "expr": "avg without(cluster_id,instance,thread) ((kafka_streams_stream_thread_metrics_process_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{thread_id}} (process)",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "expr": "avg without(cluster_id,instance,thread) ((kafka_streams_stream_thread_metrics_punctuate_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{thread_id}} (punctuate)",
+          "range": true,
+          "refId": "D"
+        }
+      ],
+      "title": "${measurement} ratio",
+      "type": "timeseries"
     }
   ],
   "refresh": "2s",
@@ -1077,7 +1220,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -1135,9 +1278,9 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": "analytics_hopping-1-StreamThread-1",
+          "value": "analytics_hopping-1-StreamThread-1"
         },
         "datasource": {
           "type": "prometheus",
@@ -1166,8 +1309,8 @@
       {
         "current": {
           "selected": true,
-          "text": "poll",
-          "value": "poll"
+          "text": "commit",
+          "value": "commit"
         },
         "hide": 0,
         "includeAll": false,
@@ -1175,12 +1318,12 @@
         "name": "measurement",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "commit",
             "value": "commit"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "poll",
             "value": "poll"
           },
@@ -1234,8 +1377,8 @@
     ]
   },
   "timezone": "",
-  "title": "02 - Threads",
-  "uid": "streams_thread",
-  "version": 3,
+  "title": "02 - Threads - A",
+  "uid": "streams_thread_a",
+  "version": 1,
   "weekStart": ""
 }

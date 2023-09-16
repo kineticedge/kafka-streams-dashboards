@@ -51,6 +51,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -58,7 +59,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -91,12 +92,14 @@
         "x": 0,
         "y": 0
       },
-      "id": 30,
+      "id": 8,
       "interval": "2s",
       "links": [],
       "options": {
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "lastNotNull"
+          ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true
@@ -115,17 +118,17 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "avg without(thread_id, instance) (kafka_streams_stream_task_metrics_process_latency_avg{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"})/1000000",
+          "expr": "sum without(thread_id, instance)  (kafka_streams_stream_task_metrics_process_total{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"} + on (cluster_id, instance) group_left(application_id) (0 * kafka_streams_info{instance=~\"${instance}\", cluster_id=~\"${cluster}\", application_id=~\"${application}\"}))",
           "format": "time_series",
           "hide": false,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{cluster_id}}|{{task_id}}",
+          "legendFormat": "{{application_id}}|{{task_id}}",
           "refId": "A"
         }
       ],
-      "title": "process latency (avg)",
+      "title": "process total",
       "type": "timeseries"
     },
     {
@@ -154,7 +157,7 @@
         "x": 19,
         "y": 0
       },
-      "id": 32,
+      "id": 35,
       "interval": "2s",
       "links": [],
       "options": {
@@ -172,7 +175,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -181,7 +184,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg without(task_id, thread_id, instance, cluster_id, job, cluster_type) (kafka_streams_stream_task_metrics_process_latency_avg{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\",instance=~\"${instance}\", cluster_id=~\"${cluster}\"})/1000000",
+          "expr": "sum without(task_id, thread_id, instance, cluster_id, cluster_type, job) (kafka_streams_stream_task_metrics_process_total{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\",instance=~\"${instance}\", cluster_id=~\"${cluster}\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -191,7 +194,7 @@
           "refId": "A"
         }
       ],
-      "title": "process latency (avg)",
+      "title": "process total",
       "type": "stat"
     },
     {
@@ -218,6 +221,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -263,7 +267,9 @@
       "links": [],
       "options": {
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "lastNotNull"
+          ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true
@@ -282,13 +288,13 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "avg without(thread_id, instance) (kafka_streams_stream_task_metrics_process_rate{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"})",
+          "expr": "avg without(thread_id, instance) (kafka_streams_stream_task_metrics_process_rate{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"} + on (cluster_id, instance) group_left(application_id) (0 * kafka_streams_info{instance=~\"${instance}\", cluster_id=~\"${cluster}\", application_id=~\"${application}\"}))",
           "format": "time_series",
           "hide": false,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{cluster_id}}|{{task_id}}",
+          "legendFormat": "{{application_id}} | {{task_id}}",
           "refId": "A"
         }
       ],
@@ -339,7 +345,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -385,6 +391,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -392,7 +399,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -425,12 +432,14 @@
         "x": 0,
         "y": 14
       },
-      "id": 8,
+      "id": 30,
       "interval": "2s",
       "links": [],
       "options": {
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "lastNotNull"
+          ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true
@@ -449,17 +458,17 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without(thread_id, instance)  (kafka_streams_stream_task_metrics_process_total{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"})",
+          "expr": "avg without(thread_id, instance) (kafka_streams_stream_task_metrics_process_latency_avg{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"} + on (cluster_id, instance) group_left(application_id) (0 * kafka_streams_info{instance=~\"${instance}\", cluster_id=~\"${cluster}\", application_id=~\"${application}\"}))/1000000",
           "format": "time_series",
           "hide": false,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{cluster_id}}|{{task_id}}",
+          "legendFormat": "{{application_id}}|{{task_id}}",
           "refId": "A"
         }
       ],
-      "title": "process total",
+      "title": "process latency (avg)",
       "type": "timeseries"
     },
     {
@@ -488,7 +497,7 @@
         "x": 19,
         "y": 14
       },
-      "id": 35,
+      "id": 32,
       "interval": "2s",
       "links": [],
       "options": {
@@ -506,7 +515,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -515,7 +524,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum without(task_id, thread_id, instance, cluster_id, cluster_type, job) (kafka_streams_stream_task_metrics_process_total{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\",instance=~\"${instance}\", cluster_id=~\"${cluster}\"})",
+          "expr": "avg without(task_id, thread_id, instance, cluster_id, job, cluster_type) (kafka_streams_stream_task_metrics_process_latency_avg{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\",instance=~\"${instance}\", cluster_id=~\"${cluster}\"})/1000000",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -525,7 +534,7 @@
           "refId": "A"
         }
       ],
-      "title": "process total",
+      "title": "process latency (avg)",
       "type": "stat"
     },
     {
@@ -552,6 +561,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -597,7 +607,9 @@
       "links": [],
       "options": {
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "lastNotNull"
+          ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true
@@ -616,13 +628,13 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "avg without(task, thread_id, instance)  (kafka_streams_stream_task_metrics_record_lateness_avg{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"})",
+          "expr": "avg without(task, thread_id, instance)  (kafka_streams_stream_task_metrics_record_lateness_avg{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"} + on (cluster_id, instance) group_left(application_id) (0 * kafka_streams_info{instance=~\"${instance}\", cluster_id=~\"${cluster}\", application_id=~\"${application}\"}) > 0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{cluster_id}}|{{task_id}}",
+          "legendFormat": "{{application_id}}|{{task_id}}",
           "refId": "A"
         }
       ],
@@ -673,7 +685,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -719,6 +731,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -764,7 +777,9 @@
       "links": [],
       "options": {
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "lastNotNull"
+          ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true
@@ -783,13 +798,13 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without(task, thread_id, instance)  (kafka_streams_stream_task_metrics_dropped_records_total{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"})",
+          "expr": "sum without(task, thread_id, instance)  (kafka_streams_stream_task_metrics_dropped_records_total{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"} + on (cluster_id, instance) group_left(application_id) (0 * kafka_streams_info{instance=~\"${instance}\", cluster_id=~\"${cluster}\", application_id=~\"${application}\"}) > 0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{cluster_id}}|{{task_id}}",
+          "legendFormat": "{{application_id}}|{{task_id}}",
           "refId": "A"
         }
       ],
@@ -840,7 +855,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.0-85205pre",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -864,7 +879,7 @@
     }
   ],
   "refresh": "2s",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "streams"
@@ -874,7 +889,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -1050,6 +1065,33 @@
         "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "process",
+          "value": "process"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "measurement",
+        "options": [
+          {
+            "selected": true,
+            "text": "process",
+            "value": "process"
+          },
+          {
+            "selected": false,
+            "text": "punctuate",
+            "value": "punctuate"
+          }
+        ],
+        "query": "process,punctuate",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -1087,6 +1129,6 @@
   "timezone": "",
   "title": "04 - Tasks",
   "uid": "streams_task",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }

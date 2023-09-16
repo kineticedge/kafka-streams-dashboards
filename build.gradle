@@ -43,7 +43,7 @@ configure(subprojects.findAll { project -> file("${project.name}/src/main/java")
             }
         }
 
-        implementation group: 'io.confluent', name: 'monitoring-interceptors', version: confluent_version
+        //implementation group: 'io.confluent', name: 'monitoring-interceptors', version: confluent_version
 
         implementation group: 'org.slf4j', name: 'slf4j-api', version: slf4j_version
 

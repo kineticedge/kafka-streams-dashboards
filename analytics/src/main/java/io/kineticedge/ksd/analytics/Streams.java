@@ -135,7 +135,8 @@ public class Streams {
 
     final Materialized<String, ProductAnalytic, WindowStore<Bytes, byte[]>> store = Materialized.<String, ProductAnalytic, WindowStore<Bytes, byte[]>>as("TUMBLING-aggregate-purchase-order")
             //.withRetention(Duration.ofHours(2L))
-            .withCachingDisabled();
+            //.withCachingDisabled()
+            ;
 
     builder.<String, PurchaseOrder>stream(options.getTopic(), Consumed.as("TUMBLING-line-item"))
             .peek((k, v) -> log.info("key={}", k), Named.as("TUMBLING-peek-incoming"))
@@ -166,7 +167,8 @@ public class Streams {
 
     final Materialized<String, ProductAnalytic, WindowStore<Bytes, byte[]>> store = Materialized.<String, ProductAnalytic, WindowStore<Bytes, byte[]>>as("HOPPING-aggregate-purchase-order")
             //.withLoggingDisabled()
-            .withCachingDisabled();
+            //.withCachingDisabled()
+            ;
 
     builder.<String, PurchaseOrder>stream(options.getTopic(), Consumed.as("HOPPING-line-item"))
             .peek((k, v) -> log.info("key={}", k), Named.as("HOPPING-peek-incoming"))
@@ -198,7 +200,7 @@ public class Streams {
 
     final Materialized<String, ProductAnalytic, WindowStore<Bytes, byte[]>> store = Materialized.<String, ProductAnalytic, WindowStore<Bytes, byte[]>>as("SLIDING-aggregate-purchase-order")
             //.withLoggingDisabled()
-            .withCachingDisabled()
+            //.withCachingDisabled()
             // if suppression is added, this is needed, otherwise the windowing causes confusion and a class-cast exception occurs
             .withKeySerde(Serdes.String())
             .withRetention(Duration.ofDays(5L));
@@ -273,7 +275,8 @@ public class Streams {
 
     final Materialized<String, ProductAnalytic, KeyValueStore<Bytes, byte[]>> store = Materialized.<String, ProductAnalytic, KeyValueStore<Bytes, byte[]>>as("NONE-aggregate-purchase-order")
             //.withLoggingDisabled()
-            .withCachingDisabled();
+            //.withCachingDisabled()
+            ;
 
     builder.<String, PurchaseOrder>stream(options.getTopic(), Consumed.as("NONE-line-item"))
             //.peek((k, v) -> log.info("key={}", k), Named.as("NONE-peek-incoming"))

@@ -74,7 +74,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "10.2.0-128927pre",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -143,7 +143,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "10.2.0-128927pre",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -212,7 +212,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "10.2.0-128927pre",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -281,7 +281,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "10.2.0-128927pre",
+      "pluginVersion": "10.2.0-130592pre",
       "targets": [
         {
           "datasource": {
@@ -854,16 +854,10 @@
         "current": {
           "selected": true,
           "text": [
-            "product-statistics-HOPPING",
-            "product-statistics-SESSION",
-            "product-statistics-SLIDING",
-            "product-statistics-TUMBLING"
+            "All"
           ],
           "value": [
-            "product-statistics-HOPPING",
-            "product-statistics-SESSION",
-            "product-statistics-SLIDING",
-            "product-statistics-TUMBLING"
+            "$__all"
           ]
         },
         "datasource": {

@@ -590,9 +590,9 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
-          "text": "streams",
-          "value": "streams"
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "prometheus",

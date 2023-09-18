@@ -83,13 +83,13 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "percentunit"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 17,
-        "w": 24,
+        "h": 20,
+        "w": 16,
         "x": 0,
         "y": 0
       },
@@ -104,7 +104,9 @@
           ],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": false
         },
         "tooltip": {
           "mode": "single",
@@ -148,15 +150,16 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "percentunit"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 19,
-        "w": 9,
-        "x": 8,
-        "y": 17
+        "h": 20,
+        "w": 8,
+        "x": 16,
+        "y": 0
       },
       "id": 41,
       "interval": "2s",
@@ -168,10 +171,10 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "",
-          "values": true
+          "values": false
         },
         "text": {},
         "textMode": "value_and_name"
@@ -328,7 +331,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -359,7 +362,7 @@
       {
         "allValue": "",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -389,8 +392,8 @@
       {
         "current": {
           "selected": true,
-          "text": "hit-ratio-avg",
-          "value": "hit-ratio-avg"
+          "text": "hit-ratio-min",
+          "value": "hit-ratio-min"
         },
         "datasource": {
           "type": "prometheus",
@@ -448,7 +451,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1m",
     "to": "now"
   },
   "timepicker": {
@@ -481,6 +484,6 @@
   "timezone": "",
   "title": "07 - Record Cache",
   "uid": "streams_recordcache",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }

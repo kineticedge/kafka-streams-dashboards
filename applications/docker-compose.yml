@@ -24,7 +24,7 @@ services:
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       CLIENT_ID_PREFIX: "producer"
-      MAX_SKU: 1000
+      MAX_SKU: 10000
       PAUSE: 1000
       OTEL_SERVICE_NAME: PUBLISHER
 

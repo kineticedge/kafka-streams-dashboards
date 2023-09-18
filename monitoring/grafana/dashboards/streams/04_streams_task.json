@@ -82,7 +82,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "msgs"
         },
         "overrides": []
       },
@@ -98,6 +98,8 @@
       "options": {
         "legend": {
           "calcs": [
+            "mean",
+            "max",
             "lastNotNull"
           ],
           "displayMode": "table",
@@ -147,7 +149,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "msgs"
         },
         "overrides": []
       },
@@ -252,7 +255,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "mps"
         },
         "overrides": []
       },
@@ -268,6 +271,8 @@
       "options": {
         "legend": {
           "calcs": [
+            "mean",
+            "max",
             "lastNotNull"
           ],
           "displayMode": "table",
@@ -317,7 +322,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "mps"
         },
         "overrides": []
       },
@@ -422,7 +428,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "ns"
         },
         "overrides": []
       },
@@ -438,6 +444,8 @@
       "options": {
         "legend": {
           "calcs": [
+            "mean",
+            "max",
             "lastNotNull"
           ],
           "displayMode": "table",
@@ -487,7 +495,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "ns"
         },
         "overrides": []
       },
@@ -592,7 +601,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -608,11 +617,15 @@
       "options": {
         "legend": {
           "calcs": [
+            "mean",
+            "max",
             "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
@@ -628,7 +641,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "avg without(task, thread_id, instance)  (kafka_streams_stream_task_metrics_record_lateness_avg{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"} + on (cluster_id, instance) group_left(application_id) (0 * kafka_streams_info{instance=~\"${instance}\", cluster_id=~\"${cluster}\", application_id=~\"${application}\"}) > 0)",
+          "expr": "avg without(task, thread_id, instance)  (kafka_streams_stream_task_metrics_record_lateness_avg{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"} + on (cluster_id, instance) group_left(application_id) (0 * kafka_streams_info{instance=~\"${instance}\", cluster_id=~\"${cluster}\", application_id=~\"${application}\"}) >= 0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -657,7 +670,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -762,9 +776,34 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "msgs"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "analytics_sliding|0_2"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -778,6 +817,8 @@
       "options": {
         "legend": {
           "calcs": [
+            "mean",
+            "max",
             "lastNotNull"
           ],
           "displayMode": "table",
@@ -798,7 +839,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without(task, thread_id, instance)  (kafka_streams_stream_task_metrics_dropped_records_total{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"} + on (cluster_id, instance) group_left(application_id) (0 * kafka_streams_info{instance=~\"${instance}\", cluster_id=~\"${cluster}\", application_id=~\"${application}\"}) > 0)",
+          "expr": "sum without(task, thread_id, instance)  (kafka_streams_stream_task_metrics_dropped_records_total{task_id=~\"${task}_${partition}\",thread_id=~\"${thread}\",instance=~\"${instance}\",cluster_id=~\"${cluster}\"} + on (cluster_id, instance) group_left(application_id) (0 * kafka_streams_info{instance=~\"${instance}\", cluster_id=~\"${cluster}\", application_id=~\"${application}\"}) >= 0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -827,7 +868,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "msgs"
         },
         "overrides": []
       },
@@ -920,7 +962,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -1065,33 +1107,6 @@
         "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query"
-      },
-      {
-        "current": {
-          "selected": true,
-          "text": "process",
-          "value": "process"
-        },
-        "hide": 0,
-        "includeAll": false,
-        "multi": false,
-        "name": "measurement",
-        "options": [
-          {
-            "selected": true,
-            "text": "process",
-            "value": "process"
-          },
-          {
-            "selected": false,
-            "text": "punctuate",
-            "value": "punctuate"
-          }
-        ],
-        "query": "process,punctuate",
-        "queryValue": "",
-        "skipUrlSync": false,
-        "type": "custom"
       }
     ]
   },
@@ -1129,6 +1144,6 @@
   "timezone": "",
   "title": "04 - Tasks",
   "uid": "streams_task",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }

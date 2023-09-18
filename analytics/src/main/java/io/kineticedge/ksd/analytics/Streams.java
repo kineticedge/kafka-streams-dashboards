@@ -66,6 +66,10 @@ public class Streams {
             Map.entry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, "TRACE"),
             Map.entry(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class.getName()),
             Map.entry(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG, RocksDBConfig.class.getName()),
+
+            Map.entry(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 2 * 1024 * 1024L),          // default is 10 MiB (10 * 1024 * 1024L)
+
+
             // very helpful for demo applications so instance immediately leaves group when closed.
             Map.entry("internal.leave.group.on.close", true)
     );
@@ -217,7 +221,7 @@ public class Streams {
                     Named.as("SLIDING-aggregate"),
                     store)
             .suppress(
-                    Suppressed.<Windowed<String>>untilWindowCloses(Suppressed.BufferConfig.unbounded())
+                    Suppressed.<Windowed<String>>untilWindowCloses(Suppressed.BufferConfig.unbounded()).withName("SLIDING-suppression")
             )
             .toStream(Named.as("SLIDING-toStream"))
             .peek((k, v) -> log.info("key={}, value={}", k, v), Named.as("SLIDING-peek-outgoing"))

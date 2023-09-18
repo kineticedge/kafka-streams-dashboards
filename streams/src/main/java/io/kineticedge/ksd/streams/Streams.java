@@ -61,6 +61,7 @@ public class Streams {
                 Map.entry(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, options.getAutoOffsetReset()),
                 Map.entry(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true"),
                 Map.entry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100),
+
 //                Map.entry(CommonClientConfigs.SESSION_TIMEOUT_MS_CONFIG, 10_000),
                 Map.entry(StreamsConfig.CLIENT_ID_CONFIG, options.getClientId()),
                 Map.entry(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class),

@@ -82,7 +82,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "msgs"
         },
         "overrides": []
       },
@@ -98,10 +98,12 @@
       "options": {
         "legend": {
           "calcs": [
-            "last"
+            "mean",
+            "max",
+            "lastNotNull"
           ],
-          "displayMode": "list",
-          "placement": "bottom",
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -147,7 +149,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "msgs"
         },
         "overrides": []
       },
@@ -251,7 +254,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "mps"
         },
         "overrides": []
       },
@@ -267,10 +270,12 @@
       "options": {
         "legend": {
           "calcs": [
-            "last"
+            "mean",
+            "max",
+            "lastNotNull"
           ],
-          "displayMode": "list",
-          "placement": "bottom",
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -315,7 +320,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "mps"
         },
         "overrides": []
       },
@@ -420,7 +426,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "mps"
         },
         "overrides": []
       },
@@ -436,10 +442,12 @@
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "mean",
+            "lastNotNull",
+            "max"
           ],
-          "displayMode": "list",
-          "placement": "bottom",
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -484,7 +492,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "mps"
         },
         "overrides": []
       },
@@ -565,7 +574,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": 60000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -588,7 +597,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -604,10 +613,12 @@
       "options": {
         "legend": {
           "calcs": [
+            "mean",
+            "max",
             "lastNotNull"
           ],
-          "displayMode": "list",
-          "placement": "bottom",
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -652,7 +663,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -756,7 +768,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -772,10 +784,12 @@
       "options": {
         "legend": {
           "calcs": [
+            "mean",
+            "max",
             "lastNotNull"
           ],
-          "displayMode": "list",
-          "placement": "bottom",
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -819,7 +833,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -922,7 +937,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "mps"
         },
         "overrides": []
       },
@@ -938,10 +953,12 @@
       "options": {
         "legend": {
           "calcs": [
+            "mean",
+            "max",
             "lastNotNull"
           ],
-          "displayMode": "list",
-          "placement": "bottom",
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -986,7 +1003,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "mps"
         },
         "overrides": []
       },
@@ -1077,7 +1095,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -1166,8 +1184,8 @@
       {
         "current": {
           "selected": true,
-          "text": "poll",
-          "value": "poll"
+          "text": "process",
+          "value": "process"
         },
         "hide": 0,
         "includeAll": false,
@@ -1180,12 +1198,12 @@
             "value": "commit"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "poll",
             "value": "poll"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "process",
             "value": "process"
           },

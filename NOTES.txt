@@ -1,2 +1,19 @@
 
 curl -s http://localhost:7072/jolokia/read/kafka.streams:client-id=stream-1,type=stream-metrics/topology-description | jq -r ".value"
+
+
+kafka-configs --bootstrap-server localhost:19092 --alter --entity-type topics --entity-name product-statistics-HOPPING --add-config message.timestamp.type=LogAppendTime
+kafka-configs --bootstrap-server localhost:19092 --alter --entity-type topics --entity-name product-statistics-HOPPING --delete-config message.timestamp.type
+
+
+#kafka-configs --bootstrap-server localhost:19092 --alter --entity-type topics --entity-name product-statistics-HOPPING --add-config message.timestamp.type=CreateTime
+
+   83  curl -s http://localhost:7071 | grep -v -E "^#" | grep kafka_streams_stream_state_metrics | sed -E 's/.*metric="(.*)",state.*/\1/' | grep  -E "^(range|put|flush|get|all|delete|suppression-buffer|record-e2e|range|restore).*" | sort | uniq | sed -E 's/(.*)(-e2e-latency-min|-e2e-latency-max|-e2e-latency-max|-e2e-latency-avg)$/\1/' | sed -E '-s(.*)(-latency-avg|-latency-max|-rate)$/\1/'
+   84  curl -s http://localhost:7071 | grep -v -E "^#" | grep kafka_streams_stream_state_metrics | sed -E 's/.*metric="(.*)",state.*/\1/' | grep  -E "^(range|put|flush|get|all|delete|suppression-buffer|record-e2e|range|restore).*" | sort | uniq | sed -E 's/(.*)(-e2e-latency-min|-e2e-latency-max|-e2e-latency-max|-e2e-latency-avg)$/\1/' | sed -E '-s/(.*)(-latency-avg|-latency-max|-rate)$/\1/'
+   85  curl -s http://localhost:7071 | grep -v -E "^#" | grep kafka_streams_stream_state_metrics | sed -E 's/.*metric="(.*)",state.*/\1/' | grep  -E "^(range|put|flush|get|all|delete|suppression-buffer|record-e2e|range|restore).*" | sort | uniq | sed -E 's/(.*)(-e2e-latency-min|-e2e-latency-max|-e2e-latency-max|-e2e-latency-avg)$/\1/' | sed -E 's/(.*)(-latency-avg|-latency-max|-rate)$/\1/'
+   86  curl -s http://localhost:7071 | grep -v -E "^#" | grep kafka_streams_stream_state_metrics | sed -E 's/.*metric="(.*)",state.*/\1/' | grep  -E "^(range|put|flush|get|all|delete|suppression-buffer|record-e2e|range|restore).*" | sort | uniq | sed -E 's/(.*)(-e2e-latency-min|-e2e-latency-max|-e2e-latency-max|-e2e-latency-avg)$/\1/' | sed -E 's/(.*)(-latency-avg|-latency-max|-rate)$/\1/' | sort | uniuq
+   87  curl -s http://localhost:7071 | grep -v -E "^#" | grep kafka_streams_stream_state_metrics | sed -E 's/.*metric="(.*)",state.*/\1/' | grep  -E "^(range|put|flush|get|all|delete|suppression-buffer|record-e2e|range|restore).*" | sort | uniq | sed -E 's/(.*)(-e2e-latency-min|-e2e-latency-max|-e2e-latency-max|-e2e-latency-avg)$/\1/' | sed -E 's/(.*)(-latency-avg|-latency-max|-rate)$/\1/' | sort | uniq
+   88  curl -s http://localhost:7071 | grep -v -E "^#" | grep kafka_streams_stream_state_metrics | sed -E 's/.*metric="(.*)",state.*/\1/' | grep  -E "^(range|put|flush|get|all|delete|suppression-buffer|record-e2e|range|restore).*" | sort | uniq | sed -E 's/(.*)(-latency-avg|-latency-max|-rate)$/\1/' | sort | uniq
+   89  curl -s http://localhost:7071 | grep -v -E "^#" | grep kafka_streams_stream_state_metrics | sed -E 's/.*metric="(.*)",state.*/\1/' | grep  -E "^(range|put|flush|get|all|delete|suppression-buffer|record-e2e|range|restore).*" | sort | uniq | sed -E 's/(.*)(-latency-avg|-latency-max|-latency-min|-rate)$/\1/' | sort | uniq
+   90  curl -s http://localhost:7071 | grep -v -E "^#" | grep kafka_streams_stream_state_metrics | sed -E 's/.*metric="(.*)",state.*/\1/' | grep  -E "^(range|put|flush|get|all|delete|suppression-buffer|record-e2e|range|restore).*" | sort | uniq
+   91  curl -s http://localhost:7071 | grep -v -E "^#" | grep kafka_streams_stream_state_metrics | sed -E 's/.*metric="(.*)",state.*/\1/' | sort | uniq

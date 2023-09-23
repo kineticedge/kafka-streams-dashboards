@@ -29,6 +29,9 @@ import org.apache.kafka.streams.processor.api.FixedKeyRecord;
 import org.apache.kafka.streams.processor.api.InternalFixedKeyRecordFactory;
 import org.apache.kafka.streams.state.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
@@ -38,8 +41,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAmount;
 import java.time.temporal.TemporalUnit;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class Streams {
@@ -52,7 +57,7 @@ public class Streams {
   private static final DateTimeFormatter TIME_FORMATTER_SSS = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 
   private Map<String, Object> properties(final Options options) {
-    return Map.ofEntries(
+    final Map<String, Object> defaults = Map.ofEntries(
             Map.entry(ProducerConfig.LINGER_MS_CONFIG, 100),
             Map.entry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, options.getBootstrapServers()),
             Map.entry(StreamsConfig.SECURITY_PROTOCOL_CONFIG, "PLAINTEXT"),
@@ -69,10 +74,28 @@ public class Streams {
 
             Map.entry(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 2 * 1024 * 1024L),          // default is 10 MiB (10 * 1024 * 1024L)
 
-
             // very helpful for demo applications so instance immediately leaves group when closed.
             Map.entry("internal.leave.group.on.close", true)
     );
+
+    final Map<String, Object> map = new HashMap<>(defaults);
+
+    try {
+      final Properties properties = new Properties();
+      final File file = new File("./analytics.properties");
+      if (file.exists() && file.isFile()) {
+        log.info("applying analytics.properties");
+        properties.load(new FileInputStream(file));
+        map.putAll(properties.entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> e.getKey().toString(), Map.Entry::getValue)));
+      }
+    } catch (final IOException e) {
+      log.info("no analytics.properties override file found");
+    }
+
+
+    return map;
   }
 
   private final Options options;
@@ -207,7 +230,9 @@ public class Streams {
             //.withCachingDisabled()
             // if suppression is added, this is needed, otherwise the windowing causes confusion and a class-cast exception occurs
             .withKeySerde(Serdes.String())
-            .withRetention(Duration.ofDays(5L));
+            ;
+            //.withRetention(Duration.ofMinutes(2));
+            //.withRetention(Duration.ofDays(5L));
 
     builder.<String, PurchaseOrder>stream(options.getTopic(), Consumed.as("SLIDING-line-item"))
             //.merge(builder.stream("foo"))

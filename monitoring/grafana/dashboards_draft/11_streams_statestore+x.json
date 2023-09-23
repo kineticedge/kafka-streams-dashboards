@@ -143,9 +143,9 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
+          "selected": false,
+          "text": "analytics",
+          "value": "analytics"
         },
         "datasource": {
           "type": "prometheus",
@@ -380,16 +380,49 @@
         "type": "query"
       },
       {
+        "allValue": ".+",
         "current": {
           "selected": true,
-          "text": "put-rate",
-          "value": "put-rate"
+          "text": "All",
+          "value": "$__all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "classification",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "statistical",
+            "value": "\"(block-cache-data-hit-ratio|block-cache-filter-hit-ratio|block-cache-index-hit-ratio|bytes-read|bytes-read-compaction|bytes-written|bytes-written-compaction|compaction-time|cur-size-active-mem-table|memtable-bytes-flushed|memtable-flush-time|memtable-hit-ratio|number-file-errors|number-open-files|write-stall-duration)\""
+          },
+          {
+            "selected": false,
+            "text": "property",
+            "value": "\"(background-errors|block-cache-capacity|block-cache-pinned-usage|block-cache-usage|compaction-pending|cur-size-active-mem-table|cur-size-all-mem-tables|estimate-num-keys|estimate-pending-compaction-bytes|estimate-table-readers-mem|live-sst-files-size|mem-table-flush-pending|num-deletes-active-mem-table|num-deletes-imm-mem-tables|num-entries-active-mem-table|num-entries-imm-mem-tables|num-immutable-mem-table|num-live-versions|num-running-compactions|num-running-flushes|size-all-mem-tables|total-sst-files-size)\""
+          }
+        ],
+        "query": "statistical : \"(block-cache-data-hit-ratio|block-cache-filter-hit-ratio|block-cache-index-hit-ratio|bytes-read|bytes-read-compaction|bytes-written|bytes-written-compaction|compaction-time|cur-size-active-mem-table|memtable-bytes-flushed|memtable-flush-time|memtable-hit-ratio|number-file-errors|number-open-files|write-stall-duration)\", property : \"(background-errors|block-cache-capacity|block-cache-pinned-usage|block-cache-usage|compaction-pending|cur-size-active-mem-table|cur-size-all-mem-tables|estimate-num-keys|estimate-pending-compaction-bytes|estimate-table-readers-mem|live-sst-files-size|mem-table-flush-pending|num-deletes-active-mem-table|num-deletes-imm-mem-tables|num-entries-active-mem-table|num-entries-imm-mem-tables|num-immutable-mem-table|num-live-versions|num-running-compactions|num-running-flushes|size-all-mem-tables|total-sst-files-size)\"",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "background-errors",
+          "value": "background-errors"
         },
         "datasource": {
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", metric=~\"(delete|all|fetch|flush|get|prefix-scan|put|put-if-absent|put-all|range|restore|remove|record-e2e|suppression-buffer)-.*\"},metric)",
+        "definition": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", metric!~\"(delete|all|fetch|flush|get|prefix-scan|put|put-if-absent|put-all|range|restore|remove|record-e2e)-.*\", metric=~\"$classification\"},metric)",
         "description": "TBD",
         "hide": 0,
         "includeAll": false,
@@ -397,7 +430,7 @@
         "name": "metric",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", metric=~\"(delete|all|fetch|flush|get|prefix-scan|put|put-if-absent|put-all|range|restore|remove|record-e2e|suppression-buffer)-.*\"},metric)",
+          "query": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", metric!~\"(delete|all|fetch|flush|get|prefix-scan|put|put-if-absent|put-all|range|restore|remove|record-e2e)-.*\", metric=~\"$classification\"},metric)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -412,7 +445,7 @@
     ]
   },
   "time": {
-    "from": "now-1m",
+    "from": "now-19h",
     "to": "now"
   },
   "timepicker": {
@@ -443,8 +476,8 @@
     ]
   },
   "timezone": "",
-  "title": "09 - StateStore (operations)",
-  "uid": "streams_statestore_operations",
-  "version": 1,
+  "title": "11 - StateStore",
+  "uid": "streams_statestore_all2",
+  "version": 8,
   "weekStart": ""
 }

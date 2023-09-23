@@ -72,6 +72,7 @@ services:
       - NET_ADMIN
     volumes:
       - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
       - ./stores:/tmp/kafka-streams
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
@@ -99,6 +100,7 @@ services:
       - NET_ADMIN
     volumes:
       - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
       - ./stores:/tmp/kafka-streams
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
@@ -126,6 +128,7 @@ services:
       - NET_ADMIN
     volumes:
       - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
       - ./stores:/tmp/kafka-streams
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
@@ -153,6 +156,7 @@ services:
       - NET_ADMIN
     volumes:
       - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
       - ./stores:/tmp/kafka-streams
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
@@ -180,6 +184,7 @@ services:
       - NET_ADMIN
     volumes:
       - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
       - ./stores:/tmp/kafka-streams
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml

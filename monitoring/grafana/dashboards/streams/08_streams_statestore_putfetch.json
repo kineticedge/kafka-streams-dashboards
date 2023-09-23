@@ -397,7 +397,7 @@
               }
             ]
           },
-          "unit": "wps"
+          "unit": "rps"
         },
         "overrides": []
       },
@@ -563,7 +563,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -652,7 +652,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -775,6 +775,6 @@
   "timezone": "",
   "title": "08 - StateStore (put/fetch)",
   "uid": "streams_statestore_putfetch",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }

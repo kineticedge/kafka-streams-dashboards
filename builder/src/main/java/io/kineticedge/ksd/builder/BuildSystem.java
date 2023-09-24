@@ -34,7 +34,7 @@ import java.util.stream.IntStream;
 public class BuildSystem {
 
     private static final short REPLICATION_FACTOR = 3;
-    private static final int PARTITIONS = 8;
+    private static final int PARTITIONS = 4;
     private static final Map<String, String> CONFIGS = Map.ofEntries(
             Map.entry("retention.ms", "86400000") // 1 day
     );

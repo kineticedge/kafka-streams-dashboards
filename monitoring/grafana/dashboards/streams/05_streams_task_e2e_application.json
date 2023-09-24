@@ -289,7 +289,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 43
       },
       "id": 54,
       "panels": [],
@@ -321,7 +321,7 @@
         "h": 6,
         "w": 6,
         "x": 0,
-        "y": 22
+        "y": 44
       },
       "id": 43,
       "interval": "2s",
@@ -401,7 +401,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 56
       },
       "id": 171,
       "panels": [],
@@ -454,8 +454,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -471,7 +470,7 @@
         "h": 11,
         "w": 6,
         "x": 0,
-        "y": 35
+        "y": 57
       },
       "id": 163,
       "interval": "2s",
@@ -523,7 +522,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 79
       },
       "id": 53,
       "panels": [],
@@ -542,8 +541,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -554,7 +552,7 @@
         "h": 6,
         "w": 6,
         "x": 0,
-        "y": 58
+        "y": 80
       },
       "id": 95,
       "interval": "2s",
@@ -643,8 +641,8 @@
         "allValue": ".+",
         "current": {
           "selected": true,
-          "text": "analytics_session",
-          "value": "analytics_session"
+          "text": "pickup-order-handler",
+          "value": "pickup-order-handler"
         },
         "datasource": {
           "type": "prometheus",

@@ -443,8 +443,8 @@
     ]
   },
   "timezone": "",
-  "title": "10 - StateStore (RocksDB Metrics)",
-  "uid": "streams_statestore_all",
+  "title": "11 - StateStore (RocksDB Metrics)",
+  "uid": "streams_statestore_rocksdb",
   "version": 3,
   "weekStart": ""
 }

@@ -82,7 +82,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "ns"
         },
         "overrides": []
       },
@@ -118,7 +118,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"} > 0) ",
+          "expr": "avg without(task_id,thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"} > 0) ",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -143,7 +143,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -382,14 +382,14 @@
       {
         "current": {
           "selected": true,
-          "text": "put-rate",
-          "value": "put-rate"
+          "text": "get-latency-max",
+          "value": "get-latency-max"
         },
         "datasource": {
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", metric=~\"(delete|all|fetch|flush|get|prefix-scan|put|put-if-absent|put-all|range|restore|remove|record-e2e|suppression-buffer)-.*\"},metric)",
+        "definition": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", metric=~\"(delete|all|fetch|flush|get|prefix-scan|put|put-if-absent|put-all|range|restore|remove|record-e2e|suppression-buffer)-latency.*\"},metric)",
         "description": "TBD",
         "hide": 0,
         "includeAll": false,
@@ -397,7 +397,7 @@
         "name": "metric",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", metric=~\"(delete|all|fetch|flush|get|prefix-scan|put|put-if-absent|put-all|range|restore|remove|record-e2e|suppression-buffer)-.*\"},metric)",
+          "query": "label_values(kafka_streams_stream_state_metrics{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", metric=~\"(delete|all|fetch|flush|get|prefix-scan|put|put-if-absent|put-all|range|restore|remove|record-e2e|suppression-buffer)-latency-.*\"},metric)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -443,8 +443,8 @@
     ]
   },
   "timezone": "",
-  "title": "09 - StateStore (operations)",
-  "uid": "streams_statestore_operations",
+  "title": "10 - StateStore (operations - latency)",
+  "uid": "streams_statestore_operations_latency",
   "version": 1,
   "weekStart": ""
 }

@@ -240,7 +240,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -329,7 +329,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sort (sum without(task_id, thread_id,instance) (kafka_streams_stream_state_metrics{metric=\"remove-rate\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\", store_type=~\"$store_type\", state_id=~\"$state\"}))",
+          "expr": "sort (sum without(task_id, thread_id,instance) (kafka_streams_stream_state_metrics{metric=~\"remove-rate|delete-rate\", thread_id=~\"$thread\", instance=~\"$instance\", cluster_id=~\"$cluster\", store_type=~\"$store_type\", state_id=~\"$state\"}) > 0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -339,7 +339,7 @@
           "refId": "A"
         }
       ],
-      "title": "remove-rate",
+      "title": "remove|delete-rate",
       "type": "timeseries"
     },
     {
@@ -563,7 +563,7 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },

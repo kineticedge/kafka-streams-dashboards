@@ -82,7 +82,7 @@
               }
             ]
           },
-          "unit": "msgs"
+          "unit": "total ops"
         },
         "overrides": []
       },
@@ -150,7 +150,7 @@
               }
             ]
           },
-          "unit": "msgs"
+          "unit": "total ops"
         },
         "overrides": []
       },
@@ -254,7 +254,7 @@
               }
             ]
           },
-          "unit": "mps"
+          "unit": "ops"
         },
         "overrides": []
       },
@@ -321,7 +321,7 @@
               }
             ]
           },
-          "unit": "mps"
+          "unit": "ops"
         },
         "overrides": []
       },
@@ -358,7 +358,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "avg (kafka_streams_stream_thread_metrics_${measurement}_rate{cluster_id=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\"})",
+          "expr": "sum (kafka_streams_stream_thread_metrics_${measurement}_rate{cluster_id=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -426,7 +426,7 @@
               }
             ]
           },
-          "unit": "mps"
+          "unit": "ops"
         },
         "overrides": []
       },
@@ -493,7 +493,7 @@
               }
             ]
           },
-          "unit": "mps"
+          "unit": "ops"
         },
         "overrides": []
       },
@@ -529,7 +529,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg (rate(kafka_streams_stream_thread_metrics_${measurement}_total{thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}[$__rate_interval]))",
+          "expr": "sum (rate(kafka_streams_stream_thread_metrics_${measurement}_total{thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}[$__rate_interval]))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -1065,8 +1065,8 @@
         "allValue": ".+",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "streams",
+          "value": "streams"
         },
         "datasource": {
           "type": "prometheus",
@@ -1184,8 +1184,8 @@
       {
         "current": {
           "selected": true,
-          "text": "process",
-          "value": "process"
+          "text": "commit",
+          "value": "commit"
         },
         "hide": 0,
         "includeAll": false,
@@ -1193,7 +1193,7 @@
         "name": "measurement",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "commit",
             "value": "commit"
           },
@@ -1203,7 +1203,7 @@
             "value": "poll"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "process",
             "value": "process"
           },

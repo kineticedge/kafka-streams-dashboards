@@ -179,7 +179,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -270,7 +270,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sort (avg without(processor_node_id, thread_id) (label_replace(kafka_streams_stream_processor_node_metrics_record_e2e_latency_min{task_id=~\"${task}_.+\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}, \"subtopology\", \"$1\", \"task_id\", \"(.+)_(.+)\") >= 0))",
+          "expr": "sort (avg without(processor_node_id, thread_id) (label_replace(kafka_streams_stream_processor_node_metrics_record_e2e_latency_max{task_id=~\"${task}_.+\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}, \"subtopology\", \"$1\", \"task_id\", \"(.+)_(.+)\") >= 0))",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -454,7 +454,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",

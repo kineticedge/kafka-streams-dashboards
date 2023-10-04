@@ -105,6 +105,13 @@ heading "starting kafka cluster $CLUSTER"
 (cd builder; ../gradlew run)
 (cd monitoring; docker-compose up -d)
 (cd applications; docker-compose up -d)
+#(cd applications; docker-compose up -d --wait $(docker-compose config --services | grep -v publisher))
+
+
+
+
+
+
 
 #avoid starting the analytic applications
 #(cd applications; docker-compose up -d otel publisher stream)

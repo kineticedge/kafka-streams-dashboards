@@ -309,7 +309,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -360,7 +360,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg without(task_id, thread_id, instance, cluster_id, job, cluster_type) (kafka_streams_stream_task_metrics_process_rate{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\",instance=~\"${instance}\", cluster_id=~\"${cluster}\"})",
+          "expr": "sum without(task_id, thread_id, instance, cluster_id, job, cluster_type) (kafka_streams_stream_task_metrics_process_rate{task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\",instance=~\"${instance}\", cluster_id=~\"${cluster}\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -962,9 +962,9 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": "analytics_tumbling",
+          "value": "analytics_tumbling"
         },
         "datasource": {
           "type": "prometheus",
@@ -1020,7 +1020,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1050,9 +1050,9 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": "0",
+          "value": "0"
         },
         "datasource": {
           "type": "prometheus",

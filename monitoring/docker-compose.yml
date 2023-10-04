@@ -12,7 +12,7 @@ services:
 
   prometheus:
     #image: prom/prometheus:v2.39.1
-    image: prom/prometheus:v2.46.0
+    image: prom/prometheus:v2.47.1
     hostname: prometheus
     container_name: ksd-prometheus
     healthcheck:

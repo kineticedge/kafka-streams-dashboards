@@ -3,10 +3,18 @@ lowercaseOutputName: true
 rules:
 #- pattern: kafka.(.*)
 - pattern: java.lang<type=(.*)>
-- pattern: "kafka.server<type=raft-metrics><>(.+): (.+)"
-  name: kafka_server_raft_metrics
+- pattern: "kafka.server<type=app-info, id=(.+)><>(.*): (.*)"
+  name: kafka_server_app_info_$2
   labels:
-    name: $1
+    node_id: "$1"
+    kafka_version: "$3"
+  value: 1
+- pattern: "kafka.server<type=raft-metrics><>current-state: (.+)"
+  name: kafka_server_raft_metrics_current_state
+  labels:
+    state: $1
+  value: 1
+- pattern: "kafka.server<type=raft-metrics><>(.+): (.+)"
 - pattern: kafka.cluster<type=Partition, name=UnderReplicated, topic=(.+), partition=(.+)><>Value
 - pattern: kafka.controller<type=KafkaController, name=ActiveControllerCount><>Value
 - pattern: kafka.controller<type=KafkaController, name=OfflinePartitionsCount><>Value
@@ -49,9 +57,3 @@ rules:
 - pattern: kafka.server<type=socket-server-metrics, clientSoftwareName=(.+), clientSoftwareVersion=(.+), listener=(.+), networkProcessor=(.+)><>connections
 - pattern: kafka.server<type=socket-server-metrics, listener=(.+), networkProcessor=(.+)><>(.+)
 - pattern: kafka.server<type=DelayedOperationPurgatory, name=PurgatorySize, delayedOperation=(.+)><>Value
-- pattern: "kafka.server<type=app-info, id=(.+)><>(.*): (.*)"
-  name: kafka_server_app_info_$2
-  labels:
-    kafka_broker: "$1"
-    kafka_version: "$3"
-  value: 1

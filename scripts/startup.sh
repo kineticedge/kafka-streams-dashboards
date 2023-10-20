@@ -19,16 +19,20 @@ cd "$(dirname -- "$0")/.." || exit
 
 CLUSTERS=(
     "cluster"
+    "cluster-3ctrls"
+    "cluster-hybrid"
     "cluster-zk"
     "cluster-sasl"
     "cluster-lb"
 )
 
 CLUSTER_DESCRIPTIONS=(
-    "cluster       --  4 brokers, 1 raft controller"
-    "cluster-zk    --  4 brokers, 1 zookeeper controller"
-    "cluster-sasl  --  4 brokers with SASL authentication, 1 zookeeper controller"
-    "cluster-lb    --  4 brokers, 1 raft controller, an nginx lb (9092)"
+    "cluster         --  4 brokers, 1 raft controller"
+    "cluster-3ctrls  --  4 brokers, 3 raft controllers"
+    "cluster-hybrid  --  4 brokers, 1 dedicated controller, 2 brokers also controllers"
+    "cluster-zk      --  4 brokers, 1 zookeeper controller"
+    "cluster-sasl    --  4 brokers with SASL authentication, 1 zookeeper controller"
+    "cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)"
 )
 
 display_menu() {

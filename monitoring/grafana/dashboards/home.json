@@ -34,13 +34,15 @@
       },
       "description": "",
       "gridPos": {
-        "h": 17,
+        "h": 19,
         "w": 8,
         "x": 0,
         "y": 0
       },
       "id": 19,
       "options": {
+        "includeVars": false,
+        "keepTime": false,
         "maxItems": 100,
         "query": "",
         "showHeadings": false,
@@ -51,7 +53,7 @@
           "kafka_cluster"
         ]
       },
-      "pluginVersion": "9.5.0-105692pre",
+      "pluginVersion": "10.2.0-138700",
       "targets": [
         {
           "datasource": {
@@ -79,6 +81,8 @@
       },
       "id": 22,
       "options": {
+        "includeVars": false,
+        "keepTime": false,
         "maxItems": 100,
         "query": "",
         "showHeadings": false,
@@ -89,7 +93,7 @@
           "streams"
         ]
       },
-      "pluginVersion": "9.5.0-105692pre",
+      "pluginVersion": "10.2.0-138700",
       "targets": [
         {
           "datasource": {
@@ -117,6 +121,8 @@
       },
       "id": 23,
       "options": {
+        "includeVars": false,
+        "keepTime": false,
         "maxItems": 100,
         "query": "",
         "showHeadings": false,
@@ -127,7 +133,7 @@
           "producer"
         ]
       },
-      "pluginVersion": "9.5.0-105692pre",
+      "pluginVersion": "10.2.0-138700",
       "targets": [
         {
           "datasource": {
@@ -155,6 +161,8 @@
       },
       "id": 24,
       "options": {
+        "includeVars": false,
+        "keepTime": false,
         "maxItems": 100,
         "query": "",
         "showHeadings": false,
@@ -165,7 +173,7 @@
           "consumer"
         ]
       },
-      "pluginVersion": "9.5.0-105692pre",
+      "pluginVersion": "10.2.0-138700",
       "targets": [
         {
           "datasource": {
@@ -186,13 +194,15 @@
       },
       "description": "",
       "gridPos": {
-        "h": 5,
+        "h": 3,
         "w": 8,
         "x": 0,
-        "y": 17
+        "y": 19
       },
       "id": 20,
       "options": {
+        "includeVars": false,
+        "keepTime": false,
         "maxItems": 100,
         "query": "",
         "showHeadings": false,
@@ -203,7 +213,7 @@
           "jvm"
         ]
       },
-      "pluginVersion": "9.5.0-105692pre",
+      "pluginVersion": "10.2.0-138700",
       "targets": [
         {
           "datasource": {
@@ -220,7 +230,6 @@
   ],
   "refresh": "",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "home"
   ],

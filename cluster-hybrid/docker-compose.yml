@@ -1,0 +1,196 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+volumes:
+  ct0: {}
+  bk1: {}
+  bk2: {}
+  bk3: {}
+  bk4: {}
+
+services:
+
+  controller-0:
+    platform: ${PLATFORM}
+    image: confluentinc/cp-kafka:${VERSION}
+    hostname: controller-0
+    container_name: ksd-controller-0
+    stop_grace_period: 120s
+    healthcheck:
+      test: nc -z localhost 9093 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ct0:/var/lib/kafka/data
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_LISTENERS: CONTROLLER://:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_PROCESS_ROLES: controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 10@controller-0:9093,1@broker-1:9093,2@broker-2:9093
+      KAFKA_NODE_ID: 10
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
+      KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
+
+
+  broker-1:
+    platform: ${PLATFORM}
+    image: confluentinc/cp-kafka:${VERSION}
+    hostname: broker-1
+    container_name: ksd-broker-1
+    stop_grace_period: 120s
+    healthcheck:
+      test: nc -z localhost 9092 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - '19092:19092'
+      - '17071:7071'
+    volumes:
+      - bk1:/var/lib/kafka/data
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_HOST://:19092,CONTROLLER://:9093
+      KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-1:9092,PLAINTEXT_HOST://localhost:19092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 10@controller-0:9093,1@broker-1:9093,2@broker-2:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 4
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
+      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
+      CONFLUENT_METRICS_ENABLE: 'false'
+
+
+  broker-2:
+    platform: ${PLATFORM}
+    image: confluentinc/cp-kafka:${VERSION}
+    hostname: broker-2
+    container_name: ksd-broker-2
+    stop_grace_period: 120s
+    healthcheck:
+      test: nc -z localhost 9092 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - '29092:29092'
+    volumes:
+      - bk2:/var/lib/kafka/data
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 2
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_HOST://:29092,CONTROLLER://:9093
+      KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-2:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 10@controller-0:9093,1@broker-1:9093,2@broker-2:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 4
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
+      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
+      CONFLUENT_METRICS_ENABLE: 'false'
+
+  broker-3:
+    platform: ${PLATFORM}
+    image: confluentinc/cp-kafka:${VERSION}
+    hostname: broker-3
+    container_name: ksd-broker-3
+    stop_grace_period: 120s
+    healthcheck:
+      test: nc -z localhost 9092 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - '39092:39092'
+    volumes:
+      - bk3:/var/lib/kafka/data
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 3
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-3:9092,PLAINTEXT_HOST://localhost:39092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 10@controller-0:9093,1@broker-1:9093,2@broker-2:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 4
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
+      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
+      CONFLUENT_METRICS_ENABLE: 'false'
+
+  broker-4:
+    platform: ${PLATFORM}
+    image: confluentinc/cp-kafka:${VERSION}
+    hostname: broker-4
+    container_name: ksd-broker-4
+    stop_grace_period: 120s
+    healthcheck:
+      test: nc -z localhost 9092 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - '49092:49092'
+    volumes:
+      - bk4:/var/lib/kafka/data
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 4
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-4:9092,PLAINTEXT_HOST://localhost:49092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 10@controller-0:9093,1@broker-1:9093,2@broker-2:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 4
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
+      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
+      CONFLUENT_METRICS_ENABLE: 'false'

@@ -38,6 +38,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Cores",
@@ -138,6 +139,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Memory",
@@ -255,6 +257,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -354,6 +357,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "% time in GC",
@@ -538,18 +542,6 @@
                 "value": 0
               }
             ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "runtime"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 139
-              }
-            ]
           }
         ]
       },
@@ -576,7 +568,7 @@
         "showRowNums": false,
         "sortBy": []
       },
-      "pluginVersion": "10.2.0-128927pre",
+      "pluginVersion": "10.2.0-138700",
       "targets": [
         {
           "datasource": {
@@ -680,7 +672,6 @@
   ],
   "refresh": "2s",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "kafka",
     "jvm"
@@ -721,7 +712,7 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },

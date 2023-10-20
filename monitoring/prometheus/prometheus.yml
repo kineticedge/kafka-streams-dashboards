@@ -19,6 +19,8 @@ scrape_configs:
     static_configs:
       - targets:
         - controller-0:7071
+        - controller-1:7071
+        - controller-2:7071
         - broker-1:7071
         - broker-2:7071
         - broker-3:7071

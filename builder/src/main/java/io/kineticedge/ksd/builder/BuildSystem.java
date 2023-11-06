@@ -33,21 +33,24 @@ import java.util.stream.IntStream;
 @Slf4j
 public class BuildSystem {
 
-    private static final short REPLICATION_FACTOR = 3;
+    // use -1 for replication factor leaving it to the cluster's default setting.
+    // this ensures that the cluster-1 cluster (that is one node) works.
+
+    private static final short REPLICATION_FACTOR = -1;
     private static final int PARTITIONS = 8;
     private static final Map<String, String> CONFIGS = Map.ofEntries(
             Map.entry("retention.ms", "86400000") // 1 day
     );
 
 
-    private static final short GLOBAL_REPLICATION_FACTOR = 3;
+    private static final short GLOBAL_REPLICATION_FACTOR = -1;
     private static final int GLOBAL_PARTITIONS = 1;
     private static final Map<String, String> GLOBAL_CONFIGS = Map.ofEntries(
             Map.entry("cleanup.policy", "compact"),
             Map.entry("retention.ms", "-1")
     );
 
-    private static final short METRICS_REPLICATION_FACTOR = 3;
+    private static final short METRICS_REPLICATION_FACTOR = -1;
     private static final int METRICS_PARTITIONS = 8;
     private static final Map<String, String> METRICS_CONFIGS = Map.ofEntries(
             Map.entry("retention.ms", "3600000"), // 1 hour

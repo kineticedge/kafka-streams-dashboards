@@ -18,6 +18,7 @@ cd "$(dirname -- "$0")/.." || exit
 
 
 CLUSTERS=(
+    "cluster-1"
     "cluster"
     "cluster-3ctrls"
     "cluster-hybrid"
@@ -27,9 +28,10 @@ CLUSTERS=(
 )
 
 CLUSTER_DESCRIPTIONS=(
+    "cluster-1       --  1 node (broker and controller)"
     "cluster         --  4 brokers, 1 raft controller"
     "cluster-3ctrls  --  4 brokers, 3 raft controllers"
-    "cluster-hybrid  --  4 brokers, 1 dedicated controller, 2 brokers also controllers"
+    "cluster-hybrid  --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers"
     "cluster-zk      --  4 brokers, 1 zookeeper controller"
     "cluster-sasl    --  4 brokers with SASL authentication, 1 zookeeper controller"
     "cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)"
@@ -107,18 +109,15 @@ heading "starting kafka cluster $CLUSTER"
 
 
 (cd builder; ../gradlew run)
-(cd monitoring; docker-compose up -d)
-(cd applications; docker-compose up -d)
+(cd monitoring; docker-compose up -d $(docker-compose config --services | grep -v tempo))
+
+(cd applications; docker-compose up -d $(docker-compose config --services | grep -v otel))
+
 #(cd applications; docker-compose up -d --wait $(docker-compose config --services | grep -v publisher))
-
-
-
-
-
-
 
 #avoid starting the analytic applications
 #(cd applications; docker-compose up -d otel publisher stream)
+
 
 # to start with a local publisher
 # publisher is part of applications

@@ -48,6 +48,11 @@ COPY ./latency.sh /root
 # extracted from the tar file, also improve build times.
 COPY ./build/runtime /dependencies
 
+# once there is arm support, this will be a way to test and compare
+#
+# https://docs.speedb.io/getting-started/kafka-streams-how-to-use-speedb-instead-of-rocksdb
+#ADD https://repo1.maven.org/maven2/io/github/speedb-io/speedbjni/2.4.1.1/speedbjni-2.4.1.1.jar /dependencies/rocksdbjni-7.1.2.jar
+
 EXPOSE 7071/tcp 7072/tcp 8080/tcp
 
 ENTRYPOINT  ["/entrypoint.sh"]

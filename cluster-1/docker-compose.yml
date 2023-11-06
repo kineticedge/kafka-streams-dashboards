@@ -1,0 +1,47 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+volumes:
+  bk1: {}
+
+services:
+
+  broker-1:
+    platform: ${PLATFORM}
+    image: confluentinc/cp-kafka:${VERSION}
+    hostname: broker-1
+    container_name: ksd-broker-1
+    stop_grace_period: 120s
+    healthcheck:
+      test: nc -z localhost 9092 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - '19092:19092'
+      - '9092:19092' # port 9092 can be used for broker discovery, but 19092 will be actually port used for kafka protocol
+      - '17071:7071'
+    volumes:
+      - bk1:/var/lib/kafka/data
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_HOST://:19092,CONTROLLER://:9093
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-1:9092,PLAINTEXT_HOST://localhost:19092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@broker-1:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_NUM_PARTITIONS: 4
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*

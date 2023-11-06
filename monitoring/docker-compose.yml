@@ -11,8 +11,7 @@ volumes:
 services:
 
   prometheus:
-    #image: prom/prometheus:v2.39.1
-    image: prom/prometheus:v2.47.1
+    image: prom/prometheus:v2.47.2
     hostname: prometheus
     container_name: ksd-prometheus
     healthcheck:
@@ -56,8 +55,8 @@ services:
     depends_on:
       prometheus:
         condition: service_healthy
-      tempo:
-        condition: service_healthy
+#      tempo:
+#        condition: service_healthy
     ports:
       - '3000:3000'
     environment:

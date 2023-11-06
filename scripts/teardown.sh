@@ -7,6 +7,7 @@ alias dc='docker compose'
 
 # just go througha all clusters, regardless of which one was started.
 (cd cluster; dc down -v)
+(cd cluster-1; dc down -v)
 (cd cluster-3ctrls; dc down -v)
 (cd cluster-hybrid; dc down -v)
 (cd cluster-zk; dc down -v)

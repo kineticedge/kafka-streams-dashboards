@@ -62,6 +62,8 @@ services:
         condition: service_healthy
     ports:
       - '19092:19092'
+      # let this broker act as the load-balancer discovery of the cluster.
+      - '9092:19092'
       - '17071:7071'
     volumes:
       - bk1:/var/lib/kafka/data

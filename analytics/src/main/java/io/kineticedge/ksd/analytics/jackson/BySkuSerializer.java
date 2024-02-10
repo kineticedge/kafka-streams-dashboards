@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import io.kineticedge.ksd.analytics.domain.BySku;
+
 import java.io.IOException;
 
 public class BySkuSerializer extends StdSerializer<BySku> {

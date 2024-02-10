@@ -1,7 +1,137 @@
+<!DOCTYPE html>
 <html>
-  <head>
-  </head>
-  <body>
-  nginx
-  </body>
+<head>
+    <title>Collapsible Data Display</title>
+    <style>
+        html {
+            font-size: 24px !important;
+        }
+
+        button, select, .collapsible {
+            font-size: 24px !important;
+        }
+
+        .collapsible {
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+        }
+
+        .active, .collapsible:hover {
+            background-color: #555;
+            color: white;
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+
+        /* Full width table */
+        table {
+            width: 100%;
+            border: 1px solid black;
+        }
+
+        th, td {
+            border: 1px solid black;
+        }
+
+        /* Alternating row colors. Use your own color choices here if you prefer */
+        table tr:nth-child(even) {
+            background-color: #e2e2e2;
+        }
+        table tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+    </style>
+</head>
+<body>
+
+<select id="mySelect">
+    <option value="none">none</option>
+    <option value="tumbling">tumbling</option>
+    <option value="hopping">hopping</option>
+    <option value="sliding">sliding</option>
+    <option value="session">session</option>
+</select>
+<select id="by">
+    <option value="windowing">window</option>
+    <option value="sku">sku</option>
+</select>
+<button onclick="fetchData()">Refresh Data</button>
+<div id="dataTable"></div>
+
+<script>
+    function fetchData() {
+        var e = document.getElementById("mySelect");
+        var selectedOption = e.options[e.selectedIndex].value;
+
+        var ee = document.getElementById("by");
+        var groupType = ee.options[ee.selectedIndex].value;
+
+        //var url = 'http://localhost:8888/';
+        var url = window.location.href;
+        fetch(url + selectedOption + "?group-type=" + groupType )
+            .then(response => response.json())
+            .then(jsonArray => {
+                let div = document.getElementById('dataTable');
+                // Clear the div
+                div.innerHTML = '';
+                // For each object in the array
+                jsonArray.forEach(data => {
+                    // Add a button with the mode name
+                    let button = document.createElement('button');
+                    button.className = 'collapsible';
+                    button.innerText = data.label;
+                    div.appendChild(button);
+                    // Create collapsible content
+                    let content = document.createElement('div');
+                    content.className = 'content';
+                    // Add a table inside the collapsible content
+                    let table = document.createElement('table');
+                    // Add table header
+                    let header = table.createTHead().insertRow(0);
+                    ['Window', 'SKU', 'Quantity', 'Order IDs', 'Timestamp'].forEach((h, i) => {
+                        header.insertCell(i).outerHTML = `<th>${h}</th>`;
+                    });
+                    // Insert a new row for each child
+                    data.children.forEach(child => {
+                        let row = table.insertRow(-1);
+                        [
+                            child.window === "[00:00:00, 00:00:00]" ? "" : child.window,
+                            child.sku,
+                            child.qty,
+                            child.orderIds.join(),
+                            child.timestamp
+                        ].forEach((item, i) => {
+                            row.insertCell(i).innerHTML = item;
+                        });
+                    });
+                    content.appendChild(table);
+                    div.appendChild(content);
+                });
+                // Add the collapsibility feature
+                let coll = document.getElementsByClassName("collapsible");
+                for (let i = 0; i < coll.length; i++) {
+                    coll[i].addEventListener("click", function() {
+                        this.classList.toggle("active");
+                        let content = this.nextElementSibling;
+                        if (content.style.display === "block") {
+                            content.style.display = "none";
+                        } else {
+                            content.style.display = "block";
+                        }
+                    });
+                }
+            });
+    }
+</script>
+
+</body>
 </html>

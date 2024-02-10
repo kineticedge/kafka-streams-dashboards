@@ -1,6 +1,7 @@
 package io.kineticedge.ksd.analytics.domain;
 
 import io.kineticedge.ksd.common.domain.ProductAnalytic;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -24,7 +25,7 @@ public class ByWindow implements By {
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    private TreeMap<Window, TreeMap<String, ProductAnalyticSummary>> records;
+    private final TreeMap<Window, TreeMap<String, ProductAnalyticSummary>> records;
 
     public ByWindow() {
         this.records = new TreeMap<>();

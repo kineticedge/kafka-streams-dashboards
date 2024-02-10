@@ -1,18 +1,20 @@
 package io.kineticedge.ksd.analytics.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import org.apache.kafka.common.utils.Utils;
 
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"start", "end"})
 public class Window implements Comparable<Window> {
+
+    public static final Window NONE = new Window(0L, 0L);
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
@@ -57,16 +59,15 @@ public class Window implements Comparable<Window> {
      */
     public static Window convert(final org.apache.kafka.streams.kstream.Window window) {
 
-        //TOOD : TEMP
         if (window == null) {
-            return new Window(System.currentTimeMillis(), System.currentTimeMillis());
+           return Window.NONE;
         }
 
         return new Window(window.start(), window.end());
     }
 
-    public static void main(String[] args) {
-        System.out.println(Utils.toPositive(Utils.murmur2("0000005348".getBytes())) % 4);
-    }
+//    public static void main(String[] args) {
+//        System.out.println(Utils.toPositive(Utils.murmur2("0000005348".getBytes())) % 4);
+//    }
 
 }

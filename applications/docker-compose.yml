@@ -24,8 +24,8 @@ services:
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       CLIENT_ID_PREFIX: "producer"
-      MAX_SKU: 10000
-      PAUSE: 1000
+      MAX_SKU: 100
+      PAUSE: 200
       OTEL_SERVICE_NAME: PUBLISHER
 
   stream:
@@ -207,6 +207,19 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
+      analytics_none:
+        condition: service_healthy
+      analytics_tumbling:
+        condition: service_healthy
+      analytics_hopping:
+        condition: service_healthy
+      analytics_sliding:
+        condition: service_healthy
+      analytics_session:
+        condition: service_healthy
     ports:
       - '8888:80'
     volumes:

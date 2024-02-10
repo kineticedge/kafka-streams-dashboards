@@ -6,12 +6,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.kineticedge.ksd.analytics.domain.ByFoo;
 import io.kineticedge.ksd.analytics.domain.BySku;
-import io.kineticedge.ksd.analytics.domain.Window;
-import io.kineticedge.ksd.analytics.jackson.ByFooSerializer;
-import io.kineticedge.ksd.analytics.jackson.BySkuSerializer;
 import io.kineticedge.ksd.analytics.domain.ByWindow;
+import io.kineticedge.ksd.analytics.domain.Window;
+import io.kineticedge.ksd.analytics.jackson.BySkuSerializer;
 import io.kineticedge.ksd.analytics.jackson.ByWindowSerializer;
 import io.kineticedge.ksd.analytics.jackson.WindowSerializer;
 import io.undertow.Handlers;
@@ -23,12 +21,10 @@ import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.util.Headers;
-
 import io.undertow.util.HttpString;
 
-
-import java.util.Deque;
 import javax.servlet.ServletException;
+import java.util.Deque;
 
 public class ServletDeployment {
 
@@ -36,7 +32,6 @@ public class ServletDeployment {
             new ObjectMapper()
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                     .registerModule(new SimpleModule("uuid-module", new Version(1, 0, 0, null, "", ""))
-                            .addSerializer(ByFoo.class, new ByFooSerializer())
                             .addSerializer(ByWindow.class, new ByWindowSerializer())
                             .addSerializer(BySku.class, new BySkuSerializer())
                             .addSerializer(Window.class, new WindowSerializer())

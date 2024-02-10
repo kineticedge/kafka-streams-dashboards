@@ -1,12 +1,14 @@
 package io.kineticedge.ksd.analytics.domain;
 
 import io.kineticedge.ksd.common.domain.ProductAnalytic;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import lombok.*;
 
 @Getter
 @AllArgsConstructor

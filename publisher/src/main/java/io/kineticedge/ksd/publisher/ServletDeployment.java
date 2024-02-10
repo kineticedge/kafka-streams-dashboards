@@ -10,8 +10,7 @@ import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.util.Headers;
-
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 public class ServletDeployment {
 

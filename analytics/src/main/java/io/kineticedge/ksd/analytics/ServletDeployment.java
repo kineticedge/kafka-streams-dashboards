@@ -22,8 +22,8 @@ import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.util.Headers;
 import io.undertow.util.HttpString;
+import jakarta.servlet.ServletException;
 
-import javax.servlet.ServletException;
 import java.util.Deque;
 
 public class ServletDeployment {

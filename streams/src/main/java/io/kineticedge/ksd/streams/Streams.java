@@ -57,6 +57,7 @@ public class Streams {
 
     private static final Random RANDOM = new Random();
 
+
     private Map<String, Object> properties(final Options options) {
 
         final Map<String, Object> defaults = Map.ofEntries(
@@ -78,11 +79,13 @@ public class Streams {
                 Map.entry(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class),
                 Map.entry(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE),
                 //Map.entry("topology.optimization", "all"),
-                Map.entry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, "DEBUG")
+                Map.entry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, "DEBUG"),
                 //Map.entry("built.in.metrics.version", "0.10.0-2.4"),
 //                Map.entry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 2),
                 //Map.entry(StreamsConfig.METRIC_REPORTER_CLASSES_CONFIG, JmxReporter.class.getName() + "," + KafkaMetricsReporter.class.getName()),
                 //Map.entry(CommonConfigs.METRICS_REPORTER_CONFIG, options.getCustomMetricsTopic())
+
+                Map.entry("internal.leave.group.on.close", true)
 
         );
 
@@ -205,6 +208,10 @@ public class Streams {
             }
         }));
 
+        final StateObserver observer = new StateObserver(streams);
+        final ServletDeployment servletDeployment = new ServletDeployment(observer, 8080);
+
+        servletDeployment.start();
     }
 
     private StreamsBuilder streamsBuilder(final Options options) {

@@ -224,6 +224,7 @@ services:
       - '8888:80'
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/proxy_headers.conf:/etc/nginx/proxy_headers.conf
       - ./nginx/html:/etc/nginx/html
 
   # tracing collector agent

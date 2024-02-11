@@ -1,5 +1,6 @@
 
 val kafka_version: String by project
+val undertow_version: String by project
 
 plugins {
     application
@@ -9,6 +10,7 @@ plugins {
 dependencies {
     implementation(project(":common"))
     implementation("org.apache.kafka:kafka-streams:$kafka_version")
+    implementation("io.undertow:undertow-servlet:$undertow_version")
 }
 
 application {

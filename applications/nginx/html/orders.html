@@ -53,17 +53,14 @@
 </head>
 <body>
 
-<select id="mySelect">
-    <option value="none">none</option>
-    <option value="tumbling">tumbling</option>
-    <option value="hopping">hopping</option>
-    <option value="sliding">sliding</option>
-    <option value="session">session</option>
+<select id="instance">
+    <option value="1">purchase-order-1</option>
+    <option value="2">purchase-order-2</option>
 </select>
-<select id="by">
-    <option value="windowing">window</option>
-    <option value="sku">sku</option>
-</select>
+<!--<select id="by">-->
+<!--    <option value="order">order</option>-->
+<!--    <option value="sku">sku</option>-->
+<!--</select>-->
 <button onclick="fetchData()">Refresh Data</button>
 <div id="dataTable"></div>
 
@@ -92,20 +89,14 @@
     }
 
     function fetchData() {
-        var e = document.getElementById("mySelect");
-        var selectedOption = e.options[e.selectedIndex].value;
+        var e = document.getElementById("instance");
+        var instance = e.options[e.selectedIndex].value;
 
-        var ee = document.getElementById("by");
-        var groupType = ee.options[ee.selectedIndex].value;
+        // var ee = document.getElementById("by");
+        // var groupType = ee.options[ee.selectedIndex].value;
 
-        //var url = 'http://localhost:8080/';
-        // var url = window.location.href;
-        // if (url.substring(-1) !== "/") {
-        //     url += "/";
-        // }
         var loc = window.location;
-        var url = loc.protocol + "//" + loc.hostname + (loc.port ? ':' + loc.port : '') + '/';
-
+        var url = loc.protocol + "//" + loc.hostname + (loc.port ? ':' + loc.port : '') + '/purchase-order-' + instance;
 
         fetch(url + "purchase-order")
             .then(response => response.json())

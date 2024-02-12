@@ -14,12 +14,12 @@ This project showcases Kafka Stream Metrics by deploying 2 types of applications
 
 ## Purchase Order Application
 
-The first application is a "purchase order" system that takes orders, attaches stores and users, and prices them, and emits
-the result as a "pickup order". This showcases KTables, Global KTables, Joins, and an aggregation.
+The first application is a *purchase order* system that takes orders, attaches stores and users, and prices them, and emits
+the result as a *pickup order*. This showcases KTables, Global KTables, Joins, aggregations, and more.
 
 The primary stream of data flowing for purchase-order is shown in this diagram. The topology to hydrate and use the tables, is not shown.
 This is a logical representation of the topology based on the DSL components, the actual topology built includes additions source and
-sink nodes to handling the rekey process. 
+sink nodes to handling the re-key process. 
 
 ![Purchase Order Topology](./doc/purchase-order-topology.png)
 
@@ -31,7 +31,7 @@ by the StreamsBuilder. It is important to understand that here, expecially since
 The second application is analytics on the SKU purchased in those orders. When the order/item message (when skus are priced) are joined
 back to the order, this application listens on that topic and extracts information to keep track of SKUs purchased over a given period of time (window).
 
-It tracks the rekeyed order by SKU and builds up windowed analytics. This includes all window types: `tumbling`, `hopping`, `sliding`, `session`, and 
+It tracks the re-keyed order by SKU and builds up windowed analytics. This includes all window types: `tumbling`, `hopping`, `sliding`, `session`, and 
 even `none` as a non-window deployment. These aggregations are tracking the quantity purchased on the given SKU for the given type of window. Now, from 
 a real-world use-case scenario, I wouldn't use `session` windows for such aggregation; but having the same application with all
 windowing options makes it a lot easyer to see and compare the metrics between them.
@@ -44,7 +44,7 @@ This project:
 * Extensively leverages Docker and Docker Compose.
 * Applications are built with Java 17 and run on a Java 17 JVM.
 * Kafka leverages Confluent Community Edition containers, which run with a Java 11 JVM.
-* Has Grafana dashboards for Kafka Cluster, Kafka Streams, Consumer, and Producer.
+* Has Grafana dashboards for Kafka Cluster, Kafka Streams, Consumer, Producer, and JVM.
   * Supports a variety of cluster configurations to better showcase the Kafka Cluster metrics and validate dashboards are build
 with the various options.
 

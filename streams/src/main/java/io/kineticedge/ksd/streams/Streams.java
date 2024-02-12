@@ -209,7 +209,7 @@ public class Streams {
         }));
 
         final StateObserver observer = new StateObserver(streams);
-        final ServletDeployment servletDeployment = new ServletDeployment(observer, 8080);
+        final ServletDeployment servletDeployment = new ServletDeployment(observer, options.getPort());
 
         servletDeployment.start();
     }

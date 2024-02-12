@@ -33,4 +33,7 @@ public class Options extends BaseOptions  {
     @Parameter(names = { "--grace-period" }, description = "")
     private Integer gracePeriod = 2;
 
+    @Parameter(names = { "--port" }, description = "the port use for introspection of window state")
+    private Integer port = 8080;
+
 }

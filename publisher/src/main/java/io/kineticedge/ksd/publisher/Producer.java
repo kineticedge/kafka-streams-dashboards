@@ -74,7 +74,7 @@ public class Producer {
     private static int counter = 0;
 
     private static String orderNumber() {
-        return ORDER_PREFIX + "-" + (counter++);
+        return ORDER_PREFIX + "-" + StringUtils.leftPad(Integer.toString(counter++), 8, '0');
     }
 
     private PurchaseOrder createPurchaseOrder() {

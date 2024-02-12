@@ -195,7 +195,17 @@ more sampling is needed to get a better display of data, or if it is just the na
 
 * docker compose `.env` files used to keep container names short and consistent but hopefully not clash with any existing docker containers you are using.
 
-* Kafka Brokers name/ports
+### Applications
+ 
+  * one docker image is built to run all of the java applications.
+  * The `.tar` file built leverating the gradle `assembly` plugin is mounted, such as:
+    * `- ./{application}-1.0.tar:/app.tar`
+  * To improve application start time, the .jar files of `kafka-clients` and `kafka-streams` are added to the docker image
+  and removed from the `.tar` file.
+  * the `entrypoint.sh` will extract the tare file and then move the pre-loaded .jar files into the gradle assembly structure.
+  * The size of the `rocksdb` jar is the biggest impact; and a dramatic startup time as a result.
+
+### Kafka Cluster
 
 Apache Kafka Clients communicate directly with each broker, and it is up to the broker to tell the client its host & port for communication. This
 means that each broker needs a unique address for communication. Within docker, this means that each broker needs a unique localhost:port so any
@@ -237,9 +247,16 @@ image needs to untar the distribution on startup.
 
   * To reduce build times, the Docker image is only built if it doesn't exist or if `-Pforce-docker=true` is part of the build process. 
 
-## OpenSource libraries
+### Monitoring
 
-These applications are build with
+* The monitoring related containers are in the `monitoring` docker-compose, and leverages the prometheus agent for obtaining metrics.
+
+## Development Notes
+
+### OpenSource libraries
+
+These applications are build with the following open-source libraries.
+
 * kafka-streams
 * kafka-clients
 * jackson
@@ -252,8 +269,15 @@ These applications are build with
 * apache-commons-lang3
 * jcommander
 
+### Lombok
+
 While I do not use `lombok` for enterprise applications, it does come in handle for demonstration projects to minimize on the boiler-plate code that is shown.
 
-## Tools
+### Framework
+
+* Kafka Streams is a framework, there is no need to use an additional framework. 
+* Always good to learn now to use the Kafka libraries w/out additional frameworks.
+
+### Tools
 
 * See Tools [README](./tools/README.md) for the benefits this can provide.

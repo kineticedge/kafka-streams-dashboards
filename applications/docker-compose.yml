@@ -4,7 +4,6 @@ networks:
     name: ksd
 
 services:
-
   publisher:
     image: ksd_app:latest
     stop_grace_period: 120s
@@ -79,7 +78,7 @@ services:
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      APPLICATION_ID: 'analytics_sliding'
+      APPLICATION_ID: "analytics_sliding"
       CLIENT_ID_PREFIX: "analytics_sliding"
       WINDOW_TYPE: SLIDING
       COMMIT_INTERVAL: 100
@@ -107,8 +106,8 @@ services:
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      APPLICATION_ID: 'analytics_tumbling'
-      CLIENT_ID_PREFIX: 'analytics_tumbling'
+      APPLICATION_ID: "analytics_tumbling"
+      CLIENT_ID_PREFIX: "analytics_tumbling"
       WINDOW_TYPE: TUMBLING
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_TUMBLING
@@ -135,8 +134,8 @@ services:
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      APPLICATION_ID: 'analytics_hopping'
-      CLIENT_ID_PREFIX: 'analytics_hopping'
+      APPLICATION_ID: "analytics_hopping"
+      CLIENT_ID_PREFIX: "analytics_hopping"
       WINDOW_TYPE: HOPPING
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_HOPPING
@@ -163,8 +162,8 @@ services:
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      APPLICATION_ID: 'analytics_session'
-      CLIENT_ID_PREFIX: 'analytics_session'
+      APPLICATION_ID: "analytics_session"
+      CLIENT_ID_PREFIX: "analytics_session"
       WINDOW_TYPE: SESSION
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_SESSION
@@ -191,8 +190,8 @@ services:
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      APPLICATION_ID: 'analytics_none'
-      CLIENT_ID_PREFIX: 'analytics_none'
+      APPLICATION_ID: "analytics_none"
+      CLIENT_ID_PREFIX: "analytics_none"
       WINDOW_TYPE: NONE
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_NONE
@@ -222,7 +221,7 @@ services:
       analytics_session:
         condition: service_healthy
     ports:
-      - '8888:80'
+      - "8888:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/proxy_headers.conf:/etc/nginx/proxy_headers.conf
@@ -241,4 +240,3 @@ services:
     #command: ["--config=/otelcol.yaml"]
     volumes:
       - ./otelcol/config.yaml:/etc/otelcol/config.yaml
-

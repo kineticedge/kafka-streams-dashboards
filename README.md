@@ -2,7 +2,8 @@
 # Kafka Streams Dashboards
 
 ## TL;TR
-* Setup and Configuration all in the `./scripts/startup.sh` script; execute from root directory to get everything running.
+* You will need to have installed Java 17 or later and Docker.
+* Setup and configuration all in the `./scripts/startup.sh` script; execute it from the root directory to get everything running.
 * Select `(1) cluster-1` or `(2) cluster` for your first exploration of this project.
 * Goto [localhost:3000](http://localhost:3000) to explore the dashboards.
   * you shouldn't need to log in, but if you need to the username is `admin` and the password is `grafana`.
@@ -17,14 +18,14 @@ This project showcases Kafka Stream Metrics by deploying 2 types of applications
 The first application is a *purchase order* system that takes orders, attaches stores and users, and prices them, and emits
 the result as a *pickup order*. This showcases KTables, Global KTables, Joins, aggregations, and more.
 
-The primary stream of data flowing for purchase-order is shown in this diagram. The topology to hydrate and use the tables, is not shown.
+The primary stream of data flowing for purchase orders is shown in this diagram. The topology to hydrate and use the tables, is not shown.
 This is a logical representation of the topology based on the DSL components, the actual topology built includes additions source and
 sink nodes to handling the re-key process. 
 
 ![Purchase Order Topology](./doc/purchase-order-topology.png)
 
 The reason for the *group by (orderId)* being split with a re-key is that is indeed what happens when the logical DSL topology is built
-by the StreamsBuilder. It is important to understand that here, expecially since it is this topic that is then leveraged for analytics.
+by the StreamsBuilder. It is important to understand that here, especially since it is this topic that is then leveraged for analytics.
 
 ## SKU Analytic Application
 
@@ -34,7 +35,7 @@ back to the order, this application listens on that topic and extracts informati
 It tracks the re-keyed order by SKU and builds up windowed analytics. This includes all window types: `tumbling`, `hopping`, `sliding`, `session`, and 
 even `none` as a non-window deployment. These aggregations are tracking the quantity purchased on the given SKU for the given type of window. Now, from 
 a real-world use-case scenario, I wouldn't use `session` windows for such aggregation; but having the same application with all
-windowing options makes it a lot easyer to see and compare the metrics between them.
+windowing options makes it a lot easier to see and compare the metrics between them.
 
 ![SKU Analytics Topology](./doc/sku-analytics-topology.png)
 
@@ -67,13 +68,13 @@ The hybrid `(4) cluster-hybrid` is to ensure that the Kafka Cluster dashboards c
 that is both a `broker` and `controller` while also having nodes that are just `broker` and just `controller`. The `(5) cluster-zk` is 
 to make sure the dashboards still support `zookeeper`. `(6) cluster-sasl` is to be able to check the `authentication` dashboard
 provided in the Kafka Cluster dashboards, it is also to show how security works with setting up a Kafka Cluster. Be sure to generate
-the certificates [readme](./cluster-sasl/certificates/README.md). The last cluster `(7) cluster-lb` has an nginx proxy for each broker that allows you to navigate
-into it and use linux's traffic-controller `tc` to add network latencies. The best way to learn if your dashboards are useful, is to 
+the *certificates* [readme](./cluster-sasl/certificates/README.md). The last cluster `(7) cluster-lb` has an nginx proxy for each broker that allows you to navigate
+into it and use Linux's traffic-controller `tc` to add network latencies. The best way to learn if your dashboards are useful, is to 
 observe them when things are not going well; this provides that scenario.
 
 ### Grafana Dashboard
 
-All of the grafana dashboards are handled with a local `Grafana` and `Prometheus` instance running from the `monitoring` module.
+The grafana dashboards are handled with a local `Grafana` and `Prometheus` instance running from the `monitoring` module.
 
   * `https://localhost:3000`
   * Credentials (configuration is currently configured allowing edit access, even w/out login)
@@ -82,7 +83,7 @@ All of the grafana dashboards are handled with a local `Grafana` and `Prometheus
 
 ### State Store UI
 
-Both the `purchase-order` and `aggregate` applications have a simple UI allowing for innspection of the state stores.
+Both the `purchase-order` and `aggregate` applications have a simple UI allowing for inspection of the state stores.
 
   * `https://localhost:8888`
   * There are two pages to allow for inspection of the purchase-order state store and aggregate state store.
@@ -197,8 +198,8 @@ more sampling is needed to get a better display of data, or if it is just the na
 
 ### Applications
  
-  * one docker image is built to run all of the java applications.
-  * The `.tar` file built leverating the gradle `assembly` plugin is mounted, such as:
+  * one docker image is built to run all java applications.
+  * The `.tar` file built leveraging the gradle `assembly` plugin is mounted, such as:
     * `- ./{application}-1.0.tar:/app.tar`
   * To improve application start time, the .jar files of `kafka-clients` and `kafka-streams` are added to the docker image
   and removed from the `.tar` file.

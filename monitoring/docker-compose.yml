@@ -9,7 +9,6 @@ volumes:
   tempo: {}
 
 services:
-
   prometheus:
     image: prom/prometheus:v2.47.2
     hostname: prometheus
@@ -25,15 +24,15 @@ services:
     # web: enable-admin-api and enable-lifecycle
     # other command options are the default (but need to be supplied in full to add the others)
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-      - '--web.enable-admin-api'
-      - '--web.enable-lifecycle'
-      - '--web.enable-remote-write-receiver'
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+      - "--web.enable-admin-api"
+      - "--web.enable-lifecycle"
+      - "--web.enable-remote-write-receiver"
     ports:
-      - '9090:9090'
+      - "9090:9090"
     volumes:
       - prometheus:/prometheus
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -55,15 +54,15 @@ services:
     depends_on:
       prometheus:
         condition: service_healthy
-#      tempo:
-#        condition: service_healthy
+    #      tempo:
+    #        condition: service_healthy
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
       GF_SECURITY_ADMIN_PASSWORD: grafana
       GF_AUTH_ANONYMOUS_ENABLED: "true"
       GF_DEFAULT_APP_MODE: development
-      GF_INSTALL_PLUGINS: "grafana-piechart-panel"
+      #GF_INSTALL_PLUGINS: "grafana-piechart-panel"
       #GF_INSTALL_PLUGINS: "grafana-piechart-panel,ke-kafkastreamstopology-panel"
     volumes:
       - grafana:/var/lib/grafana
@@ -83,9 +82,9 @@ services:
       interval: 5s
       timeout: 5s
       retries: 3
-    command: [ "-config.file=/etc/tempo/config.yml" ]
+    command: ["-config.file=/etc/tempo/config.yml"]
     ports:
-      - '3200:3200'
+      - "3200:3200"
     volumes:
       - tempo:/tmp/tempo
       - ./tempo/config.yml:/etc/tempo/config.yml

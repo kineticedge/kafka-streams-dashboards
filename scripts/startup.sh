@@ -73,18 +73,12 @@ fi
 
 
 alias d='docker'
-alias docker-compose='docker compose'
 alias dn='docker network'
 
 if ! [ -x "$(command -v docker)" ]; then
     echo "docker is not installed." >&2
     exit 1
 fi
-
-#if ! [ -x "$(command -v docker-compose)" ]; then
-#    echo "docker-compose is not installed." >&2
-#    exit 1
-#fi
 
 docker info > /dev/null 2>&1
 if [ $? -ne 0 ]; then
@@ -103,23 +97,23 @@ fi
 
 heading "starting kafka cluster $CLUSTER"
 
-(cd $CLUSTER; docker-compose up -d --wait)
+(cd $CLUSTER; docker compose up -d --wait)
 
 ./gradlew build
 
 
 (cd builder; ../gradlew run)
-(cd monitoring; docker-compose up -d $(docker-compose config --services | grep -v tempo))
+(cd monitoring; docker compose up -d $(docker compose config --services | grep -v tempo))
 
-(cd applications; docker-compose up -d $(docker-compose config --services | grep -v otel))
+(cd applications; docker compose up -d $(docker compose config --services | grep -v otel))
 
-#(cd applications; docker-compose up -d --wait $(docker-compose config --services | grep -v publisher))
+#(cd applications; docker compose up -d --wait $(docker compose config --services | grep -v publisher))
 
 #avoid starting the analytic applications
-#(cd applications; docker-compose up -d otel publisher stream)
+#(cd applications; docker compose up -d otel publisher stream)
 
 
 # to start with a local publisher
 # publisher is part of applications
-#(cd applications; docker-compose up -d --wait $(docker-compose config --services | grep -v publisher))
+#(cd applications; docker compose up -d --wait $(docker compose config --services | grep -v publisher))
 #(cd publisher; ../gradlew run --args="--max-sku 100")

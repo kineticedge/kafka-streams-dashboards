@@ -16,7 +16,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: controller-0
-    container_name: ksd-controller-0
+    container_name: ${COMPOSE_PROJECT_NAME}-controller-0
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9093 || exit 1
@@ -47,7 +47,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-1
-    container_name: ksd-broker-1
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-1
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -88,7 +88,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-2
-    container_name: ksd-broker-2
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-2
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -126,7 +126,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-3
-    container_name: ksd-broker-3
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-3
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -163,7 +163,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-4
-    container_name: ksd-broker-4
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-4
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1

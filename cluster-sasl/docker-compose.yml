@@ -17,7 +17,7 @@ services:
   sasl-zookeeper:
     image: confluentinc/cp-zookeeper:${VERSION}
     hostname: sasl-zookeeper
-    container_name: ksd-sasl-zookeeper
+    container_name: ${COMPOSE_PROJECT_NAME}-sasl-zookeeper
     healthcheck:
       test: echo ruok | nc -w 2 localhost 2181 | grep imok
       start_period: 5s
@@ -43,7 +43,7 @@ services:
   sasl-broker-1:
     image: confluentinc/cp-kafka:${VERSION}
     hostname: sasl-broker-1
-    container_name: ksd-sasl-broker-1
+    container_name: ${COMPOSE_PROJECT_NAME}-sasl-broker-1
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -96,7 +96,7 @@ services:
   sasl-broker-2:
     image: confluentinc/cp-kafka:${VERSION}
     hostname: sasl-broker-2
-    container_name: ksd-sasl-broker-2
+    container_name: ${COMPOSE_PROJECT_NAME}-sasl-broker-2
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -150,7 +150,7 @@ services:
   sasl-broker-3:
     image: confluentinc/cp-kafka:${VERSION}
     hostname: sasl-broker-3
-    container_name: ksd-sasl-broker-3
+    container_name: ${COMPOSE_PROJECT_NAME}-sasl-broker-3
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1

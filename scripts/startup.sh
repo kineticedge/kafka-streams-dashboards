@@ -24,7 +24,8 @@ CLUSTERS=(
     "cluster-hybrid"
     "cluster-zk"
     "cluster-sasl"
-    "cluster-lb"
+    "cluster-lb",
+    "cluster-native"
 )
 
 CLUSTER_DESCRIPTIONS=(
@@ -35,6 +36,7 @@ CLUSTER_DESCRIPTIONS=(
     "cluster-zk      --  4 brokers, 1 zookeeper controller"
     "cluster-sasl    --  4 brokers with SASL authentication, 1 zookeeper controller"
     "cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)"
+    "cluster-native  --  4 brokers, 1 raft controller, apache/kafka-native images"
 )
 
 display_menu() {

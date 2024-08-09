@@ -16,7 +16,7 @@ services:
   zookeeper:
     platform: ${PLATFORM}
     image: confluentinc/cp-zookeeper:${VERSION}
-    container_name: ksd-zookeeper
+    container_name: ${COMPOSE_PROJECT_NAME}-zookeeper
     hostname: zookeeper
     ports:
       - '2181:2181'
@@ -40,7 +40,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-1
-    container_name: ksd-broker-1
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-1
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -78,7 +78,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-2
-    container_name: ksd-broker-2
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-2
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -114,7 +114,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-3
-    container_name: ksd-broker-3
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-3
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -150,7 +150,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-4
-    container_name: ksd-broker-4
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-4
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -185,7 +185,7 @@ services:
 #  schema-registry:
 #    image: confluentinc/cp-schema-registry:${VERSION}
 #    hostname: schema-registry
-#    container_name: ksd-schema-registry
+#    container_name: ${COMPOSE_PROJECT_NAME}-schema-registry
 #    stop_grace_period: 120s
 #    healthcheck:
 #      test: curl --fail http://localhost:8081/ || exit 1

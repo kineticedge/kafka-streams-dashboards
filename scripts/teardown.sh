@@ -13,6 +13,7 @@ alias dc='docker compose'
 (cd cluster-zk; dc down -v)
 (cd cluster-sasl; dc down -v)
 (cd cluster-lb; dc down -v)
+(cd cluster-native; dc down -v)
 
 rm -fr applications/stores/analytics_tumbling
 rm -fr applications/stores/analytics_hopping

@@ -120,7 +120,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_consumer_consumer_metrics_request_total{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\".+\", client_id!~\".+-restore-consumer$\"}[$__rate_interval])",
+          "expr": "rate(kafka_consumer_consumer_metrics_request_tot{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\".+\", client_id!~\".+-restore-consumer$\"}[$__rate_interval])",
           "hide": false,
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
@@ -326,7 +326,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_consumer_consumer_metrics_response_total{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\".+\", client_id!~\".+-restore-consumer$\"}[$__rate_interval])",
+          "expr": "rate(kafka_consumer_consumer_metrics_response_tot{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\".+\", client_id!~\".+-restore-consumer$\"}[$__rate_interval])",
           "hide": false,
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
@@ -357,7 +357,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=~\"streams|consumers|consumers\"},cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=~\"streams|consumers|consumers\"},cluster_id)",
         "hide": 0,
         "includeAll": true,
         "label": "cluster",
@@ -365,7 +365,7 @@
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=~\"streams|consumers|consumers\"},cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=~\"streams|consumers|consumers\"},cluster_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -388,7 +388,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\"},instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -396,7 +396,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+          "query": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

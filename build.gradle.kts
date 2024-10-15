@@ -34,18 +34,21 @@ allprojects {
 
 }
 
-subprojects {
-    version = "1.0"
+subprojects.filter { it.name != "metrics-reporter" }.forEach {
 
-    plugins.apply("java")
-    plugins.apply("application")
+    //println("apply common configuration to module ${it.name}")
 
-    java {
+    it.version = "1.0"
+
+    it.plugins.apply("java")
+    it.plugins.apply("application")
+
+    it.java {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    dependencies {
+    it.dependencies {
         implementation("ch.qos.logback:logback-classic:$logback_version")
         implementation("com.beust:jcommander:$jcommander_version")
         implementation("com.fasterxml.jackson.core:jackson-core:$jackson_version")
@@ -68,15 +71,15 @@ subprojects {
         testAnnotationProcessor("org.projectlombok:lombok:$lombok_version")
     }
 
-    tasks.test {
+    it.tasks.test {
         useJUnitPlatform()
     }
 
     // no reason to build both .tar and .zip application distributions, disable zip
-    tasks.getByName<Zip>("distZip").isEnabled = false
+    it.tasks.getByName<Zip>("distZip").isEnabled = false
 
     // make this part of the docker image.
-    tasks.getByName<Tar>("distTar") {
+    it.tasks.getByName<Tar>("distTar") {
         exclude("rocksdbjni-*.jar")
         exclude("zstd-jni-*.jar")
         exclude("lz4-java-*.jar")

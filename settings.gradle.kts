@@ -9,6 +9,7 @@ buildscript {
 }
 
 include("tools")
+include("metrics-reporter")
 include("common")
 include("builder")
 include("publisher")

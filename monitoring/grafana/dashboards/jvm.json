@@ -24,13 +24,15 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 30,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
+        "default": true,
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -44,6 +46,7 @@
             "axisLabel": "Cores",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -118,10 +121,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(process_cpu_seconds_total{cluster_id=~\"$cluster\",instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "rate(process_cpu_seconds_total{cluster_id=~\"$cluster\",instance=~\"$instance\"}[$__rate_interval]) * 100",
           "interval": "",
           "legendFormat": "{{cluster_id}}-{{instance}}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -130,8 +135,9 @@
     },
     {
       "datasource": {
+        "default": true,
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -145,6 +151,7 @@
             "axisLabel": "Memory",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -212,11 +219,15 @@
       },
       "id": 12,
       "interval": "1s",
-      "links": [],
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "min",
+            "max",
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
@@ -232,13 +243,15 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without(area)(jvm_memory_pool_used_bytes{cluster_id=~\"$cluster\",instance=~\"$instance\"})",
+          "expr": "sum without(area, pool)(jvm_memory_pool_used_bytes{cluster_id=~\"$cluster\",instance=~\"$instance\", pool=~\"G1 Eden Space|G1 Old Gen|G1 Survivor Space\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}",
           "metric": "jvm_memory_bytes_used",
+          "range": true,
           "refId": "A",
           "step": 4
         }
@@ -263,6 +276,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -314,7 +328,6 @@
       },
       "id": 2,
       "interval": "1s",
-      "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -363,6 +376,7 @@
             "axisLabel": "% time in GC",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -430,7 +444,6 @@
       },
       "id": 14,
       "interval": "1s",
-      "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -553,7 +566,6 @@
       },
       "id": 6,
       "interval": "1s",
-      "links": [],
       "options": {
         "cellHeight": "md",
         "footer": {
@@ -568,7 +580,7 @@
         "showRowNums": false,
         "sortBy": []
       },
-      "pluginVersion": "10.2.0-138700",
+      "pluginVersion": "11.2.0-190735",
       "targets": [
         {
           "datasource": {
@@ -671,7 +683,7 @@
     }
   ],
   "refresh": "2s",
-  "schemaVersion": 38,
+  "schemaVersion": 39,
   "tags": [
     "kafka",
     "jvm"
@@ -681,9 +693,9 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": "analytics",
+          "value": "analytics"
         },
         "datasource": {
           "type": "prometheus",
@@ -712,7 +724,7 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },

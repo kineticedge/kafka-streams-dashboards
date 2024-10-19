@@ -4,6 +4,7 @@
 # certificate needed, brokers certificate should be based on hostname of the cerificate
 #
 declare -a MACHINES=(
+  "sasl-controller-0"
   "sasl-broker-1"
   "sasl-broker-2"
   "sasl-broker-3"

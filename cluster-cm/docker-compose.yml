@@ -107,9 +107,9 @@ services:
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
-      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientOtlpMetricsReporter
-      OTEL_EXPORTER_OTLP_ENDPOINT: broker-otel:4317
-
+      #Clients have a MetricsReporter.class while the broker has a KafkaMetricsReporter.class.
+      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
+      KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
 
   broker-2:
     platform: ${PLATFORM}
@@ -150,8 +150,8 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
-      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientOtlpMetricsReporter
-      OTEL_EXPORTER_OTLP_ENDPOINT: broker-otel:4317
+      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
+      KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
 
   broker-3:
     platform: ${PLATFORM}
@@ -192,8 +192,9 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
-      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientOtlpMetricsReporter
-      OTEL_EXPORTER_OTLP_ENDPOINT: broker-otel:4317
+      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
+      KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
+
 #  diag-container:
 #    image: busybox
 #    depends_on:

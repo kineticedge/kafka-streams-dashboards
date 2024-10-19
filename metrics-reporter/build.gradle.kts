@@ -32,6 +32,7 @@ dependencies {
             strictly(kafka_version)
         }
     }
+    //implementation("io.micrometer:micrometer-core:1.13.5")
 }
 
 

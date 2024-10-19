@@ -13,6 +13,7 @@
     <logger name="org.apache.kafka.clients.producer.internals" level="WARN"/>
 
     <logger name="io.kineticedge.ksd" level="DEBUG"/>
+    <logger name="io.kineticedge.ksd.builder" level="INFO"/>
 
     <root level="WARN">
         <appender-ref ref="CONSOLE" />

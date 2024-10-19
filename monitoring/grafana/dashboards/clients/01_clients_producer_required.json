@@ -21,7 +21,7 @@
       }
     ]
   },
-  "description": "Kafka Consumer Java client metrics",
+  "description": "Kafka Producer - client metrics",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -88,17 +88,17 @@
               }
             ]
           },
-          "unit": "msgs"
+          "unit": "ms"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 17,
-        "w": 24,
+        "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 5,
+      "id": 7,
       "options": {
         "legend": {
           "calcs": [
@@ -125,14 +125,14 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(group_id, topic_truncated, client_id_truncated) (label_replace(label_replace(\nkafka_clients_org_apache_kafka_consumer_fetch_manager_records_lag_max{group_id=~\"$group_id\", topic=~\"$topic\"}, \"topic_truncated\", \"${1}\", \"topic\", \"(.{0,64})(.*)\"), \"client_id_truncated\", \"${1}\", \"client_id\", \"^(.*?)(-consumer|)$\") >= 0)",
+          "expr": "sum by(client_id, node_id, principal) (kafka_clients_org_apache_kafka_producer_node_request_latency_avg{client_id=~\"$client_id\", principal=~\"$principal\"} >= 0)",
           "instant": false,
           "interval": "",
-          "legendFormat": "{{group_id}} | {{topic_truncated}} ({{client_id_truncated}})",
+          "legendFormat": "{{client_id}} {{node_id}} ({{principal}})",
           "refId": "B"
         }
       ],
-      "title": "Consumer Lag By Topic",
+      "title": "Request Latency (Avg)",
       "type": "timeseries"
     },
     {
@@ -195,17 +195,17 @@
               }
             ]
           },
-          "unit": "msgs"
+          "unit": "ms"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 17,
-        "w": 24,
-        "x": 0,
-        "y": 17
+        "w": 12,
+        "x": 12,
+        "y": 0
       },
-      "id": 9,
+      "id": 8,
       "options": {
         "legend": {
           "calcs": [
@@ -232,14 +232,121 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(group_id, topic_truncated, partition, client_id_truncated) (label_replace(label_replace(\nkafka_clients_org_apache_kafka_consumer_fetch_manager_records_lag_max{group_id=~\"$group_id\", topic=~\"$topic\"}, \"topic_truncated\", \"${1}\", \"topic\", \"(.{0,64})(.*)\"), \"client_id_truncated\", \"${1}\", \"client_id\", \"^(.*?)(-consumer|)$\") >= 0)",
+          "expr": "sum by(client_id, node_id, principal) (kafka_clients_org_apache_kafka_producer_node_request_latency_max{client_id=~\"$client_id\", principal=~\"$principal\"} >= 0)",
           "instant": false,
           "interval": "",
-          "legendFormat": "{{group_id}} | {{topic_truncated}},{{partition}} ({{client_id_truncated}})",
+          "legendFormat": "{{client_id}} {{node_id}} ({{principal}})",
           "refId": "B"
         }
       ],
-      "title": "Consumer Lag By Partition",
+      "title": "Request Latency (Max)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "default": true,
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cxs"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum by(client_id, client_instance_id, principal) (last_over_time(kafka_clients_org_apache_kafka_producer_connection_creation_total{client_id=~\"$client_id\", principal=~\"$principal\"}[1m]))",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{client_id}} ({{client_instance_id}})",
+          "refId": "B"
+        }
+      ],
+      "title": "Total Connections",
       "type": "timeseries"
     }
   ],
@@ -260,16 +367,16 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_clients_org_apache_kafka_consumer_fetch_manager_records_lag_max,group_id)",
+        "definition": "label_values(kafka_clients_org_apache_kafka_producer_connection_creation_total,client_id)",
         "hide": 0,
         "includeAll": true,
-        "label": "group_id",
+        "label": "client_id",
         "multi": false,
-        "name": "group_id",
+        "name": "client_id",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_clients_org_apache_kafka_consumer_fetch_manager_records_lag_max,group_id)",
+          "query": "label_values(kafka_clients_org_apache_kafka_producer_connection_creation_total,client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -289,16 +396,16 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_clients_org_apache_kafka_consumer_fetch_manager_records_lag_max{group_id=~\"$group_id\"},topic)",
+        "definition": "label_values(kafka_clients_org_apache_kafka_producer_connection_creation_total{client_id=~\"$client_id\"},principal)",
         "hide": 0,
         "includeAll": true,
-        "label": "topic",
+        "label": "principal",
         "multi": false,
-        "name": "topic",
+        "name": "principal",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_clients_org_apache_kafka_consumer_fetch_manager_records_lag_max{group_id=~\"$group_id\"},topic)",
+          "query": "label_values(kafka_clients_org_apache_kafka_producer_connection_creation_total{client_id=~\"$client_id\"},principal)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -344,8 +451,8 @@
     ]
   },
   "timezone": "",
-  "title": "01 - Clients -- Consumer Lag",
-  "uid": "clients_consumer_lag",
-  "version": 2,
+  "title": "01 - Clients -- Producer",
+  "uid": "clients_producer_required",
+  "version": 10,
   "weekStart": ""
 }

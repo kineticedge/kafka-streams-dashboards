@@ -232,11 +232,13 @@ services:
     image: otel/opentelemetry-collector:latest
     container_name: ksda-otel
     hostname: otel
-    #healthcheck:
-    #  test: /otelcol components || exit 1
-    #  interval: 5s
-    #  timeout: 10s
-    #  retries: 5
-    #command: ["--config=/otelcol.yaml"]
+    healthcheck:
+      # not a true health check, container public.ecr.aws/aws-observability/aws-otel-collector has /healthcheck
+      # would be nice if otel incorporated this into their container.
+      test: [ "CMD", "/otelcol", "components" ]
+      #test: [ "CMD", "/healthcheck" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
     volumes:
       - ./otelcol/config.yaml:/etc/otelcol/config.yaml

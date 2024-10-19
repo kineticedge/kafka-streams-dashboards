@@ -31,6 +31,7 @@ services:
       - "--web.enable-admin-api"
       - "--web.enable-lifecycle"
       - "--web.enable-remote-write-receiver"
+      # not actual setting...- "--query.staleness-delta=60s"
     ports:
       - "9090:9090"
     volumes:
@@ -67,6 +68,7 @@ services:
     volumes:
       - grafana:/var/lib/grafana
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      #- ./grafana/contactpoints.yml:/etc/grafana/provisioning/alerting/contactpoints.yml
       - ./grafana/prometheus.yml:/etc/grafana/provisioning/datasources/prometheus.yml
       - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
       - ./grafana/dashboards:/var/lib/grafana/dashboards

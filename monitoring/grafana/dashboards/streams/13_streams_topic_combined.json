@@ -41,7 +41,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "While application, instance, and thread filters will impact topics displayed, broker metrics cannot be filtered by client selection.",
           "fieldConfig": {
@@ -147,7 +147,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "",
           "fieldConfig": {
@@ -240,7 +240,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum(rate(kafka_producer_producer_topic_metrics_record_send_total{cluster_type=\"streams\", cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"${thread}-producer\", topic=~\"$topic\"}[$__rate_interval])) by (topic)",
+              "expr": "sum(rate(kafka_producer_producer_topic_metrics_record_send_tot{cluster_type=\"streams\", cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"${thread}-producer\", topic=~\"$topic\"}[$__rate_interval])) by (topic)",
               "hide": false,
               "interval": "",
               "legendFormat": "{{topic}}",
@@ -254,7 +254,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -346,7 +346,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum by(topic) (rate(kafka_streams_stream_topic_metrics_records_produced_total{cluster_id=~\"${cluster}\",instance=~\"${instance}\",thread_id=~\"${thread}\",processor_node_id=~\".+\", task_id=~\".+_.+\", topic=~\"${topic}\"}[$__rate_interval]))",
+              "expr": "sum by(topic) (rate(kafka_streams_stream_topic_metrics_records_produced_tot{cluster_id=~\"${cluster}\",instance=~\"${instance}\",thread_id=~\"${thread}\",processor_node_id=~\".+\", task_id=~\".+_.+\", topic=~\"${topic}\"}[$__rate_interval]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -376,7 +376,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "While application, instance, and thread filters will impact topics displayed, broker metrics cannot be filtered by client selection.",
           "fieldConfig": {
@@ -482,7 +482,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "",
           "fieldConfig": {
@@ -575,7 +575,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum(rate(kafka_producer_producer_topic_metrics_byte_total{cluster_id=~\"$cluster\", instance=~\"$instance\", topic=~\"$topic\"}[$__rate_interval])) by (topic)",
+              "expr": "sum(rate(kafka_producer_producer_topic_metrics_byte_tot{cluster_id=~\"$cluster\", instance=~\"$instance\", topic=~\"$topic\"}[$__rate_interval])) by (topic)",
               "hide": false,
               "interval": "",
               "legendFormat": "{{topic}}",
@@ -589,7 +589,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -681,7 +681,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum by(topic,) (rate(kafka_streams_stream_topic_metrics_bytes_produced_total{cluster_id=~\"${cluster}\",instance=~\"${instance}\",thread_id=~\"${thread}\", task_id=~\".+_.+\", topic=~\"${topic}\"}[$__rate_interval]))",
+              "expr": "sum by(topic,) (rate(kafka_streams_stream_topic_metrics_bytes_produced_tot{cluster_id=~\"${cluster}\",instance=~\"${instance}\",thread_id=~\"${thread}\", task_id=~\".+_.+\", topic=~\"${topic}\"}[$__rate_interval]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -711,7 +711,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "message based consumer metrics not avaialble from the broker.",
           "gridPos": {
@@ -737,7 +737,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "",
           "fieldConfig": {
@@ -828,7 +828,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum by (topic) (rate(kafka_consumer_consumer_fetch_manager_metrics_records_consumed_total{topic=~\"$topic\", cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval]))",
+              "expr": "sum by (topic) (rate(kafka_consumer_consumer_fetch_manager_metrics_records_consumed_tot{topic=~\"$topic\", cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval]))",
               "instant": false,
               "interval": "",
               "legendFormat": "{{topic}}",
@@ -841,7 +841,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -931,7 +931,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum by(topic) (rate(kafka_streams_stream_topic_metrics_records_consumed_total{cluster_id=~\"${cluster}\",instance=~\"${instance}\",thread_id=~\"${thread}\", processor_node_id=~\".+\", task_id=~\".+_.+\", topic=~\"${topic}\"}[$__rate_interval]))",
+              "expr": "sum by(topic) (rate(kafka_streams_stream_topic_metrics_records_consumed_tot{cluster_id=~\"${cluster}\",instance=~\"${instance}\",thread_id=~\"${thread}\", processor_node_id=~\".+\", task_id=~\".+_.+\", topic=~\"${topic}\"}[$__rate_interval]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -961,7 +961,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "While application, instance, and thread filters will impact topics displayed, broker metrics cannot be filtered by client selection.",
           "fieldConfig": {
@@ -1067,7 +1067,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "",
           "fieldConfig": {
@@ -1161,7 +1161,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(rate(kafka_consumer_consumer_fetch_manager_metrics_bytes_consumed_total{topic=~\"$topic\", cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval])) by (topic)",
+              "expr": "sum(rate(kafka_consumer_consumer_fetch_manager_metrics_bytes_consumed_tot{topic=~\"$topic\", cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval])) by (topic)",
               "instant": false,
               "interval": "",
               "legendFormat": "__auto",
@@ -1175,7 +1175,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -1267,7 +1267,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum by(topic) (rate(kafka_streams_stream_topic_metrics_bytes_consumed_total{cluster_id=~\"${cluster}\",instance=~\"${instance}\",thread_id=~\"${thread}\", task_id=~\".+_.+\", topic=~\"${topic}\"}[$__rate_interval]))",
+              "expr": "sum by(topic) (rate(kafka_streams_stream_topic_metrics_bytes_consumed_tot{cluster_id=~\"${cluster}\",instance=~\"${instance}\",thread_id=~\"${thread}\", task_id=~\".+_.+\", topic=~\"${topic}\"}[$__rate_interval]))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -1303,7 +1303,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"kafka\"},cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"},cluster_id)",
         "hide": 0,
         "includeAll": true,
         "label": "kafka cluster",
@@ -1312,7 +1312,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(jvm_info{cluster_type=\"kafka\"},cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"},cluster_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -1335,7 +1335,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"streams\"}, cluster_id)",
         "hide": 0,
         "includeAll": true,
         "label": "cluster",
@@ -1343,7 +1343,7 @@
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"streams\"}, cluster_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1366,14 +1366,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+        "definition": "label_values(kafka_streams_infor{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
         "hide": 0,
         "includeAll": true,
         "multi": false,
         "name": "application",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+          "query": "label_values(kafka_streams_infor{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1393,7 +1393,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+        "definition": "label_values(kafka_streams_infor{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
         "description": "cannot use .* for all, since then thread is not limited to the application that was selected.",
         "hide": 0,
         "includeAll": true,
@@ -1402,7 +1402,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+          "query": "label_values(kafka_streams_infor{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1425,7 +1425,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_topic_metrics_bytes_consumed_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
+        "definition": "label_values(kafka_streams_stream_topic_metrics_bytes_consumed_tot{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
         "hide": 0,
         "includeAll": true,
         "label": "thread",
@@ -1433,7 +1433,7 @@
         "name": "thread",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_topic_metrics_bytes_consumed_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
+          "query": "label_values(kafka_streams_stream_topic_metrics_bytes_consumed_tot{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1460,7 +1460,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_topic_metrics_bytes_produced_total{instance=~\"${instance}\", thread_id=~\"${thread}\"},topic)",
+        "definition": "label_values(kafka_streams_stream_topic_metrics_bytes_produced_tot{instance=~\"${instance}\", thread_id=~\"${thread}\"},topic)",
         "hide": 0,
         "includeAll": true,
         "label": "topic",
@@ -1469,7 +1469,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_streams_stream_topic_metrics_bytes_produced_total{instance=~\"${instance}\", thread_id=~\"${thread}\"},topic)",
+          "query": "label_values(kafka_streams_stream_topic_metrics_bytes_produced_tot{instance=~\"${instance}\", thread_id=~\"${thread}\"},topic)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

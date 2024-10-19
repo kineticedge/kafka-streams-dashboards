@@ -183,7 +183,7 @@ public class BuildSystem {
         IntStream.range(0, options.getNumberOfStores()).forEach(i -> {
             Store store = getRandomStore(i);
 
-            log.info("Sending key={}, value={}", store.getStoreId(), store);
+            log.debug("Sending key={}, value={}", store.getStoreId(), store);
             kafkaProducer.send(new ProducerRecord<>(options.getStoreTopic(), null, store.getStoreId(), store), (metadata, exception) -> {
                 if (exception != null) {
                     log.error("error producing to kafka", exception);
@@ -198,7 +198,7 @@ public class BuildSystem {
         IntStream.range(0, options.getNumberOfUsers()).forEach(i -> {
             User user = getRandomUser(i);
 
-            log.info("Sending key={}, value={}", user.getUserId(), user);
+            log.debug("Sending key={}, value={}", user.getUserId(), user);
             kafkaProducer.send(new ProducerRecord<>(options.getUserTopic(), null, user.getUserId(), user), (metadata, exception) -> {
                 if (exception != null) {
                     log.error("error producing to kafka", exception);
@@ -213,7 +213,7 @@ public class BuildSystem {
         IntStream.range(0, options.getNumberOfProducts()).forEach(i -> {
             Product product = getRandomProduct(i);
 
-            log.info("Sending key={}, value={}", product.getSku(), product);
+            log.debug("Sending key={}, value={}", product.getSku(), product);
             kafkaProducer.send(new ProducerRecord<>(options.getProductTopic(), null, product.getSku(), product), (metadata, exception) -> {
                 if (exception != null) {
                     log.error("error producing to kafka", exception);

@@ -26,6 +26,7 @@ CLUSTERS=(
     "cluster-sasl"
     "cluster-lb",
     "cluster-native"
+    "cluster-cm"
 )
 
 CLUSTER_DESCRIPTIONS=(
@@ -37,6 +38,7 @@ CLUSTER_DESCRIPTIONS=(
     "cluster-sasl    --  4 brokers with SASL authentication, 1 zookeeper controller"
     "cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)"
     "cluster-native  --  4 brokers, 1 raft controller, apache/kafka-native images"
+    "cluster-cm      --  3 brokers, 1 raft controller, otel collector client-metrics reporter"
 )
 
 display_menu() {
@@ -100,6 +102,12 @@ fi
 heading "starting kafka cluster $CLUSTER"
 
 (cd $CLUSTER; docker compose up -d --wait)
+
+if [ "$CLUSTER" == "cluster-cm" ]; then
+  heading "enabling client metrics communicated to the brokers."
+  kafka-client-metrics --bootstrap-server localhost:9092 --alter --name EVERYTHING --metrics org.apache.kafka.  --interval 10000
+fi
+
 
 ./gradlew build
 

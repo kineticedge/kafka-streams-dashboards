@@ -226,6 +226,46 @@
       ],
       "title": "JVM",
       "type": "dashlist"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 11
+      },
+      "id": 30,
+      "options": {
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "clients"
+        ]
+      },
+      "pluginVersion": "10.2.0-138700",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Kafka Consumers (client metrics)",
+      "type": "dashlist"
     }
   ],
   "refresh": "",

@@ -121,7 +121,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -200,7 +200,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -286,7 +286,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -925,7 +925,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1025,7 +1025,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1127,7 +1127,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1229,7 +1229,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1631,7 +1631,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1836,7 +1836,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1939,7 +1939,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -2187,7 +2187,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
         "hide": 0,
         "includeAll": false,
         "label": "cluster",
@@ -2195,7 +2195,7 @@
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

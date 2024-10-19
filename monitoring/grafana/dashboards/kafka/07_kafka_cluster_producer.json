@@ -728,7 +728,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
         "hide": 0,
         "includeAll": false,
         "label": "cluster",
@@ -736,7 +736,7 @@
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -759,7 +759,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -767,7 +767,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

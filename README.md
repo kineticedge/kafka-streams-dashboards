@@ -44,7 +44,7 @@ windowing options makes it a lot easier to see and compare the metrics between t
 This project:
 * Extensively leverages Docker and Docker Compose.
 * Applications are built with Java 17 and run on a Java 17 JVM.
-* Kafka leverages Confluent Community Edition containers, which run with a Java 11 JVM.
+* Kafka leverages Confluent Community Edition containers, which run with a Java 17 JVM.
 * Has Grafana dashboards for Kafka Cluster, Kafka Streams, Consumer, Producer, and JVM.
   * Supports a variety of cluster configurations to better showcase the Kafka Cluster metrics and validate dashboards are build
 with the various options.
@@ -54,13 +54,15 @@ will be prompted to select an Apache Kafka Cluster to start. Typically, I sugges
 realistic experience, but if you have limited memory/cpu on your machine, use `(1) cluster-1`.
 
 ```
-1. cluster-1       --  1 node (broker and controller)
-2. cluster         --  4 brokers, 1 raft controller
-3. cluster-3ctrls  --  4 brokers, 3 raft controllers
-4. cluster-hybrid  --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers
-5. cluster-zk      --  4 brokers, 1 zookeeper controller
-6. cluster-sasl    --  4 brokers with SASL authentication, 1 zookeeper controller
-7. cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)
+    1. cluster-1       --  1 node (broker and controller)
+    2. cluster         --  4 brokers, 1 raft controller
+    3. cluster-3ctrls  --  4 brokers, 3 raft controllers
+    4. cluster-hybrid  --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers
+    5. cluster-zk      --  4 brokers, 1 zookeeper controller
+    6. cluster-sasl    --  3 brokers, 1 raft controller, with SASL authentication & otel collector client-metrics reporter
+    7. cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)
+    8. cluster-native  --  4 brokers, 1 raft controller, apache/kafka-native images
+    9. cluster-cm      --  3 brokers, 1 raft controller, otel collector client-metrics reporter
 ```
 
 The other options are for more advance scenarios. `(3) cluster-3ctrls` is a typical deployment (3+ brokers and 3 controllers).

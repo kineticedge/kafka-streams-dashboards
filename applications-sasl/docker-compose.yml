@@ -1,0 +1,293 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+services:
+  publisher:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-clients.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    # provides network privileges to allow 'tc' to be used
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./publisher-1.0.tar:/app.tar
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/truststore.jks
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      CLIENT_ID_PREFIX: "producer"
+      MAX_SKU: 100
+      PAUSE: 200
+      LINE_ITEM_COUNT: "1-4"
+      OTEL_SERVICE_NAME: PUBLISHER
+      #
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
+      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="publisher" password="publisher-password";
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+
+  stream:
+    image: ksd_app:latest
+    #hostname: stream
+    #container_name: stream
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    #ports:
+    #  - "7072:7072"
+    deploy:
+      replicas: 2
+    # provides network privileges to allow 'tc' to be used
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./streams-1.0.tar:/app.tar
+      - ./streams.properties:/streams.properties
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/truststore.jks
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      CLIENT_ID_PREFIX: "stream"
+      OTEL_SERVICE_NAME: STREAMS
+      #
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
+      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="streams" password="streams-password";
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+
+  analytics_sliding:
+    image: ksd_app:latest
+    hostname: analytics_sliding
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      - ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/truststore.jks
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      APPLICATION_ID: "analytics_sliding"
+      CLIENT_ID_PREFIX: "analytics_sliding"
+      WINDOW_TYPE: SLIDING
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_SLIDING
+      #
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
+      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="analytics-sliding" password="analytics-sliding-password";
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+
+  analytics_tumbling:
+    image: ksd_app:latest
+    hostname: analytics_tumbling
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      - ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/truststore.jks
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      APPLICATION_ID: "analytics_tumbling"
+      CLIENT_ID_PREFIX: "analytics_tumbling"
+      WINDOW_TYPE: TUMBLING
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_TUMBLING
+      #
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
+      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="analytics-tumbling" password="analytics-tumbling-password";
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+
+  analytics_hopping:
+    image: ksd_app:latest
+    hostname: analytics_hopping
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      - ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/truststore.jks
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      APPLICATION_ID: "analytics_hopping"
+      CLIENT_ID_PREFIX: "analytics_hopping"
+      WINDOW_TYPE: HOPPING
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_HOPPING
+      #
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
+      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="analytics-hopping" password="analytics-hopping-password";
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+
+  analytics_session:
+    image: ksd_app:latest
+    hostname: analytics_session
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      - ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/truststore.jks
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      APPLICATION_ID: "analytics_session"
+      CLIENT_ID_PREFIX: "analytics_session"
+      WINDOW_TYPE: SESSION
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_SESSION
+      #
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
+      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="analytics-session" password="analytics-session-password";
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+
+  analytics_none:
+    image: ksd_app:latest
+    hostname: analytics_none
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      - ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/truststore.jks
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      APPLICATION_ID: "analytics_none"
+      CLIENT_ID_PREFIX: "analytics_none"
+      WINDOW_TYPE: NONE
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_NONE
+      #
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
+      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="analytics-none" password="analytics-none-password";
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+
+  nginx:
+    image: nginx:latest
+    container_name: ksda-nginx
+    hostname: nginx
+    stop_grace_period: 30s
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
+      analytics_none:
+        condition: service_healthy
+      analytics_tumbling:
+        condition: service_healthy
+      analytics_hopping:
+        condition: service_healthy
+      analytics_sliding:
+        condition: service_healthy
+      analytics_session:
+        condition: service_healthy
+    ports:
+      - "8888:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/proxy_headers.conf:/etc/nginx/proxy_headers.conf
+      - ./nginx/html:/etc/nginx/html
+
+  # tracing collector agent
+  otel:
+    image: otel/opentelemetry-collector:latest
+    container_name: ksda-otel
+    hostname: otel
+    healthcheck:
+      # not a true health check, container public.ecr.aws/aws-observability/aws-otel-collector has /healthcheck
+      # would be nice if otel incorporated this into their container.
+      test: [ "CMD", "/otelcol", "components" ]
+      #test: [ "CMD", "/healthcheck" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./otelcol/config.yaml:/etc/otelcol/config.yaml

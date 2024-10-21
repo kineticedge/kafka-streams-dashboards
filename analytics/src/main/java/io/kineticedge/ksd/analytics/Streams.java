@@ -5,6 +5,8 @@ import io.kineticedge.ksd.common.domain.ProductAnalytic;
 import io.kineticedge.ksd.common.domain.ProductAnalyticOut;
 import io.kineticedge.ksd.common.domain.PurchaseOrder;
 import io.kineticedge.ksd.common.metrics.StreamsMetrics;
+import io.kineticedge.ksd.tools.config.KafkaEnvUtil;
+import io.kineticedge.ksd.tools.config.PropertyUtils;
 import io.kineticedge.ksd.tools.serde.JsonSerde;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -80,20 +82,9 @@ public class Streams {
 
     final Map<String, Object> map = new HashMap<>(defaults);
 
-    try {
-      final Properties properties = new Properties();
-      final File file = new File("./analytics.properties");
-      if (file.exists() && file.isFile()) {
-        log.info("applying analytics.properties");
-        properties.load(new FileInputStream(file));
-        map.putAll(properties.entrySet()
-                .stream()
-                .collect(Collectors.toMap(e -> e.getKey().toString(), Map.Entry::getValue)));
-      }
-    } catch (final IOException e) {
-      log.info("no analytics.properties override file found");
-    }
+    map.putAll(PropertyUtils.loadProperties("./analytics.properties"));
 
+    map.putAll(KafkaEnvUtil.to("KAFKA_"));
 
     return map;
   }
@@ -109,13 +100,13 @@ public class Streams {
 
     Properties p = toProperties(properties(options));
 
-    log.info("starting streams " + options);
+    log.info("starting streams {}", options);
 
     final Topology topology = streamsBuilder().build(p);
 
     StreamsMetrics.register(topology.describe());
 
-    log.info("Topology:\n" + topology.describe());
+    log.info("Topology:\n{}", topology.describe());
 
     final KafkaStreams streams = new KafkaStreams(topology, p);
 

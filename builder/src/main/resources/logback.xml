@@ -7,10 +7,13 @@
         </encoder>
     </appender>
 
-    <logger name="org.apache.kafka.clients.consumer" level="INFO"/>
-    <logger name="org.apache.kafka.clients.producer" level="INFO"/>
+    <logger name="org.apache.kafka.clients.consumer" level="WARN"/>
+    <logger name="org.apache.kafka.clients.producer" level="WARN"/>
     <logger name="org.apache.kafka.clients.consumer.internals" level="WARN"/>
     <logger name="org.apache.kafka.clients.producer.internals" level="WARN"/>
+
+    <logger name="org.apache.kafka.clients.consumer.ConsumerConfig" level="WARN"/>
+    <logger name="org.apache.kafka.clients.producer.ProducerConfig" level="WARN"/>
 
     <logger name="io.kineticedge.ksd" level="DEBUG"/>
     <logger name="io.kineticedge.ksd.builder" level="INFO"/>

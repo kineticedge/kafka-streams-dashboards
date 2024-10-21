@@ -12,8 +12,27 @@ volumes:
 
 services:
 
+  # tracing collector agent
+  broker-otel:
+    image: otel/opentelemetry-collector:0.110.0
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-otel
+    hostname: broker-otel
+    healthcheck:
+      # not a true health check, container public.ecr.aws/aws-observability/aws-otel-collector has /healthcheck
+      # would be nice if otel incorporated this into their container.
+      test: [ "CMD", "/otelcol", "components" ]
+      #test: [ "CMD", "/healthcheck" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    #command: ["--config=/otelcol.yaml"]
+    ports:
+      - '9091:9091'
+    volumes:
+      - ./otelcol/config.yaml:/etc/otelcol/config.yaml
+
   sasl-controller-0:
-    image: confluentinc/cp-kafka:${VERSION}
+    image: apache/kafka:${VERSION}
     hostname: sasl-controller-0
     container_name: ${COMPOSE_PROJECT_NAME}-sasl-controller-0
     stop_grace_period: 120s
@@ -53,14 +72,12 @@ services:
         -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
         -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
         -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
-      CONFLUENT_METRICS_ENABLE: "false"
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
       KAFKA_SASL_MECHANISM_CONTROLLER_PROTOCOL: PLAIN
 
-
   sasl-broker-1:
-    image: confluentinc/cp-kafka:${VERSION}
+    image: apache/kafka:${VERSION}
     hostname: sasl-broker-1
     container_name: ${COMPOSE_PROJECT_NAME}-sasl-broker-1
     stop_grace_period: 120s
@@ -79,6 +96,7 @@ services:
       - bk1:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets/
+      - ./metrics-reporter-1.0-all.jar:/opt/kafka/libs/metrics-reporter.jar
     environment:
       CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 1
@@ -106,15 +124,16 @@ services:
         -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
         -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
         -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
-      KAFKA_METRIC_REPORTERS:
-      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
       KAFKA_SASL_MECHANISM_CONTROLLER_PROTOCOL: PLAIN
+      KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
+      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
+      KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
 
   sasl-broker-2:
-    image: confluentinc/cp-kafka:${VERSION}
+    image: apache/kafka:${VERSION}
     hostname: sasl-broker-2
     container_name: ${COMPOSE_PROJECT_NAME}-sasl-broker-2
     stop_grace_period: 120s
@@ -133,6 +152,7 @@ services:
       - bk2:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets/
+      - ./metrics-reporter-1.0-all.jar:/opt/kafka/libs/metrics-reporter.jar
     environment:
       CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 2
@@ -160,15 +180,16 @@ services:
         -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf 
         -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
         -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
-      KAFKA_METRIC_REPORTERS:
-      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
       KAFKA_SASL_MECHANISM_CONTROLLER_PROTOCOL: PLAIN
+      KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
+      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
+      KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
 
   sasl-broker-3:
-    image: confluentinc/cp-kafka:${VERSION}
+    image: apache/kafka:${VERSION}
     hostname: sasl-broker-3
     container_name: ${COMPOSE_PROJECT_NAME}-sasl-broker-3
     stop_grace_period: 120s
@@ -187,6 +208,7 @@ services:
       - bk3:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets/
+      - ./metrics-reporter-1.0-all.jar:/opt/kafka/libs/metrics-reporter.jar
     environment:
       CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 3
@@ -214,9 +236,10 @@ services:
         -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf 
         -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
         -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
-      KAFKA_METRIC_REPORTERS:
-      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
       KAFKA_SASL_MECHANISM_CONTROLLER_PROTOCOL: PLAIN
+      KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
+      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
+      KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Collapsible Data Display</title>
+    <style>
+        html {
+            font-size: 24px !important;
+        }
+
+        button, select, .collapsible {
+            font-size: 24px !important;
+        }
+
+        .collapsible {
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+        }
+
+        .active, .collapsible:hover {
+            background-color: #555;
+            color: white;
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+
+        /* Full width table */
+        table {
+            width: 100%;
+            border: 1px solid black;
+        }
+
+        th, td {
+            border: 1px solid black;
+        }
+
+        /* Alternating row colors. Use your own color choices here if you prefer */
+        table tr:nth-child(even) {
+            background-color: #e2e2e2;
+        }
+        table tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+    </style>
+</head>
+<body>
+
+<select id="instance">
+    <option value="1">purchase-order-1</option>
+    <option value="2">purchase-order-2</option>
+</select>
+<!--<select id="by">-->
+<!--    <option value="order">order</option>-->
+<!--    <option value="sku">sku</option>-->
+<!--</select>-->
+<button onclick="fetchData()">Refresh Data</button>
+<div id="dataTable"></div>
+
+<script>
+
+    function foo(array) {
+        let table = document.createElement('table');
+        // Add table header
+        let header = table.createTHead().insertRow(0);
+        ['sku', 'qty', 'price'].forEach((h, i) => {
+            header.insertCell(i).outerHTML = `<th>${h}</th>`;
+        });
+
+        array.forEach(item => {
+            let row = table.insertRow(-1);
+            [
+                item.sku,
+                item.quantity,
+                item.price
+            ].forEach((item, i) => {
+                row.insertCell(i).innerHTML = item;
+            });
+        });
+
+        return table;
+    }
+
+    function fetchData() {
+        var e = document.getElementById("instance");
+        var instance = e.options[e.selectedIndex].value;
+
+        // var ee = document.getElementById("by");
+        // var groupType = ee.options[ee.selectedIndex].value;
+
+        var loc = window.location;
+        var url = loc.protocol + "//" + loc.hostname + (loc.port ? ':' + loc.port : '') + '/purchase-order-' + instance;
+
+        fetch(url + "purchase-order")
+            .then(response => response.json())
+            .then(jsonArray => {
+                let div = document.getElementById('dataTable');
+                // Clear the div
+                div.innerHTML = '';
+                // For each object in the array
+                jsonArray.forEach(data => {
+                    // Add a button with the mode name
+                    let button = document.createElement('button');
+                    button.className = 'collapsible';
+                    button.innerText = data.orderId;
+                    div.appendChild(button);
+                    // Create collapsible content
+                    let content = document.createElement('div');
+                    content.className = 'content';
+                    // Add a table inside the collapsible content
+                    let table = document.createElement('table');
+                    // Add table header
+                    let header = table.createTHead().insertRow(0);
+                    ['OrderId', 'UserId', 'UserName', 'Store Id', 'Store Name', 'Items', 'Timestamp'].forEach((h, i) => {
+                        header.insertCell(i).outerHTML = `<th>${h}</th>`;
+                    });
+
+                    let row = table.insertRow(-1);
+                    [
+                        data.orderId,
+                        data.userId,
+                        data.userName,
+                        data.storeId,
+                        data.storeName,
+                        foo(data.items),
+                        data.timestamp
+                    ].forEach((item, i) => {
+
+                        if (i !== 5) {
+                            row.insertCell(i).innerHTML = item;
+                        } else {
+                            row.insertCell(i).appendChild(item);
+                        }
+                    });
+
+                    content.appendChild(table);
+                    div.appendChild(content);
+                });
+                // Add the collapsibility feature
+                let coll = document.getElementsByClassName("collapsible");
+                for (let i = 0; i < coll.length; i++) {
+                    coll[i].addEventListener("click", function() {
+                        this.classList.toggle("active");
+                        let content = this.nextElementSibling;
+                        if (content.style.display === "block") {
+                            content.style.display = "none";
+                        } else {
+                            content.style.display = "block";
+                        }
+                    });
+                }
+            });
+    }
+</script>
+
+</body>
+</html>

@@ -2,8 +2,8 @@
 
 The tools project provides custom deserializers to use to inspect key elements on a change-log topic.
 
-* `scripts/enable-custom-tools-derserialer` will create a symbolic link to the tools jar file. This allows
-  for `kafka-console-consumer` to utilize those deserializers.  Inspect the script before running, to understand
+* `scripts/enable-custom-tools-derserializer` will create a symbolic link to the tools jar file. This allows
+  for `kafka-console-consumer` to utilize those deserializers. Inspect the script before running, to understand
   the modification it will do (expecially if your installation of Apache Kafka is not Confluent's.)
 
 ```

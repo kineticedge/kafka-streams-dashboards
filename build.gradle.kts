@@ -44,13 +44,13 @@ subprojects.filter { it.name != "metrics-reporter" }.forEach {
     it.plugins.apply("application")
 
     it.java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     it.dependencies {
         implementation("ch.qos.logback:logback-classic:$logback_version")
-        implementation("com.beust:jcommander:$jcommander_version")
+        implementation("org.jcommander:jcommander:$jcommander_version")
         implementation("com.fasterxml.jackson.core:jackson-core:$jackson_version")
         implementation("com.fasterxml.jackson.core:jackson-databind:$jackson_version")
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version")

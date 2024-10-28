@@ -12,7 +12,7 @@ public abstract class BaseOptions {
     private boolean help;
 
     @Parameter(names = { "-b", "--bootstrap-servers" }, description = "cluster bootstrap servers")
-    private String bootstrapServers = "localhost:19092,localhost:29092,localhost:39092";
+    private String bootstrapServers = "localhost:9092";
 
     @Parameter(names = { "--store-topic" }, description = "compacted topic holding stores")
     private String storeTopic = "orders-store";

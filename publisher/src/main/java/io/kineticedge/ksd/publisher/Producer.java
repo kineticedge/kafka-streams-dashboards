@@ -1,6 +1,8 @@
 package io.kineticedge.ksd.publisher;
 
 import io.kineticedge.ksd.common.domain.PurchaseOrder;
+import io.kineticedge.ksd.tools.config.KafkaEnvUtil;
+import io.kineticedge.ksd.tools.config.PropertyUtils;
 import io.kineticedge.ksd.tools.serde.JsonSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -199,12 +201,6 @@ public class Producer {
         Map<String, Object> defaults =  Map.ofEntries(
                 Map.entry(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, options.getBootstrapServers()),
                 Map.entry(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "PLAINTEXT"),
-
-//                Map.entry(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092"),
-//                Map.entry(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT"),
-//                Map.entry(SaslConfigs.SASL_MECHANISM, "PLAIN"),
-//                Map.entry(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kafka-admin\" password=\"kafka-admin-secret\";"),
-
                 Map.entry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()),
                 Map.entry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName()),
                 Map.entry(ProducerConfig.ACKS_CONFIG, "all"),
@@ -212,6 +208,9 @@ public class Producer {
         );
 
         Map<String, Object> map = new HashMap<>(defaults);
+
+
+        map.putAll(KafkaEnvUtil.to("KAFKA_"));
 
         /*
         try {

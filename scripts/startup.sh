@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function heading() {
   tput setaf 2; printf "\n\n$@"; tput sgr 0
   #pause
@@ -24,7 +26,7 @@ CLUSTERS=(
     "cluster-hybrid"
     "cluster-zk"
     "cluster-sasl"
-    "cluster-lb",
+    "cluster-lb"
     "cluster-native"
     "cluster-cm"
 )
@@ -35,7 +37,7 @@ CLUSTER_DESCRIPTIONS=(
     "cluster-3ctrls  --  4 brokers, 3 raft controllers"
     "cluster-hybrid  --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers"
     "cluster-zk      --  4 brokers, 1 zookeeper controller"
-    "cluster-sasl    --  4 brokers with SASL authentication, 1 zookeeper controller"
+    "cluster-sasl    --  3 brokers, 1 raft controller, with SASL authentication & otel collector client-metrics reporter"
     "cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)"
     "cluster-native  --  4 brokers, 1 raft controller, apache/kafka-native images"
     "cluster-cm      --  3 brokers, 1 raft controller, otel collector client-metrics reporter"
@@ -103,27 +105,29 @@ heading "starting kafka cluster $CLUSTER"
 
 (cd $CLUSTER; docker compose up -d --wait)
 
-if [ "$CLUSTER" == "cluster-cm" ]; then
+#if [[ "$CLUSTER" == "cluster-cm" || "$CLUSTER" == "cluster-sasl" ]]; then
+
+APPLICATIONS_DIR="applications"
+
+if [[ "$CLUSTER" == "cluster-cm" ]]; then
   heading "enabling client metrics communicated to the brokers."
   kafka-client-metrics --bootstrap-server localhost:9092 --alter --name EVERYTHING --metrics org.apache.kafka.  --interval 10000
 fi
 
+if [[ "$CLUSTER" == "cluster-sasl" ]]; then
+  heading "creating sasl scram users (with full access) for applications."
+  ./cluster-sasl/create-users.sh
+  heading "enabling client metrics communicated to the brokers."
+  kafka-client-metrics --bootstrap-server localhost:19092 --command-config ./cluster-sasl/secrets/admin.conf --alter --name EVERYTHING --metrics org.apache.kafka.  --interval 10000
+
+  APPLICATIONS_DIR="applications-sasl"
+fi
 
 ./gradlew build
 
+(cd builder; ./run.sh)
+(cd monitoring; docker compose up -d)
+#(cd monitoring; docker compose up -d $(docker compose config --services | grep -v tempo))
 
-(cd builder; ../gradlew run)
-(cd monitoring; docker compose up -d $(docker compose config --services | grep -v tempo))
-
-(cd applications; docker compose up -d $(docker compose config --services | grep -v otel))
-
-#(cd applications; docker compose up -d --wait $(docker compose config --services | grep -v publisher))
-
-#avoid starting the analytic applications
-#(cd applications; docker compose up -d otel publisher stream)
-
-
-# to start with a local publisher
-# publisher is part of applications
-#(cd applications; docker compose up -d --wait $(docker compose config --services | grep -v publisher))
-#(cd publisher; ../gradlew run --args="--max-sku 100")
+(cd "$APPLICATIONS_DIR"; docker compose up -d)
+#(cd "$APPLICATIONS_DIR"; docker compose up -d $(docker compose config --services | grep -v otel))

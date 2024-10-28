@@ -8,7 +8,9 @@ build
 .settings
 .classpath
 .project
+*.jks
 /applications/stores/*
+/applications-sasl/stores/*
 
 /cluster-sasl/certificates/secrets/*
 /cluster-sasl/secrets/*.jks

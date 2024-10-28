@@ -44,8 +44,8 @@ subprojects.filter { it.name != "metrics-reporter" }.forEach {
     it.plugins.apply("application")
 
     it.java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     it.dependencies {

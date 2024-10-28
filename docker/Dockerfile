@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-jammy AS build
+FROM eclipse-temurin:21-jdk-jammy AS build
 #FROM openjdk:17-jdk-slim AS build
 
 RUN \
@@ -10,7 +10,7 @@ RUN \
 RUN \
     curl -k -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.33.2/opentelemetry-javaagent.jar
 
-FROM eclipse-temurin:17-jdk-jammy
+FROM eclipse-temurin:21-jdk-jammy
 #FROM openjdk:17-jdk-slim
 
 RUN \

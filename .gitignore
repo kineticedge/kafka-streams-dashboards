@@ -16,4 +16,6 @@ build
 /cluster-sasl/secrets/*.jks
 /cluster-sasl/secrets/kafka.key
 
+target
+
 /statestore-ui/node_modules

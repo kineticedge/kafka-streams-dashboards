@@ -37,9 +37,6 @@ import org.apache.kafka.streams.processor.api.FixedKeyRecord;
 import org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl;
 import org.apache.kafka.streams.state.KeyValueStore;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -201,9 +198,9 @@ public class Streams {
         }));
 
         final StateObserver observer = new StateObserver(streams);
-        final ServletDeployment servletDeployment = new ServletDeployment(observer, options.getPort());
 
-        servletDeployment.start();
+        final Server servletDeployment2 = new Server(observer, options.getPort());
+        servletDeployment2.start();
     }
 
     private StreamsBuilder streamsBuilder(final Options options) {

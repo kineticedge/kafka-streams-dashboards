@@ -11,7 +11,6 @@ val lombok_version: String by project
 val junit_pioneer_version: String by project
 val junit_version: String by project
 
-
 plugins {
     id("java")
 //    id("application")
@@ -80,13 +79,22 @@ subprojects.filter { it.name != "metrics-reporter" }.forEach {
 
     // make this part of the docker image.
     it.tasks.getByName<Tar>("distTar") {
+        exclude("commons-lang3-*.jar")
+        exclude("jcommander-*.jar")
+        exclude("logback-*.jar")
+        exclude("slf4j-api-*.jar")
+        //
         exclude("rocksdbjni-*.jar")
+        //
         exclude("zstd-jni-*.jar")
         exclude("lz4-java-*.jar")
         exclude("snappy-java-*.jar")
+        //
         exclude("jackson-annotations-*.jar")
         exclude("jackson-core-*.jar")
         exclude("jackson-databind-*.jar")
+        exclude("jackson-datatype-*.jar")
+        //
         exclude("kafka-clients-*.jar")
         exclude("kafka-streams-*.jar")
     }

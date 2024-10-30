@@ -28,25 +28,17 @@ import org.apache.kafka.streams.processor.StateStore;
 import org.apache.kafka.streams.processor.api.FixedKeyProcessor;
 import org.apache.kafka.streams.processor.api.FixedKeyProcessorContext;
 import org.apache.kafka.streams.processor.api.FixedKeyRecord;
-import org.apache.kafka.streams.processor.api.InternalFixedKeyRecordFactory;
 import org.apache.kafka.streams.state.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class Streams {
@@ -129,11 +121,9 @@ public class Streams {
     }));
 
     final StateObserver observer = new StateObserver(streams, options.getWindowType());
-    final ServletDeployment servletDeployment = new ServletDeployment(observer, options.getPort());
-
-    //final StatePurger purger = new StatePurger(streams, options);
-
+    final Server servletDeployment = new Server(observer, options.getPort());
     servletDeployment.start();
+    //final StatePurger purger = new StatePurger(streams, options);
   }
 
   private StreamsBuilder streamsBuilder() {

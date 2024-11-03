@@ -5,6 +5,7 @@ import io.kineticedge.ksd.common.domain.PurchaseOrder;
 import io.kineticedge.ksd.common.domain.Store;
 import io.kineticedge.ksd.common.domain.User;
 import io.kineticedge.ksd.common.metrics.StreamsMetrics;
+import io.kineticedge.ksd.common.rocksdb.RocksDBConfigSetter;
 import io.kineticedge.ksd.tools.config.KafkaEnvUtil;
 import io.kineticedge.ksd.tools.config.PropertyUtils;
 import io.kineticedge.ksd.tools.serde.JsonSerde;
@@ -84,6 +85,8 @@ public class Streams {
                 //Map.entry(StreamsConfig.METRIC_REPORTER_CLASSES_CONFIG, JmxReporter.class.getName() + "," + KafkaMetricsReporter.class.getName()),
                 //Map.entry(CommonConfigs.METRICS_REPORTER_CONFIG, options.getCustomMetricsTopic())
 
+                Map.entry(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG, RocksDBConfigSetter.class.getName()),
+
                 Map.entry("internal.leave.group.on.close", true)
 
         );
@@ -141,7 +144,14 @@ public class Streams {
 
         map.putAll(PropertyUtils.loadProperties("./streams.properties"));
 
-        map.putAll(KafkaEnvUtil.to("KAFKA_"));
+        map.putAll(new KafkaEnvUtil().to("KAFKA_"));
+
+        final String instanceId = System.getenv("INSTANCE_ID");
+        if (instanceId != null) {
+            int id = Integer.parseInt(System.getenv("INSTANCE_ID"));
+            map.putAll(new KafkaEnvUtil().to("KAFKA_" + id + "_"));
+        }
+
 
         return map;
     }

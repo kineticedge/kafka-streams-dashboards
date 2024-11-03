@@ -126,8 +126,9 @@ fi
 ./gradlew build
 
 (cd builder; ./run.sh)
-(cd monitoring; docker compose up -d)
-#(cd monitoring; docker compose up -d $(docker compose config --services | grep -v tempo))
+#(cd monitoring; docker compose up -d)
+(cd monitoring; docker compose up -d $(docker compose config --services | grep -v tempo))
 
-(cd "$APPLICATIONS_DIR"; docker compose up -d)
-#(cd "$APPLICATIONS_DIR"; docker compose up -d $(docker compose config --services | grep -v otel))
+#(cd "$APPLICATIONS_DIR"; docker compose up -d)
+#(cd "$APPLICATIONS_DIR"; docker compose up -d publisher stream analytics_tumbling)
+(cd "$APPLICATIONS_DIR"; docker compose up -d $(docker compose config --services | grep -v otel))

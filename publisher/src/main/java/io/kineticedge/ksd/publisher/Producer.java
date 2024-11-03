@@ -210,7 +210,7 @@ public class Producer {
         Map<String, Object> map = new HashMap<>(defaults);
 
 
-        map.putAll(KafkaEnvUtil.to("KAFKA_"));
+        map.putAll(new KafkaEnvUtil().to("KAFKA_"));
 
         /*
         try {

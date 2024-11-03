@@ -248,7 +248,7 @@ public class BuildSystem {
             )
     );
 
-    map.putAll(KafkaEnvUtil.to("KAFKA_"));
+    map.putAll(new KafkaEnvUtil().to("KAFKA_"));
 
     return map;
   }

@@ -30,8 +30,6 @@ services:
 
   stream:
     image: ksd_app:latest
-    #hostname: stream
-    #container_name: stream
     stop_grace_period: 120s
     healthcheck:
       test: /healthcheck-streams.sh || exit 1
@@ -58,7 +56,6 @@ services:
 
   analytics_sliding:
     image: ksd_app:latest
-    hostname: analytics_sliding
     stop_grace_period: 120s
     healthcheck:
       test: /healthcheck-streams.sh || exit 1
@@ -74,7 +71,7 @@ services:
       - ./analytics-1.0.tar:/app.tar
       - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
-      - ./stores:/tmp/kafka-streams
+      #- ./stores:/tmp/kafka-streams
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
@@ -86,7 +83,6 @@ services:
 
   analytics_tumbling:
     image: ksd_app:latest
-    hostname: analytics_tumbling
     stop_grace_period: 120s
     healthcheck:
       test: /healthcheck-streams.sh || exit 1
@@ -102,7 +98,7 @@ services:
       - ./analytics-1.0.tar:/app.tar
       - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
-      - ./stores:/tmp/kafka-streams
+      #- ./stores:/tmp/kafka-streams
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
@@ -114,7 +110,6 @@ services:
 
   analytics_hopping:
     image: ksd_app:latest
-    hostname: analytics_hopping
     stop_grace_period: 120s
     healthcheck:
       test: /healthcheck-streams.sh || exit 1
@@ -130,7 +125,7 @@ services:
       - ./analytics-1.0.tar:/app.tar
       - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
-      - ./stores:/tmp/kafka-streams
+      #- ./stores:/tmp/kafka-streams
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
@@ -142,7 +137,6 @@ services:
 
   analytics_session:
     image: ksd_app:latest
-    hostname: analytics_session
     stop_grace_period: 120s
     healthcheck:
       test: /healthcheck-streams.sh || exit 1
@@ -158,7 +152,7 @@ services:
       - ./analytics-1.0.tar:/app.tar
       - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
-      - ./stores:/tmp/kafka-streams
+      #- ./stores:/tmp/kafka-streams
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
@@ -170,7 +164,6 @@ services:
 
   analytics_none:
     image: ksd_app:latest
-    hostname: analytics_none
     stop_grace_period: 120s
     healthcheck:
       test: /healthcheck-streams.sh || exit 1
@@ -186,7 +179,7 @@ services:
       - ./analytics-1.0.tar:/app.tar
       - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
-      - ./stores:/tmp/kafka-streams
+      #- ./stores:/tmp/kafka-streams
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092

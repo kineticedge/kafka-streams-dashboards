@@ -5,6 +5,7 @@ import io.kineticedge.ksd.common.domain.ProductAnalytic;
 import io.kineticedge.ksd.common.domain.ProductAnalyticOut;
 import io.kineticedge.ksd.common.domain.PurchaseOrder;
 import io.kineticedge.ksd.common.metrics.StreamsMetrics;
+import io.kineticedge.ksd.common.rocksdb.RocksDBConfigSetter;
 import io.kineticedge.ksd.tools.config.KafkaEnvUtil;
 import io.kineticedge.ksd.tools.config.PropertyUtils;
 import io.kineticedge.ksd.tools.serde.JsonSerde;
@@ -21,14 +22,30 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler;
 import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
-import org.apache.kafka.streams.kstream.*;
+import org.apache.kafka.streams.kstream.Consumed;
+import org.apache.kafka.streams.kstream.Grouped;
+import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.kstream.Named;
+import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.kstream.Repartitioned;
+import org.apache.kafka.streams.kstream.SessionWindows;
+import org.apache.kafka.streams.kstream.SlidingWindows;
+import org.apache.kafka.streams.kstream.Suppressed;
+import org.apache.kafka.streams.kstream.TimeWindows;
+import org.apache.kafka.streams.kstream.Windowed;
 import org.apache.kafka.streams.processor.PunctuationType;
 import org.apache.kafka.streams.processor.Punctuator;
 import org.apache.kafka.streams.processor.StateStore;
 import org.apache.kafka.streams.processor.api.FixedKeyProcessor;
 import org.apache.kafka.streams.processor.api.FixedKeyProcessorContext;
 import org.apache.kafka.streams.processor.api.FixedKeyRecord;
-import org.apache.kafka.streams.state.*;
+import org.apache.kafka.streams.state.KeyValueIterator;
+import org.apache.kafka.streams.state.KeyValueStore;
+import org.apache.kafka.streams.state.SessionStore;
+import org.apache.kafka.streams.state.TimestampedKeyValueStore;
+import org.apache.kafka.streams.state.ValueAndTimestamp;
+import org.apache.kafka.streams.state.WindowStore;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -64,7 +81,7 @@ public class Streams {
             Map.entry(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE),
             Map.entry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, "TRACE"),
             Map.entry(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class.getName()),
-            Map.entry(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG, RocksDBConfig.class.getName()),
+            Map.entry(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG, RocksDBConfigSetter.class.getName()),
 
             Map.entry(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 2 * 1024 * 1024L),          // default is 10 MiB (10 * 1024 * 1024L)
 
@@ -76,7 +93,13 @@ public class Streams {
 
     map.putAll(PropertyUtils.loadProperties("./analytics.properties"));
 
-    map.putAll(KafkaEnvUtil.to("KAFKA_"));
+    map.putAll(new KafkaEnvUtil().to("KAFKA_"));
+
+    final String instanceId = System.getenv("INSTANCE_ID");
+    if (instanceId != null) {
+      int id = Integer.parseInt(System.getenv("INSTANCE_ID"));
+      map.putAll(new KafkaEnvUtil().to("KAFKA_" + id + "_"));
+    }
 
     return map;
   }
@@ -107,6 +130,16 @@ public class Streams {
       return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_APPLICATION;
     });
 
+
+    final StateObserver observer = new StateObserver(streams, options.getWindowType());
+    final Server servletDeployment = new Server(observer, options.getPort());
+
+    streams.setStateListener((newState, oldState) -> {
+      if (newState == KafkaStreams.State.PENDING_ERROR) {
+        servletDeployment.stop();
+      }
+    });
+
     streams.start();
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -120,10 +153,7 @@ public class Streams {
       }
     }));
 
-    final StateObserver observer = new StateObserver(streams, options.getWindowType());
-    final Server servletDeployment = new Server(observer, options.getPort());
     servletDeployment.start();
-    //final StatePurger purger = new StatePurger(streams, options);
   }
 
   private StreamsBuilder streamsBuilder() {

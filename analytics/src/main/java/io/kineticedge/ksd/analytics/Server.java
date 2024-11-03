@@ -24,6 +24,8 @@ import java.util.Map;
 
 public class Server {
 
+  private HttpServer server;
+
   private static final ObjectMapper OBJECT_MAPPER =
           new ObjectMapper()
                   .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -43,7 +45,7 @@ public class Server {
 
   public void start() {
     try {
-      HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+      server = HttpServer.create(new InetSocketAddress(port), 0);
 
       // Register the endpoints
       server.createContext("/", new CustomHandler());
@@ -52,6 +54,10 @@ public class Server {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public void stop() {
+    server.stop(0);
   }
 
   private class CustomHandler implements HttpHandler {

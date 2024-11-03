@@ -1,11 +1,16 @@
 [
   {
     "targets": [
-      "analytics_tumbling:7071",
-      "analytics_hopping:7071",
-      "analytics_sliding:7071",
-      "analytics_session:7071",
-      "analytics_none:7071"
+      "ksda-analytics_tumbling-1:7071",
+      "ksda-analytics_tumbling-2:7071",
+      "ksda-analytics_hopping-1:7071",
+      "ksda-analytics_hopping-2:7071",
+      "ksda-analytics_sliding-1:7071",
+      "ksda-analytics_sliding-2:7071",
+      "ksda-analytics_session-1:7071",
+      "ksda-analytics_session-2:7071",
+      "ksda-analytics_none-1:7071",
+      "ksda-analytics_none-2:7071"
     ],
     "labels": {
       "job": "analytics",

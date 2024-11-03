@@ -54,7 +54,7 @@ services:
       CLIENT_ID_PREFIX: "stream"
       OTEL_SERVICE_NAME: STREAMS
 
-  analytics_sliding:
+  analytics-sliding:
     image: ksd_app:latest
     stop_grace_period: 120s
     healthcheck:
@@ -75,13 +75,13 @@ services:
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      APPLICATION_ID: "analytics_sliding"
-      CLIENT_ID_PREFIX: "analytics_sliding"
+      APPLICATION_ID: "analytics-sliding"
+      CLIENT_ID_PREFIX: "analytics-sliding"
       WINDOW_TYPE: SLIDING
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_SLIDING
 
-  analytics_tumbling:
+  analytics-tumbling:
     image: ksd_app:latest
     stop_grace_period: 120s
     healthcheck:
@@ -102,13 +102,13 @@ services:
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      APPLICATION_ID: "analytics_tumbling"
-      CLIENT_ID_PREFIX: "analytics_tumbling"
+      APPLICATION_ID: "analytics-tumbling"
+      CLIENT_ID_PREFIX: "analytics-tumbling"
       WINDOW_TYPE: TUMBLING
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_TUMBLING
 
-  analytics_hopping:
+  analytics-hopping:
     image: ksd_app:latest
     stop_grace_period: 120s
     healthcheck:
@@ -129,13 +129,13 @@ services:
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      APPLICATION_ID: "analytics_hopping"
-      CLIENT_ID_PREFIX: "analytics_hopping"
+      APPLICATION_ID: "analytics-hopping"
+      CLIENT_ID_PREFIX: "analytics-hopping"
       WINDOW_TYPE: HOPPING
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_HOPPING
 
-  analytics_session:
+  analytics-session:
     image: ksd_app:latest
     stop_grace_period: 120s
     healthcheck:
@@ -156,13 +156,13 @@ services:
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      APPLICATION_ID: "analytics_session"
-      CLIENT_ID_PREFIX: "analytics_session"
+      APPLICATION_ID: "analytics-session"
+      CLIENT_ID_PREFIX: "analytics-session"
       WINDOW_TYPE: SESSION
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_SESSION
 
-  analytics_none:
+  analytics-none:
     image: ksd_app:latest
     stop_grace_period: 120s
     healthcheck:
@@ -183,8 +183,8 @@ services:
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      APPLICATION_ID: "analytics_none"
-      CLIENT_ID_PREFIX: "analytics_none"
+      APPLICATION_ID: "analytics-none"
+      CLIENT_ID_PREFIX: "analytics-none"
       WINDOW_TYPE: NONE
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_NONE
@@ -203,15 +203,15 @@ services:
     depends_on:
       stream:
         condition: service_healthy
-      analytics_none:
+      analytics-none:
         condition: service_healthy
-      analytics_tumbling:
+      analytics-tumbling:
         condition: service_healthy
-      analytics_hopping:
+      analytics-hopping:
         condition: service_healthy
-      analytics_sliding:
+      analytics-sliding:
         condition: service_healthy
-      analytics_session:
+      analytics-session:
         condition: service_healthy
     ports:
       - "8888:80"

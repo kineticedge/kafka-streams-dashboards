@@ -179,7 +179,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {

@@ -177,7 +177,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -348,7 +348,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -523,7 +523,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {

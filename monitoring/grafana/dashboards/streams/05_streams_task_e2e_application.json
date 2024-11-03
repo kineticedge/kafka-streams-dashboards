@@ -72,7 +72,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -140,7 +140,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -342,7 +342,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "repeat": "partition",
       "repeatDirection": "h",
       "targets": [
@@ -573,7 +573,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "repeat": "partition",
       "repeatDirection": "h",
       "targets": [

@@ -24,8 +24,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 19,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -38,11 +38,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -94,7 +96,6 @@
       },
       "id": 8,
       "interval": "2s",
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -111,7 +112,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -162,12 +163,12 @@
       },
       "id": 35,
       "interval": "2s",
-      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -175,10 +176,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -211,11 +214,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -267,7 +272,6 @@
       },
       "id": 36,
       "interval": "2s",
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -284,7 +288,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -335,12 +339,12 @@
       },
       "id": 37,
       "interval": "2s",
-      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -348,10 +352,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -384,11 +390,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -440,7 +448,6 @@
       },
       "id": 30,
       "interval": "2s",
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -457,7 +464,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -508,12 +515,12 @@
       },
       "id": 32,
       "interval": "2s",
-      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -521,10 +528,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -557,11 +566,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -613,7 +624,6 @@
       },
       "id": 39,
       "interval": "2s",
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -632,7 +642,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -683,12 +693,12 @@
       },
       "id": 40,
       "interval": "2s",
-      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -696,10 +706,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -732,11 +744,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -778,32 +792,7 @@
           },
           "unit": "msgs"
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "analytics_sliding|0_2"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 7,
@@ -813,7 +802,6 @@
       },
       "id": 41,
       "interval": "2s",
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -830,7 +818,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -881,12 +869,12 @@
       },
       "id": 42,
       "interval": "2s",
-      "links": [],
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -894,10 +882,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.2.0-130592pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -920,9 +910,9 @@
       "type": "stat"
     }
   ],
+  "preload": false,
   "refresh": "2s",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 40,
   "tags": [
     "streams"
   ],
@@ -931,7 +921,6 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -940,10 +929,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(jvm_runtime_info{cluster_type=\"streams\"}, cluster_id)",
-        "hide": 0,
         "includeAll": true,
         "label": "cluster",
-        "multi": false,
         "name": "cluster",
         "options": [],
         "query": {
@@ -952,28 +939,20 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
-          "text": "analytics_tumbling",
-          "value": "analytics_tumbling"
+          "text": "analytics-tumbling",
+          "value": "analytics-tumbling"
         },
         "datasource": {
           "type": "prometheus",
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_streams_infor{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
-        "hide": 0,
         "includeAll": true,
-        "multi": false,
         "name": "application",
         "options": [],
         "query": {
@@ -982,14 +961,10 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
-        "allValue": "",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -999,10 +974,8 @@
         },
         "definition": "label_values(kafka_streams_infor{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
         "description": "cannot use .* for all, since then thread is not limited to the application that was selected.",
-        "hide": 0,
         "includeAll": true,
         "label": "instance",
-        "multi": false,
         "name": "instance",
         "options": [],
         "query": {
@@ -1011,16 +984,10 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1029,10 +996,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_tot{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
-        "hide": 0,
         "includeAll": true,
         "label": "thread",
-        "multi": false,
         "name": "thread",
         "options": [],
         "query": {
@@ -1041,16 +1006,10 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "current": {
-          "selected": true,
           "text": "0",
           "value": "0"
         },
@@ -1059,10 +1018,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
-        "hide": 0,
         "includeAll": true,
         "label": "task",
-        "multi": false,
         "name": "task",
         "options": [],
         "query": {
@@ -1071,17 +1028,11 @@
         },
         "refresh": 1,
         "regex": "/^(.*)_.*$/",
-        "skipUrlSync": false,
         "sort": 3,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
-        "allValue": "",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -1090,10 +1041,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
-        "hide": 0,
         "includeAll": true,
         "label": "partition",
-        "multi": false,
         "name": "partition",
         "options": [],
         "query": {
@@ -1102,10 +1051,7 @@
         },
         "refresh": 1,
         "regex": "/^.*_(.*)$/",
-        "skipUrlSync": false,
         "sort": 3,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
         "type": "query"
       }
     ]
@@ -1127,18 +1073,6 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "1m",
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
   "timezone": "",

@@ -141,7 +141,7 @@
         "showRowNums": false,
         "sortBy": []
       },
-      "pluginVersion": "9.5.0-105692pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {
@@ -453,7 +453,7 @@
           }
         ]
       },
-      "pluginVersion": "9.5.0-105692pre",
+      "pluginVersion": "11.4.0-205587",
       "targets": [
         {
           "datasource": {

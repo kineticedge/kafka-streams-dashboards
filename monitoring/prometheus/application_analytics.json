@@ -1,16 +1,16 @@
 [
   {
     "targets": [
-      "ksda-analytics_tumbling-1:7071",
-      "ksda-analytics_tumbling-2:7071",
-      "ksda-analytics_hopping-1:7071",
-      "ksda-analytics_hopping-2:7071",
-      "ksda-analytics_sliding-1:7071",
-      "ksda-analytics_sliding-2:7071",
-      "ksda-analytics_session-1:7071",
-      "ksda-analytics_session-2:7071",
-      "ksda-analytics_none-1:7071",
-      "ksda-analytics_none-2:7071"
+      "ksda-analytics-tumbling-1:7071",
+      "ksda-analytics-tumbling-2:7071",
+      "ksda-analytics-hopping-1:7071",
+      "ksda-analytics-hopping-2:7071",
+      "ksda-analytics-sliding-1:7071",
+      "ksda-analytics-sliding-2:7071",
+      "ksda-analytics-session-1:7071",
+      "ksda-analytics-session-2:7071",
+      "ksda-analytics-none-1:7071",
+      "ksda-analytics-none-2:7071"
     ],
     "labels": {
       "job": "analytics",

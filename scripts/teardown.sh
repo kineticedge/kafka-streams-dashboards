@@ -19,16 +19,4 @@ alias dc='docker compose'
 (cd cluster-native; dc down -v)
 (cd cluster-cm; dc down -v)
 
-rm -fr applications/stores/analytics_tumbling
-rm -fr applications/stores/analytics_hopping
-rm -fr applications/stores/analytics_sliding
-rm -fr applications/stores/analytics_session
-rm -fr applications/stores/analytics_none
-
-rm -fr applications-sas/stores/analytics_tumbling
-rm -fr applications-sas/stores/analytics_hopping
-rm -fr applications-sas/stores/analytics_sliding
-rm -fr applications-sas/stores/analytics_session
-rm -fr applications-sas/stores/analytics_none
-
 #docker network rm ksd

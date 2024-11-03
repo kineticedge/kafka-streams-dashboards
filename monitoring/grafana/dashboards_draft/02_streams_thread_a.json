@@ -1279,8 +1279,8 @@
       {
         "current": {
           "selected": true,
-          "text": "analytics_hopping-1-StreamThread-1",
-          "value": "analytics_hopping-1-StreamThread-1"
+          "text": "analytics-hopping-1-StreamThread-1",
+          "value": "analytics-hopping-1-StreamThread-1"
         },
         "datasource": {
           "type": "prometheus",

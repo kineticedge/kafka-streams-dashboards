@@ -13,8 +13,7 @@ volumes:
 services:
 
   controller-0:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: controller-0
     container_name: ${COMPOSE_PROJECT_NAME}-controller-0
     stop_grace_period: 120s
@@ -41,10 +40,8 @@ services:
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
 
-
   broker-1:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: broker-1
     container_name: ${COMPOSE_PROJECT_NAME}-broker-1
     stop_grace_period: 120s
@@ -81,11 +78,9 @@ services:
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
-      CONFLUENT_METRICS_ENABLE: 'false'
 
   broker-2:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: broker-2
     container_name: ${COMPOSE_PROJECT_NAME}-broker-2
     stop_grace_period: 120s
@@ -121,11 +116,9 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
-      CONFLUENT_METRICS_ENABLE: 'false'
 
   broker-3:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: broker-3
     container_name: ${COMPOSE_PROJECT_NAME}-broker-3
     stop_grace_period: 120s
@@ -161,11 +154,9 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
-      CONFLUENT_METRICS_ENABLE: 'false'
 
   broker-4:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: broker-4
     container_name: ${COMPOSE_PROJECT_NAME}-broker-4
     stop_grace_period: 120s
@@ -201,7 +192,6 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
-      CONFLUENT_METRICS_ENABLE: 'false'
 
   broker-1-lb:
     build: ./nginx

@@ -15,8 +15,7 @@ volumes:
 services:
 
   controller-0:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: controller-0
     container_name: ${COMPOSE_PROJECT_NAME}-controller-0
     stop_grace_period: 120s
@@ -45,8 +44,7 @@ services:
       KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
 
   controller-1:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: controller-1
     container_name: ${COMPOSE_PROJECT_NAME}-controller-1
     stop_grace_period: 120s
@@ -75,8 +73,7 @@ services:
       KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
 
   controller-2:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: controller-2
     container_name: ${COMPOSE_PROJECT_NAME}-controller-2
     stop_grace_period: 120s
@@ -106,8 +103,7 @@ services:
 
 
   broker-1:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: broker-1
     container_name: ${COMPOSE_PROJECT_NAME}-broker-1
     stop_grace_period: 120s
@@ -125,6 +121,7 @@ services:
       controller-2:
         condition: service_healthy
     ports:
+      - '9092:19092'
       - '19092:19092'
       - '17071:7071'
     volumes:
@@ -148,12 +145,9 @@ services:
       KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
       KAFKA_METRIC_REPORTERS: ' '
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
-      CONFLUENT_METRICS_ENABLE: 'false'
-
 
   broker-2:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: broker-2
     container_name: ${COMPOSE_PROJECT_NAME}-broker-2
     stop_grace_period: 120s
@@ -193,11 +187,9 @@ services:
       KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
       KAFKA_METRIC_REPORTERS: ' '
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
-      CONFLUENT_METRICS_ENABLE: 'false'
 
   broker-3:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: broker-3
     container_name: ${COMPOSE_PROJECT_NAME}-broker-3
     stop_grace_period: 120s
@@ -237,11 +229,9 @@ services:
       KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
       KAFKA_METRIC_REPORTERS: ' '
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
-      CONFLUENT_METRICS_ENABLE: 'false'
 
   broker-4:
-    platform: ${PLATFORM}
-    image: confluentinc/cp-kafka:${VERSION}
+    image: ${IMAGE}:${VERSION}
     hostname: broker-4
     container_name: ${COMPOSE_PROJECT_NAME}-broker-4
     stop_grace_period: 120s
@@ -281,4 +271,3 @@ services:
       KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
       KAFKA_METRIC_REPORTERS: ' '
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
-      CONFLUENT_METRICS_ENABLE: 'false'

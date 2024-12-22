@@ -476,7 +476,7 @@
     ]
   },
   "timezone": "",
-  "title": "02 - Clients -- Consumer",
+  "title": "01 - Clients -- Consumer (required)",
   "uid": "clients_consumer_required",
   "version": 1,
   "weekStart": ""

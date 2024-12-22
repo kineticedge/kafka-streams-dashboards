@@ -77,7 +77,7 @@ public class Streams {
             Map.entry(StreamsConfig.APPLICATION_ID_CONFIG, options.getApplicationId()),
             Map.entry(StreamsConfig.CLIENT_ID_CONFIG, options.getClientId()),
             Map.entry(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, options.getAutoOffsetReset()),
-            Map.entry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, options.getCommitInterval()),
+
             Map.entry(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE),
             Map.entry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, "TRACE"),
             Map.entry(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class.getName()),

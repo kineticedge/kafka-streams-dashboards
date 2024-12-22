@@ -4,11 +4,15 @@ import io.kineticedge.ksd.common.domain.Product;
 import io.kineticedge.ksd.common.domain.PurchaseOrder;
 import io.kineticedge.ksd.common.domain.Store;
 import io.kineticedge.ksd.common.domain.User;
+import io.kineticedge.ksd.common.metrics.MicrometerConfig;
 import io.kineticedge.ksd.common.metrics.StreamsMetrics;
 import io.kineticedge.ksd.common.rocksdb.RocksDBConfigSetter;
 import io.kineticedge.ksd.tools.config.KafkaEnvUtil;
 import io.kineticedge.ksd.tools.config.PropertyUtils;
 import io.kineticedge.ksd.tools.serde.JsonSerde;
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.binder.kafka.KafkaStreamsMetrics;
+import io.micrometer.core.instrument.config.MeterFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -176,6 +180,8 @@ public class Streams {
             return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_APPLICATION;
         });
 
+        MicrometerConfig micrometerConfig = new MicrometerConfig(options.getApplicationId(), streams);
+
         streams.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -209,7 +215,7 @@ public class Streams {
 
         final StateObserver observer = new StateObserver(streams);
 
-        final Server servletDeployment2 = new Server(observer, options.getPort());
+        final Server servletDeployment2 = new Server(observer, micrometerConfig, options.getPort());
         servletDeployment2.start();
     }
 

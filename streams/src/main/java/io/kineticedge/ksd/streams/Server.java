@@ -10,14 +10,19 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import io.kineticedge.ksd.common.domain.util.HttpUtils;
+import io.kineticedge.ksd.common.metrics.MicrometerConfig;
 import io.kineticedge.ksd.streams.domain.ByOrderId;
 import io.kineticedge.ksd.streams.jackson.ByOrderIdSerializer;
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.prometheusmetrics.PrometheusConfig;
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 public class Server {
 
@@ -32,18 +37,33 @@ public class Server {
   private final StateObserver stateObserver;
   private final int port;
 
-  public Server(StateObserver stateObserver, int port) {
+  private final MicrometerConfig micrometerConfig;
+
+  public Server(StateObserver stateObserver, MicrometerConfig micrometerConfig, int port) {
     this.stateObserver = stateObserver;
+    this.micrometerConfig = micrometerConfig;
     this.port = port;
   }
 
   public void start() {
+
     try {
       HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
+      server.createContext("/metrics", exchange -> {
+        exchange.getResponseHeaders().set("Content-Type", "html/text");
+        exchange.getResponseHeaders().set("Cache-Control", "no-cache");
+        exchange.sendResponseHeaders(200, 0);
+        try (exchange; OutputStream os = exchange.getResponseBody()) {
+          micrometerConfig.scrape(os);
+        }
+      });
+
       server.createContext("/", new CustomHandler());
 
-      server.setExecutor(null); // Use default executor
+      //server.setExecutor(null); // Use default executor
+      server.setExecutor(Executors.newFixedThreadPool(4));
+
       server.start();
     } catch (IOException e) {
       throw new RuntimeException(e);

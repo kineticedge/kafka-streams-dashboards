@@ -11,6 +11,8 @@ val lombok_version: String by project
 val junit_pioneer_version: String by project
 val junit_version: String by project
 
+val micrometer_version: String by project
+
 plugins {
     id("java")
 //    id("application")
@@ -48,6 +50,10 @@ subprojects.filter { it.name != "metrics-reporter" }.forEach {
     }
 
     it.dependencies {
+
+        implementation("io.micrometer:micrometer-registry-prometheus:$micrometer_version")
+        implementation("io.micrometer:micrometer-core:$micrometer_version")
+
         implementation("ch.qos.logback:logback-classic:$logback_version")
         implementation("org.jcommander:jcommander:$jcommander_version")
         implementation("com.fasterxml.jackson.core:jackson-core:$jackson_version")

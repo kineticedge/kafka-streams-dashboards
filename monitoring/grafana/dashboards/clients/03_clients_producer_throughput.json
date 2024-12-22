@@ -21,7 +21,7 @@
       }
     ]
   },
-  "description": "Kafka Consumer Java client metrics",
+  "description": "Java client Kafka Producer metrics",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -42,7 +42,7 @@
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "Messages/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -84,15 +84,220 @@
               }
             ]
           },
-          "unit": "ops"
+          "unit": "iops"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
-        "w": 8,
+        "h": 11,
+        "w": 12,
         "x": 0,
         "y": 0
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.1.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "rate(kafka_clients_org_apache_kafka_producer_record_send_total{client_id=~\"$client_id\"}[$__rate_interval])",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{client_id}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Outgoing Messages / second (client)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Bytes/s",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.1.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "rate(kafka_clients_org_apache_kafka_producer_outgoing_byte_total{client_id=~\"$client_id\"}[$__rate_interval])",
+          "interval": "",
+          "legendFormat": "{{client_id}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Outgoing Byte Rate (client)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Messages/s",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "iops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 0,
+        "y": 11
       },
       "id": 5,
       "options": {
@@ -120,14 +325,15 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_consumer_consumer_fetch_manager_metrics_fetch{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}[$__rate_interval])",
-          "instant": false,
+          "expr": "sum(rate(kafka_clients_org_apache_kafka_producer_topic_record_send_total{client_id=~\"$client_id\", topic=~\".+\"}[$__rate_interval])) by (topic)",
+          "hide": false,
           "interval": "",
-          "legendFormat": "{{client_id}} ({{instance}})",
-          "refId": "B"
+          "legendFormat": "{{topic}}",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "title": "Fetch Requests / second",
+      "title": "Outgoing messages / second (topic)",
       "type": "timeseries"
     },
     {
@@ -144,7 +350,7 @@
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "Bytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -171,210 +377,7 @@
               "mode": "off"
             }
           },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 8,
-        "x": 8,
-        "y": 0
-      },
-      "id": 34,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max",
-            "mean"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.1.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "kafka_consumer_consumer_fetch_manager_metrics_fetch_size_avg{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}",
-          "legendFormat": "{{client_id}} ({{instance}})",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Average Fetch Size / Request",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "The average time taken for a fetch request.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 8,
-        "x": 16,
-        "y": 0
-      },
-      "id": 32,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max",
-            "mean"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Last *",
-          "sortDesc": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.1.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "kafka_consumer_consumer_fetch_manager_metrics_fetch_latency_avg{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}",
-          "interval": "",
-          "legendFormat": "{{client_id}} ({{instance}})",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Average Fetch Latency",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
+          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -389,119 +392,17 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "Bps"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 13,
-        "w": 12,
-        "x": 0,
-        "y": 12
-      },
-      "id": 36,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max",
-            "mean"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.1.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "kafka_consumer_consumer_coordinator_metrics_commit_latency_avg{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
-          "interval": "",
-          "legendFormat": "{{client_id}} ({{instance}})",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Average Commit Latency",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "ops"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 13,
+        "h": 11,
         "w": 12,
         "x": 12,
-        "y": 12
+        "y": 11
       },
-      "id": 43,
+      "id": 3,
       "options": {
         "legend": {
           "calcs": [
@@ -527,29 +428,27 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_coordinator_metrics_commit_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
+          "expr": "sum(rate(kafka_clients_org_apache_kafka_producer_topic_byte_total{client_id=~\"$client_id\", topic=~\".+\"}[$__rate_interval])) by (topic)",
+          "hide": false,
           "interval": "",
-          "legendFormat": "{{client_id}} ({{instance}})",
+          "legendFormat": "{{topic}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Commit Calls / second",
+      "title": "Outgoing Byte Rate (topic)",
       "type": "timeseries"
     }
   ],
   "refresh": "2s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [
-    "consumer"
-  ],
+  "tags": [ "clients" ],
   "templating": {
     "list": [
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -557,87 +456,19 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=~\"streams|producer|consumer\"},cluster_id)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "cluster",
-        "multi": false,
-        "name": "cluster",
-        "options": [],
-        "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=~\"streams|producer|consumer\"},cluster_id)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": ".+",
-        "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
-        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\"},instance)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "instance",
-        "multi": false,
-        "name": "instance",
-        "options": [],
-        "query": {
-          "query": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\"},instance)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": ".+",
-        "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
-        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
-        "hide": 0,
+        "definition": "label_values(kafka_clients_org_apache_kafka_producer_connection_count,client_id)",
         "includeAll": true,
         "label": "client-id",
-        "multi": false,
         "name": "client_id",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
+          "qryType": 1,
+          "query": "label_values(kafka_clients_org_apache_kafka_producer_connection_count,client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       }
     ]
   },
@@ -673,8 +504,8 @@
     ]
   },
   "timezone": "",
-  "title": "02 - Fetch and Commit Metrics",
-  "uid": "consumer_fetch_commit",
+  "title": "03 - Clients - Producer Throughput",
+  "uid": "clients_producer_throughput",
   "version": 1,
   "weekStart": ""
 }

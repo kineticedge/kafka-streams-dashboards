@@ -451,7 +451,7 @@
     ]
   },
   "timezone": "",
-  "title": "01 - Clients -- Producer",
+  "title": "01 - Clients -- Producer (required)",
   "uid": "clients_producer_required",
   "version": 10,
   "weekStart": ""

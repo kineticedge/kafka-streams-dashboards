@@ -1,0 +1,22 @@
+[
+  {
+    "targets": [
+      "ksda-stream-1:8080",
+      "ksda-stream-2:8080",
+      "ksda-stream-3:8080",
+      "ksda-stream-4:8080",
+      "ksda-stream-5:8080",
+      "ksda-stream-6:8080",
+      "ksda-stream-7:8080",
+      "ksda-stream-8:8080",
+      "ksda-stream-9:8080",
+      "ksda-stream-10:8080"
+    ],
+    "labels": {
+      "job": "streams",
+      "cluster_type": "streams",
+      "cluster_id": "streams",
+      "source": "micrometer"
+    }
+  }
+]

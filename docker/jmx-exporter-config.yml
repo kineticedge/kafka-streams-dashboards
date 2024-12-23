@@ -20,31 +20,34 @@ rules:
     version: "$2"
   value: 1
 - pattern: kafka.producer<type=kafka-metrics-count, client-id=(.+)><>(.+):.+
-  name: kafka_producer_kafka_metrics_count_$2
+  name: kafka_producer_kafka_count_$2
   labels:
     client_id: "$1"
-#
+
 - pattern: kafka.producer<type=producer-metrics, client-id=(.+)><>(.+)-total:.+
-  name: kafka_producer_producer_metrics_$2_tot
+  name: kafka_producer_$2_total
+  type: COUNTER
   labels:
     client_id: "$1"
 - pattern: kafka.producer<type=producer-metrics, client-id=(.+)><>(.+):.+
-  name: kafka_producer_producer_metrics_$2
+  name: kafka_producer_$2
   labels:
     client_id: "$1"
-#
+
 - pattern: kafka.producer<type=producer-topic-metrics, client-id=(.+), topic=(.+)><>(.+)-total:.+
-  name: kafka_producer_producer_topic_metrics_$3_tot
+  name: kafka_producer_topic_$3_total
+  type: COUNTER
   labels:
     client_id: "$1"
     topic: "$2"
 - pattern: kafka.producer<type=producer-topic-metrics, client-id=(.+), topic=(.+)><>(.+):.+
-  name: kafka_producer_producer_topic_metrics_$3
+  name: kafka_producer_topic_$3
+  type: GAUGE
   labels:
     client_id: "$1"
     topic: "$2"
 - pattern: kafka.producer<type=producer-node-metrics, client-id=(.+), node-id=(.+)><>(.+):.+
-  name: kafka_producer_producer_node_metrics_$3
+  name: kafka_producer_node_$3
   labels:
     client_id: "$1"
     node_id: "$2"
@@ -56,59 +59,68 @@ rules:
   labels:
     client_id: "$1"
 - pattern: "kafka.consumer<type=app-info, client-id=(.+)><>version: (.*)"
-  name: kafka_consumer_app_info
+  name: kafka_consumer_app_infor
   labels:
     client_id: "$1"
     version: "$2"
   value: 1
 - pattern: kafka.consumer<type=kafka-metrics-count, client-id=(.+)><>(.+):.+
-  name: kafka_consumer_kafka_metrics_count_$2
+  name: kafka_consumer_kafka_count_$2
   labels:
     client_id: "$1"
 - pattern: kafka.consumer<type=consumer-metrics, client-id=(.+)><>(.+):.+
-  name: kafka_consumer_consumer_metrics_$2
+  name: kafka_consumer_$2
   labels:
     client_id: "$1"
-#
+
 - pattern: kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)><>(.+)-total:.+
-  name: kafka_consumer_consumer_coordinator_metrics_$2_tot
+  name: kafka_consumer_coordinator_$2_total
+  type: COUNTER
   labels:
     client_id: "$1"
 - pattern: kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)><>(.+):.+
-  name: kafka_consumer_consumer_coordinator_metrics_$2
+  name: kafka_consumer_coordinator_$2
   labels:
     client_id: "$1"
 - pattern: kafka.consumer<type=consumer-node-metrics, client-id=(.+), node-id=(.+)><>(.+):.+
-  name: kafka_consumer_consumer_node_metrics_$3
+  name: kafka_consumer_node_$3
   labels:
     client_id: "$1"
     node_id: "$2"
-#
+
 - pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(.+)-total:.+
-  name: kafka_consumer_consumer_fetch_manager_metrics_$4_tot
+  name: kafka_consumer_fetch_manager_$4_total
+  type: COUNTER
   labels:
     client_id: "$1"
     topic: "$2"
     partition: "$3"
 - pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(.+):.+
-  name: kafka_consumer_consumer_fetch_manager_metrics_$4
+  name: kafka_consumer_fetch_manager_$4
   labels:
     client_id: "$1"
     topic: "$2"
     partition: "$3"
-#
+
 - pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+)><>(.+)-total:.+
-  name: kafka_consumer_consumer_fetch_manager_metrics_$3_tot
+  name: kafka_consumer_fetch_manager_$3_total
+  type: COUNTER
   labels:
     client_id: "$1"
     topic: "$2"
 - pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+)><>(.+):.+
-  name: kafka_consumer_consumer_fetch_manager_metrics_$3
+  name: kafka_consumer_fetch_manager_$3
+  type: GAUGE
   labels:
     client_id: "$1"
     topic: "$2"
+- pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+)><>(.+)-total:.+
+  type: COUNTER
+  name: kafka_consumer_fetch_manager_$2
+  labels:
+    client_id: "$1"
 - pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+)><>(.+):.+
-  name: kafka_consumer_consumer_fetch_manager_metrics_$2
+  name: kafka_consumer_fetch_manager_$2
   labels:
     client_id: "$1"
 #
@@ -124,74 +136,91 @@ rules:
     client_id: $1
     "$2": "$3"
 - pattern: kafka.streams<type=stream-record-cache-metrics, thread-id=(.+), task-id=(.+), record-cache-id=(.+)><>(.+):.+
-  name: kafka_streams_stream_record_cache_metrics
+  name: kafka_stream_record_cache
   labels:
     thread_id: "$1"
     task_id: "$2"
     record-cache-id: "$3"
     metric: "$4"
 - pattern: kafka.streams<type=stream-state-metrics, thread-id=(.+), task-id=(.+), (.+)-id=(.+)><>(.+):.+
-  name: kafka_streams_stream_state_metrics
+  name: kafka_stream_state
   labels:
     thread_id: "$1"
     task_id: "$2"
     store_type: "$3"
     state_id: "$4"
     metric: "$5"
+
+# dropping -total or droping -created would be ok, but dropping -created-total and -total leads
+# to one metric overriding the other, as they end up having the same name.
+
 # in 1.0.1 _total gets sanitized, use tot - https://github.com/prometheus/jmx_exporter/issues/982
+#- pattern: kafka.streams<type=stream-thread-metrics, thread-id=(.+)><>(.+)-created-total:.+
+#  name: kafka_stream_thread_$2_xxx_total
+#  type: COUNTER
+#  labels:
+#    thread_id: "$1"
+#- pattern: kafka.streams<type=stream-thread-metrics, thread-id=(.+)><>created-total:.+
+#  name: kafka_stream_thread_$2_XXXX
+#  type: COUNTER
+#  labels:
+#    thread_id: "$1"
 - pattern: kafka.streams<type=stream-thread-metrics, thread-id=(.+)><>(.+)-total:.+
-  name: kafka_streams_stream_thread_metrics_$2_tot
+  name: kafka_stream_thread_$2_total
+  type: COUNTER
   labels:
     thread_id: "$1"
 - pattern: kafka.streams<type=stream-thread-metrics, thread-id=(.+)><>(.+):.+
-  name: kafka_streams_stream_thread_metrics_$2
+  name: kafka_stream_thread_$2
   labels:
     thread_id: "$1"
 #
 - pattern: kafka.streams<type=stream-task-metrics, thread-id=(.*), task-id=(.+)><>(.+)-total:.+
-  name: kafka_streams_stream_task_metrics_$3_tot
+  name: kafka_stream_task_$3_total
+  type: COUNTER
   labels:
     thread_id: "$1"
     task_id: "$2"
 - pattern: kafka.streams<type=stream-task-metrics, thread-id=(.*), task-id=(.+)><>(.+):.+
-  name: kafka_streams_stream_task_metrics_$3
+  name: kafka_stream_task_$3
   labels:
     thread_id: "$1"
     task_id: "$2"
 #
-- pattern: kafka.streams<type=stream-processor-node-metrics, thread-id=(.*), task-id=(.+), processor-node-id=(.+)><>(.+)-total:.+
-  name: kafka_streams_stream_processor_node_metrics_$4_tot
-  labels:
-    thread_id: "$1"
-    task_id: "$2"
-    processor_node_id: "$3"
+#- pattern: kafka.streams<type=stream-processor-node-metrics, thread-id=(.*), task-id=(.+), processor-node-id=(.+)><>(.+)-total:.+
+#  name: kafka_stream_processor_node_$4_tot
+#  labels:
+#    thread_id: "$1"
+#    task_id: "$2"
+#    processor_node_id: "$3"
 - pattern: kafka.streams<type=stream-processor-node-metrics, thread-id=(.*), task-id=(.+), processor-node-id=(.+)><>(.+):.+
-  name: kafka_streams_stream_processor_node_metrics_$4
+  name: kafka_stream_processor_node_$4
   labels:
     thread_id: "$1"
     task_id: "$2"
     processor_node_id: "$3"
 #
 - pattern: kafka.streams<type=stream-topic-metrics, thread-id=(.*), task-id=(.+), processor-node-id=(.+), topic=(.+)><>(.+)-total:.+
-  name: kafka_streams_stream_topic_metrics_$5_tot
+  name: kafka_stream_topic_$5_total
+  type: COUNTER
   labels:
     thread_id: "$1"
     task_id: "$2"
     processor_node_id: "$3"
     topic: "$4"
 - pattern: kafka.streams<type=stream-topic-metrics, thread-id=(.*), task-id=(.+), processor-node-id=(.+), topic=(.+)><>(.+):.+
-  name: kafka_streams_stream_topic_metrics_$5
+  name: kafka_stream_topic_$5
   labels:
     thread_id: "$1"
     task_id: "$2"
     processor_node_id: "$3"
     topic: "$4"
 #- pattern: kafka.producer<type=producer-metrics, client-id=(.+)><>(.+):.+
-#  name: kafka_producer_producer_metrics_$2
+#  name: kafka_producer_$2
 #  labels:
 #    client_id: "$1"
 #- pattern: kafka.consumer<type=consumer-metrics, client-id=(.+)><>(.+):.+
-#  name: kafka_consumer_consumer_metrics_$2
+#  name: kafka_consumer_$2
 #  labels:
 #    client_id: "$1"
 #- pattern: application(.*)

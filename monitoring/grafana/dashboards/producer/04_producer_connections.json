@@ -120,7 +120,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by (client_id, instance) (kafka_producer_producer_metrics_connection_count{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"})",
+          "expr": "sum by (client_id, instance) (kafka_producer_connection_count{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"})",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "range": true,
@@ -222,7 +222,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_producer_producer_metrics_connection_count{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}[$__rate_interval])",
+          "expr": "rate(kafka_producer_connection_count{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "range": true,
@@ -323,7 +323,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_producer_producer_metrics_connection_creation_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
+          "expr": "kafka_producer_connection_creation_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "refId": "A"
@@ -423,7 +423,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_producer_producer_metrics_connection_close_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
+          "expr": "kafka_producer_connection_close_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "refId": "A"

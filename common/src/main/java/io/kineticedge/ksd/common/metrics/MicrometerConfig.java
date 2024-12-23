@@ -1,10 +1,14 @@
 package io.kineticedge.ksd.common.metrics;
 
 import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Tags;
+import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.binder.kafka.KafkaStreamsMetrics;
 import io.micrometer.core.instrument.config.MeterFilter;
+import io.micrometer.core.instrument.config.MeterFilterReply;
 import io.micrometer.prometheusmetrics.PrometheusConfig;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 import org.apache.kafka.streams.KafkaStreams;
@@ -13,10 +17,13 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class MicrometerConfig {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(MicrometerConfig.class);
+
+    private static final Pattern TOTAL = Pattern.compile("^(kafka\\..*\\.tot)al$");
 
     private static final List<String> ATTRIBUTES = List.of(
         "rocksdb.state.id",
@@ -38,8 +45,31 @@ public class MicrometerConfig {
 
         Metrics.globalRegistry.config().meterFilter(augmentKafkaStreamMetrics());
 
+//        Metrics.globalRegistry.config().meterFilter(new MeterFilter() {
+//          @Override
+//          public Meter.Id map(Meter.Id id) {
+////            System.out.println("!!! " + id.getName());
+//            if (TOTAL.matcher(id.getName()).matches()) {
+////              System.out.println("xxx!!!");
+//              return id.withName(id.getName().substring(0, id.getName().length() - 6) + "-tot");
+//            }
+//            return id;
+//          }
+//        });
+
         final KafkaStreamsMetrics kafkaStreamsMetrics = new KafkaStreamsMetrics(kafkaStreams);
         kafkaStreamsMetrics.bindTo(Metrics.globalRegistry);
+
+        Metrics.globalRegistry.gauge(
+                "kafka_stream_infor",
+                Tags.of(Tag.of("application.id", applicationId)),
+                kafkaStreams,
+                streams -> switch (streams.state()) {
+                  case RUNNING -> 1.0;
+                  case REBALANCING -> 0.5;
+                  default -> 0.0;
+                }
+        );
 
         Metrics.globalRegistry.add(prometheusMeterRegistry);
     }
@@ -47,6 +77,8 @@ public class MicrometerConfig {
     public void scrape(OutputStream os) throws IOException  {
         prometheusMeterRegistry.scrape(os);
     }
+
+
 
     private MeterFilter augmentKafkaStreamMetrics() {
         return new MeterFilter() {

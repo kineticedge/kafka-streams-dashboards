@@ -23,8 +23,6 @@ public class MicrometerConfig {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(MicrometerConfig.class);
 
-    private static final Pattern TOTAL = Pattern.compile("^(kafka\\..*\\.tot)al$");
-
     private static final List<String> ATTRIBUTES = List.of(
         "rocksdb.state.id",
         "rocksdb.window.state.id",
@@ -45,23 +43,11 @@ public class MicrometerConfig {
 
         Metrics.globalRegistry.config().meterFilter(augmentKafkaStreamMetrics());
 
-//        Metrics.globalRegistry.config().meterFilter(new MeterFilter() {
-//          @Override
-//          public Meter.Id map(Meter.Id id) {
-////            System.out.println("!!! " + id.getName());
-//            if (TOTAL.matcher(id.getName()).matches()) {
-////              System.out.println("xxx!!!");
-//              return id.withName(id.getName().substring(0, id.getName().length() - 6) + "-tot");
-//            }
-//            return id;
-//          }
-//        });
-
         final KafkaStreamsMetrics kafkaStreamsMetrics = new KafkaStreamsMetrics(kafkaStreams);
         kafkaStreamsMetrics.bindTo(Metrics.globalRegistry);
 
         Metrics.globalRegistry.gauge(
-                "kafka_stream_infor",
+                "kafka_streams_infor",
                 Tags.of(Tag.of("application.id", applicationId)),
                 kafkaStreams,
                 streams -> switch (streams.state()) {
@@ -79,6 +65,11 @@ public class MicrometerConfig {
     }
 
 
+    // kafka_stream_state
+
+    // kafka.stream.record.cache.hit.ratio.avg
+    // kafka.stream.record.cache.hit.ratio.min
+    // kafka.stream.record.cache.hit.ratio.max
 
     private MeterFilter augmentKafkaStreamMetrics() {
         return new MeterFilter() {

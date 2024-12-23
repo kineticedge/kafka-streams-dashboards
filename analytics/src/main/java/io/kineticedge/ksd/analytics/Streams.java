@@ -4,6 +4,7 @@ import io.kineticedge.ksd.analytics.util.FixedKeyRecordFactory;
 import io.kineticedge.ksd.common.domain.ProductAnalytic;
 import io.kineticedge.ksd.common.domain.ProductAnalyticOut;
 import io.kineticedge.ksd.common.domain.PurchaseOrder;
+import io.kineticedge.ksd.common.metrics.MicrometerConfig;
 import io.kineticedge.ksd.common.metrics.StreamsMetrics;
 import io.kineticedge.ksd.common.rocksdb.RocksDBConfigSetter;
 import io.kineticedge.ksd.tools.config.KafkaEnvUtil;
@@ -130,9 +131,11 @@ public class Streams {
       return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_APPLICATION;
     });
 
+    MicrometerConfig micrometerConfig = new MicrometerConfig(options.getApplicationId(), streams);
+
 
     final StateObserver observer = new StateObserver(streams, options.getWindowType());
-    final Server servletDeployment = new Server(observer, options.getPort());
+    final Server servletDeployment = new Server(observer, micrometerConfig, options.getPort());
 
     streams.setStateListener((newState, oldState) -> {
       if (newState == KafkaStreams.State.PENDING_ERROR) {

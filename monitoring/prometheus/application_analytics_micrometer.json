@@ -1,21 +1,22 @@
 [
   {
     "targets": [
-      "ksda-analytics-tumbling-1:7071",
-      "ksda-analytics-tumbling-2:7071",
-      "ksda-analytics-hopping-1:7071",
-      "ksda-analytics-hopping-2:7071",
-      "ksda-analytics-sliding-1:7071",
-      "ksda-analytics-sliding-2:7071",
-      "ksda-analytics-session-1:7071",
-      "ksda-analytics-session-2:7071",
-      "ksda-analytics-none-1:7071",
-      "ksda-analytics-none-2:7071"
+      "ksda-analytics-tumbling-1:8080",
+      "ksda-analytics-tumbling-2:8080",
+      "ksda-analytics-hopping-1:8080",
+      "ksda-analytics-hopping-2:8080",
+      "ksda-analytics-sliding-1:8080",
+      "ksda-analytics-sliding-2:8080",
+      "ksda-analytics-session-1:8080",
+      "ksda-analytics-session-2:8080",
+      "ksda-analytics-none-1:8080",
+      "ksda-analytics-none-2:8080"
     ],
     "labels": {
       "job": "analytics",
       "cluster_type": "streams",
-      "cluster_id": "analytics"
+      "cluster_id": "analytics",
+      "source": "micrometer"
     }
   }
 ]

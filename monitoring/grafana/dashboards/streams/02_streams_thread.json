@@ -1072,7 +1072,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"streams\"}, cluster_id)",
+        "definition": "label_values(kafka_streams_infor{cluster_type=\"streams\"}, cluster_id)",
         "hide": 0,
         "includeAll": true,
         "label": "cluster",
@@ -1080,7 +1080,7 @@
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"streams\"}, cluster_id)",
+          "query": "label_values(kafka_streams_infor{cluster_type=\"streams\"}, cluster_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

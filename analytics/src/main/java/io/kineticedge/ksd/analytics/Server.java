@@ -15,12 +15,14 @@ import io.kineticedge.ksd.analytics.jackson.BySkuSerializer;
 import io.kineticedge.ksd.analytics.jackson.ByWindowSerializer;
 import io.kineticedge.ksd.analytics.jackson.WindowSerializer;
 import io.kineticedge.ksd.common.domain.util.HttpUtils;
+import io.kineticedge.ksd.common.metrics.MicrometerConfig;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 public class Server {
 
@@ -37,9 +39,11 @@ public class Server {
 
   private final StateObserver stateObserver;
   private final int port;
+  private final MicrometerConfig micrometerConfig;
 
-  public Server(StateObserver stateObserver, int port) {
+  public Server(StateObserver stateObserver, MicrometerConfig micrometerConfig, int port) {
     this.stateObserver = stateObserver;
+    this.micrometerConfig = micrometerConfig;
     this.port = port;
   }
 
@@ -47,9 +51,19 @@ public class Server {
     try {
       server = HttpServer.create(new InetSocketAddress(port), 0);
 
-      // Register the endpoints
+      server.createContext("/metrics", exchange -> {
+        exchange.getResponseHeaders().set("Content-Type", "html/text");
+        exchange.getResponseHeaders().set("Cache-Control", "no-cache");
+        exchange.sendResponseHeaders(200, 0);
+        try (exchange; OutputStream os = exchange.getResponseBody()) {
+          micrometerConfig.scrape(os);
+        }
+      });
+
       server.createContext("/", new CustomHandler());
-      server.setExecutor(null); // TODO - use separate thread executor
+
+      server.setExecutor(Executors.newFixedThreadPool(4));
+
       server.start();
     } catch (IOException e) {
       throw new RuntimeException(e);

@@ -15,7 +15,8 @@
     "labels": {
       "job": "analytics",
       "cluster_type": "streams",
-      "cluster_id": "analytics"
+      "cluster_id": "analytics",
+      "source": "jmxprometheus"
     }
   }
 ]

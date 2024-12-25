@@ -38,9 +38,9 @@ services:
       - prometheus:/prometheus
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/application_streams.json:/etc/prometheus/application_streams.json
-      #- ./prometheus/application_streams_micrometer.json:/etc/prometheus/application_streams_micrometer.json
+#      - ./prometheus/application_streams_micrometer.json:/etc/prometheus/application_streams_micrometer.json
       - ./prometheus/application_analytics.json:/etc/prometheus/application_analytics.json
-      #- ./prometheus/application_analytics_micrometer.json:/etc/prometheus/application_analytics_micrometer.json
+#      - ./prometheus/application_analytics_micrometer.json:/etc/prometheus/application_analytics_micrometer.json
       - ./prometheus/application_publisher.json:/etc/prometheus/application_publisher.json
       - ./prometheus/application_sasl_streams.json:/etc/prometheus/application_sasl_streams.json
       - ./prometheus/application_sasl_analytics.json:/etc/prometheus/application_sasl_analytics.json

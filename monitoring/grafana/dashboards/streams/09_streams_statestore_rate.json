@@ -24,8 +24,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 10,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -113,7 +113,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "11.4.0-206727",
       "targets": [
         {
           "datasource": {
@@ -121,7 +121,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum without(task_id,thread_id) (kafka_stream_state{metric=~\"${metric}\", state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"} > 0) ",
+          "expr": "sum without(task_id,thread_id) (kafka_stream_state_[[metric]]{state_id=~\"${state}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\", store_type=~\"${store_type}\"} > 0) ",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -135,8 +135,9 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "2s",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [
     "streams"
   ],
@@ -145,7 +146,6 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -154,10 +154,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_streams_infor{cluster_type=\"streams\"}, cluster_id)",
-        "hide": 0,
         "includeAll": true,
         "label": "cluster",
-        "multi": false,
         "name": "cluster",
         "options": [],
         "query": {
@@ -166,17 +164,11 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -185,9 +177,7 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_streams_infor{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
-        "hide": 0,
         "includeAll": true,
-        "multi": false,
         "name": "application",
         "options": [],
         "query": {
@@ -196,14 +186,10 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
-        "allValue": "",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -213,10 +199,8 @@
         },
         "definition": "label_values(kafka_streams_infor{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
         "description": "cannot use .* for all, since then thread is not limited to the application that was selected.",
-        "hide": 0,
         "includeAll": true,
         "label": "instance",
-        "multi": false,
         "name": "instance",
         "options": [],
         "query": {
@@ -225,16 +209,10 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -243,10 +221,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_stream_thread_process_rate{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
-        "hide": 0,
         "includeAll": true,
         "label": "thread",
-        "multi": false,
         "name": "thread",
         "options": [],
         "query": {
@@ -255,16 +231,10 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -273,10 +243,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_stream_task_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
-        "hide": 0,
         "includeAll": true,
         "label": "task",
-        "multi": false,
         "name": "task",
         "options": [],
         "query": {
@@ -285,17 +253,11 @@
         },
         "refresh": 1,
         "regex": "/^(.*)_.*$/",
-        "skipUrlSync": false,
         "sort": 3,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
-        "allValue": "",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -304,10 +266,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_stream_task_process_rate{instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
-        "hide": 0,
         "includeAll": true,
         "label": "partition",
-        "multi": false,
         "name": "partition",
         "options": [],
         "query": {
@@ -316,15 +276,11 @@
         },
         "refresh": 1,
         "regex": "/^.*_(.*)$/",
-        "skipUrlSync": false,
         "sort": 3,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -332,29 +288,22 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_stream_state{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\"},store_type)",
-        "hide": 0,
+        "definition": "label_values({cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", __name__=~\"kafka_stream_state_.+\"},store_type)",
         "includeAll": true,
-        "multi": false,
         "name": "store_type",
         "options": [],
         "query": {
-          "query": "label_values(kafka_stream_state{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\"},store_type)",
+          "qryType": 1,
+          "query": "label_values({cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", __name__=~\"kafka_stream_state_.+\"},store_type)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".*",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -362,28 +311,23 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_stream_state{task_id=~\"${task}_${partition}\",instance=~\"${instance}\",thread_id=~\"${thread}\"}, state_id)",
-        "hide": 0,
+        "definition": "label_values({task_id=~\"${task}_${partition}\", instance=~\"${instance}\", thread_id=~\"${thread}\", __name__=~\"kafka_stream_state_(.+)\"},state_id)",
         "includeAll": true,
         "label": "state",
-        "multi": false,
         "name": "state",
         "options": [],
         "query": {
-          "query": "label_values(kafka_stream_state{task_id=~\"${task}_${partition}\",instance=~\"${instance}\",thread_id=~\"${thread}\"}, state_id)",
-          "refId": "StandardVariableQuery"
+          "qryType": 1,
+          "query": "label_values({task_id=~\"${task}_${partition}\", instance=~\"${instance}\", thread_id=~\"${thread}\", __name__=~\"kafka_stream_state_(.+)\"},state_id)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 3,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
           "text": "put-rate",
           "value": "put-rate"
         },
@@ -391,25 +335,19 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_stream_state{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", metric=~\"(delete|all|fetch|flush|get|prefix-scan|put|put-if-absent|put-all|range|restore|remove|record-e2e|suppression-buffer)-rate\"},metric)",
+        "definition": "label_values({cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", __name__=~\"kafka_stream_state_(delete|all|fetch|flush|get|prefix_scan|put|put_if_absent|put_all|range|restore|remove|record_e2e|suppression_buffer)_rate\"},__name__)",
         "description": "TBD",
-        "hide": 0,
         "includeAll": false,
-        "multi": false,
         "name": "metric",
         "options": [],
         "query": {
-          "query": "label_values(kafka_stream_state{cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", metric=~\"(delete|all|fetch|flush|get|prefix-scan|put|put-if-absent|put-all|range|restore|remove|record-e2e|suppression-buffer)-rate\"},metric)",
+          "qryType": 1,
+          "query": "label_values({cluster_id=~\"$cluster\", instance=~\"$instance\", thread_id=~\"$thread\", store_type=~\"$store_type\", state_id=~\"$state\", __name__=~\"kafka_stream_state_(delete|all|fetch|flush|get|prefix_scan|put|put_if_absent|put_all|range|restore|remove|record_e2e|suppression_buffer)_rate\"},__name__)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "regex": "kafka_stream_state_(.*)",
+        "type": "query"
       }
     ]
   },
@@ -430,23 +368,11 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "1m",
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
   "timezone": "",
   "title": "09 - StateStore (operations - rate)",
   "uid": "streams_statestore_operations_rate",
-  "version": 1,
+  "version": 7,
   "weekStart": ""
 }

@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 40,
+  "id": 50,
   "links": [],
   "panels": [
     {
@@ -373,6 +373,6 @@
   "timezone": "",
   "title": "11 - StateStore (RocksDB Metrics)",
   "uid": "streams_statestore_rocksdb",
-  "version": 5,
+  "version": 1,
   "weekStart": ""
 }

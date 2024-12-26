@@ -141,16 +141,6 @@ rules:
     thread_id: "$1"
     task_id: "$2"
     record-cache-id: "$3"
-#    metric: "$4"
-- pattern: kafka.streams<type=stream-state-metrics, thread-id=(.+), task-id=(.+), (.+)-id=(.+)><>(.+)-total:.+
-  name: kafka_stream_state_$5_total_xx
-  type: COUNTER
-  labels:
-    thread_id: "$1"
-    task_id: "$2"
-    store_type: "$3"
-    state_id: "$4"
-    foo: bar
 - pattern: kafka.streams<type=stream-state-metrics, thread-id=(.+), task-id=(.+), (.+)-id=(.+)><>(.+):.+
   name: kafka_stream_state_$5
   labels:
@@ -158,9 +148,6 @@ rules:
     task_id: "$2"
     store_type: "$3"
     state_id: "$4"
-    foo2: bar2
-#    metric: "$5"
-
 # dropping -total or droping -created would be ok, but dropping -created-total and -total leads
 # to one metric overriding the other, as they end up having the same name.
 

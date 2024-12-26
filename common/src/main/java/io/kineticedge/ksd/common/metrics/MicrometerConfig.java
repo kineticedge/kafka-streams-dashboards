@@ -11,6 +11,7 @@ import io.micrometer.prometheusmetrics.PrometheusConfig;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -21,11 +22,7 @@ public class MicrometerConfig {
 
   private static final Logger log = org.slf4j.LoggerFactory.getLogger(MicrometerConfig.class);
 
-  private static final String KAFKA_STREAM_PREFIX = "kafka.stream.";
-  private static final String KAFKA_STREAM_STATE = KAFKA_STREAM_PREFIX + "state";
-  private static final String KAFKA_STREAM_STATE_PREFIX = KAFKA_STREAM_STATE + ".";
-  private static final String KAFKA_STREAM_RECORD_CACHE = KAFKA_STREAM_PREFIX + "record.cache";
-  private static final String KAFKA_STREAM_RECORD_CACHE_PREFIX = KAFKA_STREAM_RECORD_CACHE + ".";
+  private static final String KAFKA_STREAM_STATE_PREFIX = "kafka.stream.state.";
 
   // only one of these will ever be defined, listed in order of typical ocurrance.
   private static final List<String> ATTRIBUTES = List.of(
@@ -51,34 +48,15 @@ public class MicrometerConfig {
                   return id;
                 }
                 return ATTRIBUTES.stream()
-                        .filter(attribute -> id.getTag(attribute) != null)
+                        .map(attribute -> new KeyValue<>(attribute, id.getTag(attribute)))
+                        .filter(kv -> kv.value != null)
                         .findFirst()
-                        .map(attribute -> {
-
-                          final String storeType = attribute.substring(0, attribute.length() - 3).replace('.', '-');
-                          final String value = id.getTag(attribute);
-
-                          // rename name, add metric...
+                        .map(kv -> {
+                          final String storeType = kv.key.substring(0, kv.key.length() - 3).replace('.', '-');
                           return id
                                   .withTag(Tag.of("store.type", storeType))
-                                  .withTag(Tag.of("state.id", value));
+                                  .withTag(Tag.of("state.id", kv.value));
                         }).orElse(id)
-                        ;
-              }
-            }
-    );
-
-    // create a metric 'record.cache' with tags 'hit.ratio.{min|max|avg}'
-    Metrics.globalRegistry.config().meterFilter(
-            new MeterFilter() {
-              @Override
-              public Meter.Id map(final Meter.Id id) {
-                if (!id.getName().startsWith(KAFKA_STREAM_RECORD_CACHE_PREFIX)) {
-                  return id;
-                }
-                return id
-                        .withName(KAFKA_STREAM_RECORD_CACHE)
-                        .withTag(Tag.of("metric", id.getName().substring(KAFKA_STREAM_RECORD_CACHE_PREFIX.length())))
                         ;
               }
             }

@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 50,
+  "id": 27,
   "links": [],
   "panels": [
     {
@@ -328,8 +328,8 @@
       },
       {
         "current": {
-          "text": "put-rate",
-          "value": "put-rate"
+          "text": "estimate_num_keys",
+          "value": "estimate_num_keys"
         },
         "datasource": {
           "type": "prometheus",

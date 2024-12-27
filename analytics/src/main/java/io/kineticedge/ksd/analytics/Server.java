@@ -15,12 +15,11 @@ import io.kineticedge.ksd.analytics.jackson.BySkuSerializer;
 import io.kineticedge.ksd.analytics.jackson.ByWindowSerializer;
 import io.kineticedge.ksd.analytics.jackson.WindowSerializer;
 import io.kineticedge.ksd.common.domain.util.HttpUtils;
-import io.kineticedge.ksd.common.metrics.MicrometerConfig;
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
@@ -39,11 +38,11 @@ public class Server {
 
   private final StateObserver stateObserver;
   private final int port;
-  private final MicrometerConfig micrometerConfig;
+  private final PrometheusMeterRegistry prometheusMeterRegistry;
 
-  public Server(StateObserver stateObserver, MicrometerConfig micrometerConfig, int port) {
+  public Server(StateObserver stateObserver, PrometheusMeterRegistry prometheusMeterRegistry, int port) {
     this.stateObserver = stateObserver;
-    this.micrometerConfig = micrometerConfig;
+    this.prometheusMeterRegistry = prometheusMeterRegistry;
     this.port = port;
   }
 
@@ -56,7 +55,7 @@ public class Server {
         exchange.getResponseHeaders().set("Cache-Control", "no-cache");
         exchange.sendResponseHeaders(200, 0);
         try (exchange; OutputStream os = exchange.getResponseBody()) {
-          micrometerConfig.scrape(os);
+          prometheusMeterRegistry.scrape(os);
         }
       });
 

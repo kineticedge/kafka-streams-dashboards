@@ -4,12 +4,17 @@ import io.kineticedge.ksd.analytics.util.FixedKeyRecordFactory;
 import io.kineticedge.ksd.common.domain.ProductAnalytic;
 import io.kineticedge.ksd.common.domain.ProductAnalyticOut;
 import io.kineticedge.ksd.common.domain.PurchaseOrder;
-import io.kineticedge.ksd.common.metrics.MicrometerConfig;
 import io.kineticedge.ksd.common.metrics.StreamsMetrics;
 import io.kineticedge.ksd.common.rocksdb.RocksDBConfigSetter;
 import io.kineticedge.ksd.tools.config.KafkaEnvUtil;
 import io.kineticedge.ksd.tools.config.PropertyUtils;
 import io.kineticedge.ksd.tools.serde.JsonSerde;
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Tags;
+import io.micrometer.core.instrument.binder.kafka.KafkaStreamsMetrics;
+import io.micrometer.prometheusmetrics.PrometheusConfig;
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -131,11 +136,23 @@ public class Streams {
       return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_APPLICATION;
     });
 
-    MicrometerConfig micrometerConfig = new MicrometerConfig(options.getApplicationId(), streams);
-
+    final PrometheusMeterRegistry prometheusMeterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+    final KafkaStreamsMetrics kafkaStreamsMetrics = new KafkaStreamsMetrics(streams);
+    kafkaStreamsMetrics.bindTo(Metrics.globalRegistry);
+    Metrics.globalRegistry.gauge(
+            "kafka_stream_application",
+            Tags.of(Tag.of("application.id", options.getApplicationId())),
+            streams,
+            s -> switch (s.state()) {
+              case RUNNING -> 1.0;
+              case REBALANCING -> 0.5;
+              default -> 0.0;
+            }
+    );
+    Metrics.globalRegistry.add(prometheusMeterRegistry);
 
     final StateObserver observer = new StateObserver(streams, options.getWindowType());
-    final Server servletDeployment = new Server(observer, micrometerConfig, options.getPort());
+    final Server servletDeployment = new Server(observer, prometheusMeterRegistry, options.getPort());
 
     streams.setStateListener((newState, oldState) -> {
       if (newState == KafkaStreams.State.PENDING_ERROR) {

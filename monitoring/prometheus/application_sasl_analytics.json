@@ -13,9 +13,8 @@
       "ksdax-analytics-none-2:7071"
     ],
     "labels": {
-      "job": "analytics",
       "cluster_type": "streams",
-      "cluster_id": "analytics"
+      "job": "analytics"
     }
   }
 ]

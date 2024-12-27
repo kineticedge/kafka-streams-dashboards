@@ -93,7 +93,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(max(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"Size\", topic=~ '$topic'}) by (partition))",
+          "expr": "sum(max(kafka_log_log_value{job=~\"$job\", name=\"Size\", topic=~ '$topic'}) by (partition))",
           "format": "time_series",
           "instant": true,
           "interval": "1m",
@@ -170,7 +170,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "count(count(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"Size\", topic='$topic'}) by (partition))",
+          "expr": "count(count(kafka_log_log_value{job=~\"$job\", name=\"Size\", topic='$topic'}) by (partition))",
           "format": "time_series",
           "instant": true,
           "interval": "1m",
@@ -248,7 +248,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(max(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogEndOffset\", topic =~ \"$topic\"}) by (partition)) - sum(max(kafka_log_log_value{name=\"LogStartOffset\", topic =~ \"$topic\"}) by (partition))",
+          "expr": "sum(max(kafka_log_log_value{job=~\"$job\", name=\"LogEndOffset\", topic =~ \"$topic\"}) by (partition)) - sum(max(kafka_log_log_value{name=\"LogStartOffset\", topic =~ \"$topic\"}) by (partition))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -326,7 +326,7 @@
             "uid": "prometheus"
           },
           "exemplar": false,
-          "expr": "sum (max by(partition) (kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogEndOffset\", topic =~ \"$topic\"}))",
+          "expr": "sum (max by(partition) (kafka_log_log_value{job=~\"$job\", name=\"LogEndOffset\", topic =~ \"$topic\"}))",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -405,7 +405,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"NumLogSegments\", topic=\"$topic\"})",
+          "expr": "sum(kafka_log_log_value{job=~\"$job\", name=\"NumLogSegments\", topic=\"$topic\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -482,7 +482,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum (kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogEndOffset\", topic =~ \"$topic\"}) - sum (kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogStartOffset\", topic =~ \"$topic\"})",
+          "expr": "sum (kafka_log_log_value{job=~\"$job\", name=\"LogEndOffset\", topic =~ \"$topic\"}) - sum (kafka_log_log_value{job=~\"$job\", name=\"LogStartOffset\", topic =~ \"$topic\"})",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -562,7 +562,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic = \"${topic}\"})",
+          "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{job=~\"$job\", name=\"MessagesInPerSec\", topic = \"${topic}\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -640,7 +640,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesInPerSec\", topic = \"${topic}\"})",
+          "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{job=~\"$job\", name=\"BytesInPerSec\", topic = \"${topic}\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -718,7 +718,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\", topic=\"${topic}\"})",
+          "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{job=~\"$job\", name=\"BytesOutPerSec\", topic=\"${topic}\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -815,7 +815,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\",topic = \"${topic}\"})",
+          "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{job=~\"$job\", name=\"MessagesInPerSec\",topic = \"${topic}\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{topic}}",
@@ -913,7 +913,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum without(instance,job)(kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesInPerSec\",topic = \"${topic}\"})",
+          "expr": "sum without(instance,job)(kafka_server_brokertopicmetrics_oneminuterate{job=~\"$job\", name=\"BytesInPerSec\",topic = \"${topic}\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{topic}}",
@@ -1011,7 +1011,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum without(instance,job)(kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\",topic = \"${topic}\"})",
+          "expr": "sum without(instance,job)(kafka_server_brokertopicmetrics_oneminuterate{job=~\"$job\", name=\"BytesOutPerSec\",topic = \"${topic}\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{topic}}",
@@ -1090,7 +1090,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic=\"${topic}\"}[$__rate_interval]))",
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{job=~\"$job\", name=\"MessagesInPerSec\", topic=\"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 10,
@@ -1169,7 +1169,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesInPerSec\",topic = \"${topic}\"}[$__rate_interval]))",
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{job=~\"$job\", name=\"BytesInPerSec\",topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 10,
@@ -1248,7 +1248,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\",topic = \"${topic}\"}[$__rate_interval]))",
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{job=~\"$job\", name=\"BytesOutPerSec\",topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 10,
@@ -1346,7 +1346,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
+          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{job=~\"$job\", name=\"MessagesInPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -1445,7 +1445,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesInPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
+          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{job=~\"$job\", name=\"BytesInPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -1544,7 +1544,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
+          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{job=~\"$job\", name=\"BytesOutPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -1576,15 +1576,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
         "hide": 0,
         "includeAll": false,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1613,7 +1613,7 @@
         "name": "topic",
         "options": [],
         "query": {
-          "query": "kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\",instance=~\".*\",name=\"BytesInPerSec\",topic!~\"__confluent.+\"}",
+          "query": "kafka_server_brokertopicmetrics_oneminuterate{job=~\"$job\",instance=~\".*\",name=\"BytesInPerSec\",topic!~\"__confluent.+\"}",
           "refId": "prometheus-topic-Variable-Query"
         },
         "refresh": 1,

@@ -153,7 +153,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"RequestQueueTimeMs\",request=\"${consumer}\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"RequestQueueTimeMs\",request=\"${consumer}\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -217,7 +217,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "avg (kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=~\"RequestQueueTimeMs|LocalTimeMs|RemoteTimeMs|ResponseQueueTimeMs|ResponseSendTimeMs\",request=\"${consumer}\"}) by (name)",
+          "expr": "avg (kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=~\"RequestQueueTimeMs|LocalTimeMs|RemoteTimeMs|ResponseQueueTimeMs|ResponseSendTimeMs\",request=\"${consumer}\"}) by (name)",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -328,7 +328,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"LocalTimeMs\",request=\"${consumer}\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"LocalTimeMs\",request=\"${consumer}\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -428,7 +428,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"RequestBytes\",request=\"${consumer}\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"RequestBytes\",request=\"${consumer}\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -528,7 +528,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"RemoteTimeMs\",request=\"${consumer}\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"RemoteTimeMs\",request=\"${consumer}\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -627,7 +627,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=\"$cluster\",instance=~\"$instance\",name=\"ResponseQueueTimeMs\",request=\"${consumer}\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=\"$job\",instance=~\"$instance\",name=\"ResponseQueueTimeMs\",request=\"${consumer}\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -727,7 +727,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"ResponseSendTimeMs\",request=\"${consumer}\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"ResponseSendTimeMs\",request=\"${consumer}\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -757,15 +757,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
         "hide": 0,
         "includeAll": false,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -788,7 +788,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\", job=\"$job\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -796,7 +796,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\", job=\"$job\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

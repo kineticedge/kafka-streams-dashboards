@@ -33,17 +33,17 @@
           "value": "ksql-cluster"
         },
         "datasource": "prometheus",
-        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, job)",
         "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+          "query": "label_values(jvm_info{cluster_type=\"streams\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -63,7 +63,7 @@
           "value": "ksql-server"
         },
         "datasource": "prometheus",
-        "definition": "label_values(jvm_info{cluster_type=\"streams\", cluster_id=~\"$cluster\"}, instance)",
+        "definition": "label_values(jvm_info{cluster_type=\"streams\", job=~\"$job\"}, instance)",
         "description": null,
         "error": null,
         "hide": 0,
@@ -73,7 +73,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\", cluster_id=~\"$cluster\"}, instance)",
+          "query": "label_values(jvm_info{cluster_type=\"streams\", job=~\"$job\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -93,7 +93,7 @@
           "value": "$__all"
         },
         "datasource": "prometheus",
-        "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
+        "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_total{job=~\"$job\", instance=~\"$instance\"}, thread_id)",
         "description": null,
         "error": null,
         "hide": 0,
@@ -103,7 +103,7 @@
         "name": "thread",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
+          "query": "label_values(kafka_streams_stream_thread_metrics_task_created_total{job=~\"$job\", instance=~\"$instance\"}, thread_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -123,7 +123,7 @@
           "value": "$__all"
         },
         "datasource": "prometheus",
-        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
+        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{job=~\"$job\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
         "description": null,
         "error": null,
         "hide": 0,
@@ -159,7 +159,7 @@
           }
         ],
         "query": {
-          "query": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
+          "query": "label_values(kafka_streams_stream_task_metrics_process_rate{job=~\"$job\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 0,
@@ -180,7 +180,7 @@
           "value": "$__all"
         },
         "datasource": "prometheus",
-        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"${cluster}\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, partition_id)",
+        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{job=~\"${cluster}\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, partition_id)",
         "description": null,
         "error": null,
         "hide": 0,

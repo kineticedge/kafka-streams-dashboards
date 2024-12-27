@@ -103,7 +103,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "(kafka_network_requestmetrics_99thpercentile{cluster_id=~\"$cluster\", instance=~\"$instance\",name=\"TotalTimeMs\",request=\"Produce\",})",
+          "expr": "(kafka_network_requestmetrics_99thpercentile{job=~\"$job\", instance=~\"$instance\",name=\"TotalTimeMs\",request=\"Produce\",})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}",
@@ -191,7 +191,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "avg by(name) (kafka_network_requestmetrics_99thpercentile{cluster_id=~\"$cluster\", instance=~\"$instance\",request=\"Produce\", name =~ \".+Ms\"})",
+          "expr": "avg by(name) (kafka_network_requestmetrics_99thpercentile{job=~\"$job\", instance=~\"$instance\",request=\"Produce\", name =~ \".+Ms\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}",
@@ -279,7 +279,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "(kafka_network_requestmetrics_99thpercentile{cluster_id=~\"$cluster\", instance=~\"$instance\",name=\"TotalTimeMs\",request=\"FetchConsumer\",})",
+          "expr": "(kafka_network_requestmetrics_99thpercentile{job=~\"$job\", instance=~\"$instance\",name=\"TotalTimeMs\",request=\"FetchConsumer\",})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}",
@@ -367,7 +367,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "avg by (name) (kafka_network_requestmetrics_99thpercentile{cluster_id=~\"$cluster\", instance=~\"$instance\",request=\"FetchConsumer\", name =~ \".+Ms\"})",
+          "expr": "avg by (name) (kafka_network_requestmetrics_99thpercentile{job=~\"$job\", instance=~\"$instance\",request=\"FetchConsumer\", name =~ \".+Ms\"})",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -456,7 +456,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "(kafka_network_requestmetrics_99thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"TotalTimeMs\",request=\"FetchFollower\",})",
+          "expr": "(kafka_network_requestmetrics_99thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"TotalTimeMs\",request=\"FetchFollower\",})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}",
@@ -544,7 +544,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "avg by (name) (kafka_network_requestmetrics_99thpercentile{cluster_id=~\"$cluster\", instance=~\"$instance\",request=\"FetchFollower\", name =~ \".+Ms\"})",
+          "expr": "avg by (name) (kafka_network_requestmetrics_99thpercentile{job=~\"$job\", instance=~\"$instance\",request=\"FetchFollower\", name =~ \".+Ms\"})",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -576,15 +576,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
         "hide": 0,
         "includeAll": false,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -607,7 +607,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\", job=\"$job\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -615,7 +615,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\", job=\"$job\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

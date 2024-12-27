@@ -127,7 +127,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"RequestQueueTimeMs\",request=\"Produce\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"RequestQueueTimeMs\",request=\"Produce\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -181,7 +181,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "avg (kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=~\"RequestQueueTimeMs|LocalTimeMs|RemoteTimeMs|ResponseQueueTimeMs|ResponseSendTimeMs\",request=\"Produce\"}) by (name)",
+          "expr": "avg (kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=~\"RequestQueueTimeMs|LocalTimeMs|RemoteTimeMs|ResponseQueueTimeMs|ResponseSendTimeMs\",request=\"Produce\"}) by (name)",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -272,7 +272,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"LocalTimeMs\",request=\"Produce\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"LocalTimeMs\",request=\"Produce\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -339,7 +339,7 @@
       "targets": [
         {
           "exemplar": false,
-          "expr": "avg(kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"TotalTimeMs\",request=\"Produce\"})",
+          "expr": "avg(kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"TotalTimeMs\",request=\"Produce\"})",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -430,7 +430,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"RemoteTimeMs\",request=\"Produce\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"RemoteTimeMs\",request=\"Produce\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -519,7 +519,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"RequestBytes\",request=\"Produce\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"RequestBytes\",request=\"Produce\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -608,7 +608,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"ResponseQueueTimeMs\",request=\"Produce\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"ResponseQueueTimeMs\",request=\"Produce\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -697,7 +697,7 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{cluster_id=~\"$cluster\",instance=~\"$instance\",name=\"ResponseSendTimeMs\",request=\"Produce\"}",
+          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"ResponseSendTimeMs\",request=\"Produce\"}",
           "interval": "",
           "legendFormat": "{{instance}}",
           "queryType": "randomWalk",
@@ -728,15 +728,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
         "hide": 0,
         "includeAll": false,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -759,7 +759,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\", job=\"$job\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -767,7 +767,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\", job=\"$job\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

@@ -118,7 +118,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without(cluster_id,instance,thread) (kafka_streams_stream_thread_metrics_${measurement}_total{cluster_id=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\"} * on (cluster_id, instance) group_left(application_id) kafka_streams_info{application_id=~\"${application}\"})",
+          "expr": "sum without(job,instance,thread) (kafka_streams_stream_thread_metrics_${measurement}_total{job=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\"} * on (job, instance) group_left(application_id) kafka_streams_info{application_id=~\"${application}\"})",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -183,7 +183,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "sum (kafka_streams_stream_thread_metrics_${measurement}_total{cluster_id=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\"})",
+          "expr": "sum (kafka_streams_stream_thread_metrics_${measurement}_total{job=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -286,7 +286,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "sum without(cluster_id,instance,thread) (kafka_streams_stream_thread_metrics_${measurement}_rate{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"})",
+          "expr": "sum without(job,instance,thread) (kafka_streams_stream_thread_metrics_${measurement}_rate{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"})",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -351,7 +351,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "sum (kafka_streams_stream_thread_metrics_${measurement}_rate{cluster_id=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\"})",
+          "expr": "sum (kafka_streams_stream_thread_metrics_${measurement}_rate{job=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -454,7 +454,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "sum without(cluster_id,instance,thread) (rate(kafka_streams_stream_thread_metrics_${measurement}_total{thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}[$__rate_interval]))",
+          "expr": "sum without(job,instance,thread) (rate(kafka_streams_stream_thread_metrics_${measurement}_total{thread_id=~\"${thread}\", instance=~\"${instance}\", job=~\"${cluster}\"}[$__rate_interval]))",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -518,7 +518,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum (rate(kafka_streams_stream_thread_metrics_${measurement}_total{thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}[$__rate_interval]))",
+          "expr": "sum (rate(kafka_streams_stream_thread_metrics_${measurement}_total{thread_id=~\"${thread}\", instance=~\"${instance}\", job=~\"${cluster}\"}[$__rate_interval]))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -621,7 +621,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "avg without(cluster_id,instance,thread) ((kafka_streams_stream_thread_metrics_${measurement}_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "expr": "avg without(job,instance,thread) ((kafka_streams_stream_thread_metrics_${measurement}_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >=0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -686,7 +686,7 @@
             "uid": "prometheus"
           },
           "exemplar": false,
-          "expr": "avg ((kafka_streams_stream_thread_metrics_${measurement}_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "expr": "avg ((kafka_streams_stream_thread_metrics_${measurement}_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >=0)",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -789,7 +789,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg without(job,instance,thread) ((kafka_streams_stream_thread_metrics_${measurement}_latency_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >= 0)",
+          "expr": "avg without(job,instance,thread) ((kafka_streams_stream_thread_metrics_${measurement}_latency_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >= 0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -854,7 +854,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg ((kafka_streams_stream_thread_metrics_${measurement}_latency_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >= 0)",
+          "expr": "avg ((kafka_streams_stream_thread_metrics_${measurement}_latency_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >= 0)",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -957,7 +957,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "avg without(cluster_id,instance,thread) (kafka_streams_stream_thread_metrics_${measurement}_records_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"})",
+          "expr": "avg without(job,instance,thread) (kafka_streams_stream_thread_metrics_${measurement}_records_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"})",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -1021,7 +1021,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "avg (kafka_streams_stream_thread_metrics_${measurement}_records_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"})",
+          "expr": "avg (kafka_streams_stream_thread_metrics_${measurement}_records_avg{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -1125,7 +1125,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "avg without(cluster_id,instance,thread) ((kafka_streams_stream_thread_metrics_commit_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "expr": "avg without(job,instance,thread) ((kafka_streams_stream_thread_metrics_commit_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >=0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -1140,7 +1140,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg without(cluster_id,instance,thread) ((kafka_streams_stream_thread_metrics_poll_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "expr": "avg without(job,instance,thread) ((kafka_streams_stream_thread_metrics_poll_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >=0)",
           "hide": false,
           "instant": false,
           "legendFormat": "{{thread_id}} (poll)",
@@ -1153,7 +1153,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg without(cluster_id,instance,thread) ((kafka_streams_stream_thread_metrics_process_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "expr": "avg without(job,instance,thread) ((kafka_streams_stream_thread_metrics_process_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >=0)",
           "hide": false,
           "instant": false,
           "legendFormat": "{{thread_id}} (process)",
@@ -1166,7 +1166,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg without(cluster_id,instance,thread) ((kafka_streams_stream_thread_metrics_punctuate_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "expr": "avg without(job,instance,thread) ((kafka_streams_stream_thread_metrics_punctuate_ratio{instance=~\"${instance}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >=0)",
           "hide": false,
           "instant": false,
           "legendFormat": "{{thread_id}} (punctuate)",
@@ -1197,15 +1197,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, job)",
         "hide": 0,
         "includeAll": true,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+          "query": "label_values(jvm_info{cluster_type=\"streams\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1228,14 +1228,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+        "definition": "label_values(kafka_streams_info{job=~\"${cluster}\", application_id=~\".+\"}, application_id)",
         "hide": 0,
         "includeAll": true,
         "multi": false,
         "name": "application",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+          "query": "label_values(kafka_streams_info{job=~\"${cluster}\", application_id=~\".+\"}, application_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1255,7 +1255,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+        "definition": "label_values(kafka_streams_info{cluster_type=\"streams\", job=~\"${cluster}\", application_id=~\"$application\"}, instance)",
         "description": "cannot use .* for all, since then thread is not limited to the application that was selected.",
         "hide": 0,
         "includeAll": true,
@@ -1264,7 +1264,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+          "query": "label_values(kafka_streams_info{cluster_type=\"streams\", job=~\"${cluster}\", application_id=~\"$application\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1286,7 +1286,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
+        "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_total{job=~\"$job\", instance=~\"$instance\"}, thread_id)",
         "hide": 0,
         "includeAll": true,
         "label": "thread",
@@ -1294,7 +1294,7 @@
         "name": "thread",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
+          "query": "label_values(kafka_streams_stream_thread_metrics_task_created_total{job=~\"$job\", instance=~\"$instance\"}, thread_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

@@ -13,10 +13,9 @@
       "ksda-stream-10:8080"
     ],
     "labels": {
-      "job": "streams",
+      "source": "micrometer",
       "cluster_type": "streams",
-      "cluster_id": "streams",
-      "source": "micrometer"
+      "job": "streams"
     }
   }
 ]

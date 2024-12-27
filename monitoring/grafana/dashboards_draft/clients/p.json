@@ -834,7 +834,7 @@
               "refId": "A"
             },
             {
-              "expr": "jvm_memory_bytes_max{job=\"kafka-connect\",env=\"$env\",kafka_connect_cluster_id=~\"$kafka_connect_cluster_id\",instance=~\"$instance\",area=\"heap\"}",
+              "expr": "jvm_memory_bytes_max{job=\"kafka-connect\",env=\"$env\",kafka_connect_job=~\"$kafka_connect_job\",instance=~\"$instance\",area=\"heap\"}",
               "interval": "",
               "legendFormat": "{{instance}}",
               "refId": "B"

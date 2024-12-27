@@ -122,7 +122,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by (client_id_truncated, topic_truncated) (label_replace(label_replace(kafka_consumer_fetch_manager_records_consumed_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\", topic=~\"${topic}\"}, \"topic_truncated\", \"${1}\", \"topic\", \"(.{0,64})(.*)\"), \"client_id_truncated\", \"${1}\", \"client_id\", \"^(.*?)(-consumer$|$)\"))",
+          "expr": "sum by (client_id_truncated, topic_truncated) (label_replace(label_replace(kafka_consumer_fetch_manager_records_consumed_rate{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\", topic=~\"${topic}\"}, \"topic_truncated\", \"${1}\", \"topic\", \"(.{0,64})(.*)\"), \"client_id_truncated\", \"${1}\", \"client_id\", \"^(.*?)(-consumer$|$)\"))",
           "instant": false,
           "interval": "",
           "legendFormat": "{{topic_truncated}} ({{client_id_truncated}})",
@@ -226,7 +226,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(client_id_truncated, topic_truncated) (label_replace(label_replace(kafka_consumer_fetch_manager_records_lag{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\", topic=~\"${topic}\"}, \"topic_truncated\", \"${1}\", \"topic\", \"(.{0,64})(.*)\"), \"client_id_truncated\", \"${1}\", \"client_id\", \"^(.*?)(-consumer|)$\") > 0)",
+          "expr": "sum by(client_id_truncated, topic_truncated) (label_replace(label_replace(kafka_consumer_fetch_manager_records_lag{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\", topic=~\"${topic}\"}, \"topic_truncated\", \"${1}\", \"topic\", \"(.{0,64})(.*)\"), \"client_id_truncated\", \"${1}\", \"client_id\", \"^(.*?)(-consumer|)$\") > 0)",
           "instant": false,
           "interval": "",
           "legendFormat": "{{topic_truncated}} ({{client_id_truncated}})",
@@ -332,7 +332,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(client_id_truncated, topic_truncated, partition) (label_replace(label_replace(kafka_consumer_fetch_manager_records_lag{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\", topic=~\"${topic}\"}, \"topic_truncated\", \"${1}\", \"topic\", \"(.{0,64})(.*)\"), \"client_id_truncated\", \"${1}\", \"client_id\", \"^(.*?)(-consumer|)$\") > 0)",
+          "expr": "sum by(client_id_truncated, topic_truncated, partition) (label_replace(label_replace(kafka_consumer_fetch_manager_records_lag{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\", topic=~\"${topic}\"}, \"topic_truncated\", \"${1}\", \"topic\", \"(.{0,64})(.*)\"), \"client_id_truncated\", \"${1}\", \"client_id\", \"^(.*?)(-consumer|)$\") > 0)",
           "instant": false,
           "interval": "",
           "legendFormat": "{{partition}} - {{topic_truncated}} ({{client_id_truncated}})",
@@ -361,15 +361,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=~\"streams|producer|consumer\"},cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=~\"streams|producer|consumer\"},job)",
         "hide": 0,
         "includeAll": true,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=~\"streams|producer|consumer\"},cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=~\"streams|producer|consumer\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -392,7 +392,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\"},instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -400,7 +400,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+          "query": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -423,7 +423,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
+        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
         "hide": 0,
         "includeAll": true,
         "label": "client-id",
@@ -431,7 +431,7 @@
         "name": "client_id",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
+          "query": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -454,7 +454,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_consumer_fetch_manager_records_consumed_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", topic=~\".+\"},topic)",
+        "definition": "label_values(kafka_consumer_fetch_manager_records_consumed_rate{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\", topic=~\".+\"},topic)",
         "hide": 0,
         "includeAll": true,
         "label": "topic",
@@ -462,7 +462,7 @@
         "name": "topic",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_fetch_manager_records_consumed_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\", topic=~\".+\"},topic)",
+          "query": "label_values(kafka_consumer_fetch_manager_records_consumed_rate{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\", topic=~\".+\"},topic)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

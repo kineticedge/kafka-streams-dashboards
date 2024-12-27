@@ -77,7 +77,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cluster_id"
+              "options": "job"
             },
             "properties": [
               {
@@ -199,7 +199,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "label_replace(kafka_streams_stream_processor_node_metrics_process_total{cluster_id=~\"${cluster}\"} * on (instance) group_left(application_id) kafka_streams_info{application_id=~\"${application}\"} , \"subtopology\", \"$1\", \"task_id\", \"(.*)_.*\")",
+          "expr": "label_replace(kafka_streams_stream_processor_node_metrics_process_total{job=~\"${cluster}\"} * on (instance) group_left(application_id) kafka_streams_info{application_id=~\"${application}\"} , \"subtopology\", \"$1\", \"task_id\", \"(.*)_.*\")",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -229,7 +229,7 @@
               "Time": 5,
               "Value": 10,
               "application_id": 1,
-              "cluster_id": 0,
+              "job": 0,
               "cluster_type": 7,
               "instance": 2,
               "job": 6,
@@ -256,7 +256,7 @@
                 "aggregations": [],
                 "operation": "groupby"
               },
-              "cluster_id": {
+              "job": {
                 "aggregations": [],
                 "operation": "groupby"
               },
@@ -361,7 +361,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cluster_id"
+              "options": "job"
             },
             "properties": [
               {
@@ -476,7 +476,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum (kafka_streams_stream_processor_node_metrics_process_total{cluster_id=~\"${cluster}\"} * on (instance) group_left(application_id) kafka_streams_info{application_id=~\"$application\", instance=~\"$instance\"}) without()",
+          "expr": "sum (kafka_streams_stream_processor_node_metrics_process_total{job=~\"${cluster}\"} * on (instance) group_left(application_id) kafka_streams_info{application_id=~\"$application\", instance=~\"$instance\"}) without()",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -505,7 +505,7 @@
               "Time": 5,
               "Value": 9,
               "application_id": 1,
-              "cluster_id": 0,
+              "job": 0,
               "cluster_type": 7,
               "instance": 2,
               "job": 6,
@@ -539,7 +539,7 @@
                 "aggregations": [],
                 "operation": "groupby"
               },
-              "cluster_id": {
+              "job": {
                 "aggregations": [],
                 "operation": "groupby"
               },
@@ -612,15 +612,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, job)",
         "hide": 0,
         "includeAll": true,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+          "query": "label_values(jvm_info{cluster_type=\"streams\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -643,14 +643,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+        "definition": "label_values(kafka_streams_info{job=~\"${cluster}\", application_id=~\".+\"}, application_id)",
         "hide": 0,
         "includeAll": true,
         "multi": false,
         "name": "application",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+          "query": "label_values(kafka_streams_info{job=~\"${cluster}\", application_id=~\".+\"}, application_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -670,7 +670,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+        "definition": "label_values(kafka_streams_info{cluster_type=\"streams\", job=~\"${cluster}\", application_id=~\"$application\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -678,7 +678,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+          "query": "label_values(kafka_streams_info{cluster_type=\"streams\", job=~\"${cluster}\", application_id=~\"$application\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

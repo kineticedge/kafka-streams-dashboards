@@ -13,10 +13,9 @@
       "ksda-analytics-none-2:8080"
     ],
     "labels": {
-      "job": "analytics",
+      "source": "micrometer",
       "cluster_type": "streams",
-      "cluster_id": "analytics",
-      "source": "micrometer"
+      "job": "analytics"
     }
   }
 ]

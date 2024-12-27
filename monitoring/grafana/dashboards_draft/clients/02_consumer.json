@@ -109,7 +109,7 @@
             "uid": "grafana"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_coordinator_metrics_commit_rate{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_consumer_consumer_coordinator_metrics_commit_rate{job=~\"$job\", instance=~\"$instance\"}",
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
           "refId": "A"
@@ -175,7 +175,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_fetch_manager_metrics_fetch_throttle_time_avg{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_consumer_consumer_fetch_manager_metrics_fetch_throttle_time_avg{job=~\"$job\", instance=~\"$instance\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
@@ -241,7 +241,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_metrics_failed_authentication_rate{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_consumer_consumer_metrics_failed_authentication_rate{job=~\"$job\", instance=~\"$instance\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
@@ -306,7 +306,7 @@
             "uid": "grafana"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_coordinator_metrics_rebalance_rate_per_hour{cluster_id=~\"$cluster\", instance=~\"$instance\"} + kafka_consumer_consumer_coordinator_metrics_failed_rebalance_rate_per_hour{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_consumer_consumer_coordinator_metrics_rebalance_rate_per_hour{job=~\"$job\", instance=~\"$instance\"} + kafka_consumer_consumer_coordinator_metrics_failed_rebalance_rate_per_hour{job=~\"$job\", instance=~\"$instance\"}",
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
           "refId": "A"
@@ -434,7 +434,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_consumer_consumer_fetch_manager_metrics_bytes_consumed_total{topic=~\".*\", cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "rate(kafka_consumer_consumer_fetch_manager_metrics_bytes_consumed_total{topic=~\".*\", job=~\"$job\", instance=~\"$instance\"}[$__rate_interval])",
           "instant": false,
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
@@ -535,7 +535,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "rate(kafka_consumer_consumer_fetch_manager_metrics_records_consumed_total{topic=~\"$topic\", cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "rate(kafka_consumer_consumer_fetch_manager_metrics_records_consumed_total{topic=~\"$topic\", job=~\"$job\", instance=~\"$instance\"}[$__rate_interval])",
           "instant": false,
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
@@ -637,7 +637,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "sum(rate(kafka_consumer_consumer_fetch_manager_metrics_bytes_consumed_total{topic!=\"\", cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval])) by (topic)",
+          "expr": "sum(rate(kafka_consumer_consumer_fetch_manager_metrics_bytes_consumed_total{topic!=\"\", job=~\"$job\", instance=~\"$instance\"}[$__rate_interval])) by (topic)",
           "instant": false,
           "interval": "",
           "legendFormat": "{{topic}}",
@@ -738,7 +738,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "sum by (topic) (rate(kafka_consumer_consumer_fetch_manager_metrics_records_consumed_total{topic!=\"\", cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval]))",
+          "expr": "sum by (topic) (rate(kafka_consumer_consumer_fetch_manager_metrics_records_consumed_total{topic!=\"\", job=~\"$job\", instance=~\"$instance\"}[$__rate_interval]))",
           "instant": false,
           "interval": "",
           "legendFormat": "{{topic}}",
@@ -865,7 +865,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "rate(kafka_consumer_consumer_fetch_manager_metrics_fetch_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "rate(kafka_consumer_consumer_fetch_manager_metrics_fetch_total{job=~\"$job\", instance=~\"$instance\"}[$__rate_interval])",
           "instant": false,
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
@@ -1062,7 +1062,7 @@
             "uid": "grafana"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_fetch_manager_metrics_fetch_latency_avg{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_consumer_consumer_fetch_manager_metrics_fetch_latency_avg{job=~\"$job\", instance=~\"$instance\"}",
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
           "refId": "A"
@@ -1187,7 +1187,7 @@
             "uid": "grafana"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_coordinator_metrics_commit_latency_avg{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_consumer_consumer_coordinator_metrics_commit_latency_avg{job=~\"$job\", instance=~\"$instance\"}",
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
           "refId": "A"
@@ -1287,7 +1287,7 @@
             "uid": "grafana"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_coordinator_metrics_commit_rate{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_consumer_consumer_coordinator_metrics_commit_rate{job=~\"$job\", instance=~\"$instance\"}",
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
           "refId": "A"
@@ -1413,7 +1413,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_metrics_connection_count{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_consumer_consumer_metrics_connection_count{job=~\"$job\", instance=~\"$instance\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
@@ -1514,7 +1514,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_consumer_node_metrics_response_rate{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_consumer_consumer_node_metrics_response_rate{job=~\"$job\", instance=~\"$instance\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
@@ -1542,15 +1542,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=~\"streams|producer|consumer\"},cluster_id)",
+        "definition": "label_values(jvm_info{cluster_type=~\"streams|producer|consumer\"},job)",
         "hide": 0,
         "includeAll": true,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=~\"streams|producer|consumer\"},cluster_id)",
+          "query": "label_values(jvm_info{cluster_type=~\"streams|producer|consumer\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -1573,7 +1573,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+        "definition": "label_values(kafka_consumer_app_info_start_time_ms{job=~\"$job\"},instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -1581,7 +1581,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_app_info_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+          "query": "label_values(kafka_consumer_app_info_start_time_ms{job=~\"$job\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

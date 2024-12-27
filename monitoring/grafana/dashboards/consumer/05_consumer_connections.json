@@ -120,7 +120,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by (client_id, instance) (kafka_consumer_connection_count{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"})",
+          "expr": "sum by (client_id, instance) (kafka_consumer_connection_count{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"})",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "range": true,
@@ -222,7 +222,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_consumer_connection_count{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}[$__rate_interval])",
+          "expr": "rate(kafka_consumer_connection_count{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "range": true,
@@ -323,7 +323,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_connection_creation_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
+          "expr": "kafka_consumer_connection_creation_rate{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"}",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "refId": "A"
@@ -423,7 +423,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "kafka_consumer_connection_close_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"}",
+          "expr": "kafka_consumer_connection_close_rate{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"}",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "refId": "A"
@@ -452,15 +452,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=~\"streams|consumers|consumers\"},cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=~\"streams|consumers|consumers\"},job)",
         "hide": 0,
         "includeAll": true,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=~\"streams|consumers|consumers\"},cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=~\"streams|consumers|consumers\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -483,7 +483,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\"},instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -491,7 +491,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+          "query": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -514,7 +514,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
+        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
         "hide": 0,
         "includeAll": true,
         "label": "client-id",
@@ -522,7 +522,7 @@
         "name": "client_id",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_app_infor_start_time_ms{cluster_id=~\"$cluster\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
+          "query": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

@@ -115,7 +115,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "expr": "sum ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >=0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -180,7 +180,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg  ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "expr": "avg  ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", job=~\"${cluster}\"}) >=0)",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -282,7 +282,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "min ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_min{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >= 0)",
+          "expr": "min ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_min{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >= 0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -347,7 +347,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg  ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_min{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "expr": "avg  ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_min{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", job=~\"${cluster}\"}) >=0)",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -413,7 +413,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "max ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_max{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", cluster_id=~\"${cluster}\"}) >= 0)",
+          "expr": "max ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_max{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", job=~\"${cluster}\"}) >= 0)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -507,7 +507,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg  ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_max{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", cluster_id=~\"${cluster}\"}) >=0)",
+          "expr": "avg  ((kafka_streams_stream_processor_node_metrics_record_e2e_latency_max{processor_node_id=~\"${process}\", task_id=~\"${task}_${partition}\", thread_id=~\"${thread}\", instance=~\"${instance}\", job=~\"${cluster}\"}) >=0)",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -540,15 +540,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, job)",
         "hide": 0,
         "includeAll": true,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+          "query": "label_values(jvm_info{cluster_type=\"streams\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -571,14 +571,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+        "definition": "label_values(kafka_streams_info{job=~\"${cluster}\", application_id=~\".+\"}, application_id)",
         "hide": 0,
         "includeAll": true,
         "multi": false,
         "name": "application",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_info{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+          "query": "label_values(kafka_streams_info{job=~\"${cluster}\", application_id=~\".+\"}, application_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -598,7 +598,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+        "definition": "label_values(kafka_streams_info{cluster_type=\"streams\", job=~\"${cluster}\", application_id=~\"$application\"}, instance)",
         "description": "cannot use .* for all, since then thread is not limited to the application that was selected.",
         "hide": 0,
         "includeAll": true,
@@ -607,7 +607,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_info{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+          "query": "label_values(kafka_streams_info{cluster_type=\"streams\", job=~\"${cluster}\", application_id=~\"$application\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -629,7 +629,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
+        "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_total{job=~\"$job\", instance=~\"$instance\"}, thread_id)",
         "hide": 0,
         "includeAll": true,
         "label": "thread",
@@ -637,7 +637,7 @@
         "name": "thread",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
+          "query": "label_values(kafka_streams_stream_thread_metrics_task_created_total{job=~\"$job\", instance=~\"$instance\"}, thread_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -659,7 +659,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
+        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{job=~\"$job\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
         "hide": 0,
         "includeAll": true,
         "label": "task",
@@ -667,7 +667,7 @@
         "name": "task",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
+          "query": "label_values(kafka_streams_stream_task_metrics_process_rate{job=~\"$job\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -720,7 +720,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{cluster_type=\"streams\",cluster_id=~\"${cluster}\",instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}, processor_node_id)",
+        "definition": "label_values(kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{cluster_type=\"streams\",job=~\"${cluster}\",instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}, processor_node_id)",
         "hide": 0,
         "includeAll": true,
         "label": "process",
@@ -728,7 +728,7 @@
         "name": "process",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{cluster_type=\"streams\",cluster_id=~\"${cluster}\",instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}, processor_node_id)",
+          "query": "label_values(kafka_streams_stream_processor_node_metrics_record_e2e_latency_avg{cluster_type=\"streams\",job=~\"${cluster}\",instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}, processor_node_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

@@ -123,9 +123,9 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(process_cpu_seconds_total{cluster_id=~\"$cluster\",instance=~\"$instance\"}[$__rate_interval]) * 100",
+          "expr": "rate(process_cpu_seconds_total{job=~\"$job\",instance=~\"$instance\"}[$__rate_interval]) * 100",
           "interval": "",
-          "legendFormat": "{{cluster_id}}-{{instance}}",
+          "legendFormat": "{{job}}-{{instance}}",
           "range": true,
           "refId": "A"
         }
@@ -245,7 +245,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without(area, pool)(jvm_memory_pool_used_bytes{cluster_id=~\"$cluster\",instance=~\"$instance\", pool=~\"G1 Eden Space|G1 Old Gen|G1 Survivor Space\"})",
+          "expr": "sum without(area, pool)(jvm_memory_pool_used_bytes{job=~\"$job\",instance=~\"$instance\", pool=~\"G1 Eden Space|G1 Old Gen|G1 Survivor Space\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -348,7 +348,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "jvm_threads_current{cluster_id=~\"$cluster\",instance=~\"$instance\"}",
+          "expr": "jvm_threads_current{job=~\"$job\",instance=~\"$instance\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -464,7 +464,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "sum without(gc)(rate(jvm_gc_collection_seconds_sum{cluster_id=~\"$cluster\",instance=~\"$instance\"}[$__rate_interval]))",
+          "expr": "sum without(gc)(rate(jvm_gc_collection_seconds_sum{job=~\"$job\",instance=~\"$instance\"}[$__rate_interval]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -589,7 +589,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "java_lang_runtime_uptime{cluster_id=~\"$cluster\",instance=~\"$instance\"} + on (cluster_id, instance) group_left(runtime, vendor, version) (0 * jvm_runtime_info{cluster_id=~\"$cluster\",instance=~\"$instance\"})",
+          "expr": "java_lang_runtime_uptime{job=~\"$job\",instance=~\"$instance\"} + on (job, instance) group_left(runtime, vendor, version) (0 * jvm_runtime_info{job=~\"$job\",instance=~\"$instance\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -605,7 +605,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "jvm_threads_current{cluster_id=~\"$cluster\",instance=~\"$instance\"}",
+          "expr": "jvm_threads_current{job=~\"$job\",instance=~\"$instance\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -632,7 +632,7 @@
               "Time 2": true,
               "Value #B": false,
               "__name__": true,
-              "cluster_id 2": true,
+              "job 2": true,
               "cluster_type 1": true,
               "cluster_type 2": true,
               "job": true,
@@ -644,8 +644,8 @@
               "Value #A": 7,
               "Value #C": 13,
               "__name__": 14,
-              "cluster_id 1": 1,
-              "cluster_id 2": 10,
+              "job 1": 1,
+              "job 2": 10,
               "cluster_type 1": 0,
               "cluster_type 2": 11,
               "instance": 2,
@@ -659,7 +659,7 @@
               "Time 1": "",
               "Value #B": "threads",
               "Value #C": "threads",
-              "cluster_id 1": "cluster_id",
+              "job 1": "job",
               "cluster_type 1": "cluster_type",
               "instance": "instance"
             }
@@ -701,15 +701,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info, cluster_id)",
+        "definition": "label_values(jvm_runtime_info, job)",
         "hide": 0,
         "includeAll": true,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info, cluster_id)",
+          "query": "label_values(jvm_runtime_info, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -732,7 +732,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_id=~\"$cluster\"}, instance)",
+        "definition": "label_values(jvm_runtime_info{job=~\"$job\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -740,7 +740,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_id=~\"$cluster\"}, instance)",
+          "query": "label_values(jvm_runtime_info{job=~\"$job\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

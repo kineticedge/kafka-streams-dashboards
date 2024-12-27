@@ -111,7 +111,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "kafka_producer_producer_metrics_record_retry_rate{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_producer_producer_metrics_record_retry_rate{job=~\"$job\", instance=~\"$instance\"}",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -179,7 +179,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_producer_producer_metrics_record_error_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "rate(kafka_producer_producer_metrics_record_error_total{job=~\"$job\", instance=~\"$instance\"}[$__rate_interval])",
           "hide": false,
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
@@ -250,7 +250,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "kafka_producer_producer_metrics_buffer_available_bytes{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_producer_producer_metrics_buffer_available_bytes{job=~\"$job\", instance=~\"$instance\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -317,7 +317,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "kafka_producer_producer_metrics_produce_throttle_time_avg{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_producer_producer_metrics_produce_throttle_time_avg{job=~\"$job\", instance=~\"$instance\"}",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -387,7 +387,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "kafka_producer_producer_metrics_compression_rate_avg{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_producer_producer_metrics_compression_rate_avg{job=~\"$job\", instance=~\"$instance\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -488,7 +488,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "kafka_producer_producer_metrics_request_latency_avg{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_producer_producer_metrics_request_latency_avg{job=~\"$job\", instance=~\"$instance\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "{{client_id}}({{instance}})",
@@ -589,7 +589,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "kafka_producer_producer_metrics_record_queue_time_avg{cluster_id=~\"$cluster\", instance=~\"$instance\"}",
+          "expr": "kafka_producer_producer_metrics_record_queue_time_avg{job=~\"$job\", instance=~\"$instance\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -691,7 +691,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_producer_producer_metrics_failed_authentication_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "rate(kafka_producer_producer_metrics_failed_authentication_total{job=~\"$job\", instance=~\"$instance\"}[$__rate_interval])",
           "hide": false,
           "interval": "",
           "legendFormat": "{{client_id}}@{{hostname}}",
@@ -2846,15 +2846,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=~\"streams|producers|consumers\"},cluster_id)",
+        "definition": "label_values(jvm_info{cluster_type=~\"streams|producers|consumers\"},job)",
         "hide": 0,
         "includeAll": true,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=~\"streams|producers|consumers\"},cluster_id)",
+          "query": "label_values(jvm_info{cluster_type=~\"streams|producers|consumers\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -2877,7 +2877,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_producer_app_info_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+        "definition": "label_values(kafka_producer_app_info_start_time_ms{job=~\"$job\"},instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -2885,7 +2885,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_producer_app_info_start_time_ms{cluster_id=~\"$cluster\"},instance)",
+          "query": "label_values(kafka_producer_app_info_start_time_ms{job=~\"$job\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

@@ -119,7 +119,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum without(instance, version) (kafka_network_requestmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"RequestsPerSec\", instance=~\"$instance\"}) ",
+          "expr": "sum without(instance, version) (kafka_network_requestmetrics_oneminuterate{job=~\"$job\", name=\"RequestsPerSec\", instance=~\"$instance\"}) ",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{request}}",
@@ -244,7 +244,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": " (kafka_network_requestchannel_value{cluster_id=~\"$cluster\", instance=~\"$instance\", processor=\"\"}) ",
+          "expr": " (kafka_network_requestchannel_value{job=~\"$job\", instance=~\"$instance\", processor=\"\"}) ",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "__auto",
@@ -276,15 +276,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
         "hide": 0,
         "includeAll": false,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -307,7 +307,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\", job=\"$job\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -315,7 +315,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\", job=\"$job\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

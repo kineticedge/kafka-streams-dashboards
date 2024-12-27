@@ -9,7 +9,7 @@ scrape_configs:
           - zookeeper:7071
         labels:
           cluster_type: "zookeeper"
-          cluster_id: "kafka-zookeeper"
+          job: "kafka-zookeeper"
     relabel_configs:
       - source_labels: [__address__]
         regex: '(.*):(.*)'
@@ -29,7 +29,7 @@ scrape_configs:
         - broker-4:7071
         labels:
           cluster_type: "kafka"
-          cluster_id: "kafka-core"
+          job: "kafka-core"
     relabel_configs:
       - source_labels: [__address__]
         regex: '(.*):(.*)'
@@ -55,7 +55,7 @@ scrape_configs:
         - sasl-broker-4:7071
         labels:
           cluster_type: "kafka"
-          cluster_id: "sasl-kafka-core"
+          job: "sasl-kafka-core"
     relabel_configs:
       - source_labels: [__address__]
         regex: '(.*):(.*)'

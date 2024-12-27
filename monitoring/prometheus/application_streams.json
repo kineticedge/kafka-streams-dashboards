@@ -13,10 +13,9 @@
       "ksda-stream-10:7071"
     ],
     "labels": {
+      "source": "jmxprometheus",
       "job": "streams",
-      "cluster_type": "streams",
-      "cluster_id": "streams",
-      "source": "jmxprometheus"
+      "cluster_type": "streams"
     }
   }
 ]

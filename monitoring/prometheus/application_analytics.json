@@ -13,10 +13,9 @@
       "ksda-analytics-none-2:7071"
     ],
     "labels": {
-      "job": "analytics",
+      "source": "jmxprometheus",
       "cluster_type": "streams",
-      "cluster_id": "analytics",
-      "source": "jmxprometheus"
+      "job": "analytics"
     }
   }
 ]

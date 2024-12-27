@@ -2000,7 +2000,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(instance, node_id) (kafka_server_replicamanager_value{instance=~\".+\", name=\"PartitionCount\",} + on (cluster_id, instance) group_left(node_id) (0 * kafka_server_app_info_version))",
+          "expr": "sum by(instance, node_id) (kafka_server_replicamanager_value{instance=~\".+\", name=\"PartitionCount\",} + on (job, instance) group_left(node_id) (0 * kafka_server_app_info_version))",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -2187,15 +2187,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+        "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
         "hide": 0,
         "includeAll": false,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, cluster_id)",
+          "query": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

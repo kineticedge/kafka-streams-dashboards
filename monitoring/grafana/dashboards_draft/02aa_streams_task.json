@@ -77,7 +77,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cluster_id"
+              "options": "job"
             },
             "properties": [
               {
@@ -192,7 +192,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "kafka_streams_stream_processor_node_metrics_process_total{cluster_id=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}",
+          "expr": "kafka_streams_stream_processor_node_metrics_process_total{job=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -208,7 +208,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "kafka_streams_info{cluster_id=~\"${cluster}\", instance=~\"${instance}\", application_id=~\".+\"}",
+          "expr": "kafka_streams_info{job=~\"${cluster}\", instance=~\"${instance}\", application_id=~\".+\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -279,7 +279,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cluster_id"
+              "options": "job"
             },
             "properties": [
               {
@@ -394,7 +394,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "kafka_streams_stream_processor_node_metrics_process_total{cluster_id=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}",
+          "expr": "kafka_streams_stream_processor_node_metrics_process_total{job=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -422,7 +422,7 @@
             "indexByName": {
               "Time": 5,
               "Value": 9,
-              "cluster_id": 0,
+              "job": 0,
               "cluster_type": 7,
               "instance": 1,
               "job": 6,
@@ -445,7 +445,7 @@
           "id": "groupBy",
           "options": {
             "fields": {
-              "cluster_id": {
+              "job": {
                 "aggregations": [],
                 "operation": "groupby"
               },
@@ -492,7 +492,7 @@
           "options": {
             "excludeByName": {},
             "indexByName": {
-              "cluster_id": 0,
+              "job": 0,
               "instance": 1,
               "partition": 4,
               "subtopology": 3,
@@ -571,7 +571,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cluster_id"
+              "options": "job"
             },
             "properties": [
               {
@@ -698,7 +698,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "label_replace(kafka_streams_stream_processor_node_metrics_process_total{cluster_id=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}, \"subtopology\", \"$1\", \"task_id\", \"(.*)_.*\")\n",
+          "expr": "label_replace(kafka_streams_stream_processor_node_metrics_process_total{job=~\"${cluster}\", instance=~\"${instance}\", thread_id=~\"${thread}\", task_id=~\"${task}_${partition}\"}, \"subtopology\", \"$1\", \"task_id\", \"(.*)_.*\")\n",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -713,7 +713,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "kafka_streams_info{cluster_id=~\"${cluster}\", instance=~\"${instance}\", application_id=~\".+\"}",
+          "expr": "kafka_streams_info{job=~\"${cluster}\", instance=~\"${instance}\", application_id=~\".+\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -747,7 +747,7 @@
             "indexByName": {
               "Time": 5,
               "Value": 9,
-              "cluster_id": 0,
+              "job": 0,
               "cluster_type": 7,
               "instance": 1,
               "job": 6,
@@ -782,7 +782,7 @@
                 "aggregations": [],
                 "operation": "groupby"
               },
-              "cluster_id": {
+              "job": {
                 "aggregations": [],
                 "operation": "groupby"
               },
@@ -854,15 +854,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+        "definition": "label_values(jvm_info{cluster_type=\"streams\"}, job)",
         "hide": 0,
         "includeAll": true,
-        "label": "cluster",
+        "label": "job",
         "multi": false,
-        "name": "cluster",
+        "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\"}, cluster_id)",
+          "query": "label_values(jvm_info{cluster_type=\"streams\"}, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -885,7 +885,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_info{cluster_type=\"streams\", cluster_id=~\"$cluster\"}, instance)",
+        "definition": "label_values(jvm_info{cluster_type=\"streams\", job=~\"$job\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -893,7 +893,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{cluster_type=\"streams\", cluster_id=~\"$cluster\"}, instance)",
+          "query": "label_values(jvm_info{cluster_type=\"streams\", job=~\"$job\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -915,7 +915,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
+        "definition": "label_values(kafka_streams_stream_thread_metrics_task_created_total{job=~\"$job\", instance=~\"$instance\"}, thread_id)",
         "hide": 0,
         "includeAll": true,
         "label": "thread",
@@ -923,7 +923,7 @@
         "name": "thread",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_thread_metrics_task_created_total{cluster_id=~\"$cluster\", instance=~\"$instance\"}, thread_id)",
+          "query": "label_values(kafka_streams_stream_thread_metrics_task_created_total{job=~\"$job\", instance=~\"$instance\"}, thread_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -945,7 +945,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
+        "definition": "label_values(kafka_streams_stream_task_metrics_process_rate{job=~\"$job\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
         "hide": 0,
         "includeAll": true,
         "label": "task",
@@ -953,7 +953,7 @@
         "name": "task",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_stream_task_metrics_process_rate{cluster_id=~\"$cluster\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
+          "query": "label_values(kafka_streams_stream_task_metrics_process_rate{job=~\"$job\", instance=~\"${instance}\",thread_id=~\"${thread}\"}, task_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

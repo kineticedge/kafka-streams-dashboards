@@ -78,9 +78,78 @@ scrape_configs:
           - /etc/prometheus/application_*.json
     relabel_configs:
       - source_labels: [__address__]
-        regex: '(.*):(.*)'
+        regex: '(.*):[0-9]+'
         target_label: instance
         replacement: '$1'
+      - source_labels: [__address__]
+        regex: '(.*):[0-9]+'
+        target_label: pod
+        replacement: '$1'
+#      - source_labels: [__address__]
+#        regex: '[a-zA-Z0-9]+-([a-zA-Z0-9._~:-]+?)(-[0-9]+)?:[0-9]+'
+#        target_label: application
+#        replacement: '$1'
+  - job_name: micrometer_applications
+    scrape_interval: 2s
+    metrics_path: /metrics
+    file_sd_configs:
+      - files:
+          - /etc/prometheus/micrometer_application_*.json
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):[0-9]+'
+        target_label: instance
+        replacement: '$1'
+      - source_labels: [__address__]
+        regex: '(.*):[0-9]+'
+        target_label: pod
+        replacement: '$1'
+#      - source_labels: [__address__]
+#        regex: '[a-z]-(.*)(-[0-9])?:.*'
+#        target_label: application
+#        replacement: '$1'
+    metric_relabel_configs:
+      - source_labels: [rocksdb_state_id,rocksdb_window_state_id,rocksdb_session_state_id,in_memory_state_id,in_memory_window_state_id,in_memory_lru_state_id,in_memory_suppression_state_id]
+        separator: '' # ; is the default, but since only one of the source labels is ever defined, we remove this separator
+        target_label: state_id
+        regex: '(.+)'
+        replacement: '$1'
+        action: replace
+      - source_labels: [rocksdb_state_id]
+        target_label: "store_type"
+        regex: ".+"
+        replacement: "rocksdb_state"
+        action: replace
+      - source_labels: [rocksdb_window_state_id]
+        target_label: "store_type"
+        regex: ".+"
+        replacement: "rocksdb_window_state"
+        action: replace
+      - source_labels: [rocksdb_session_state_id]
+        target_label: "store_type"
+        regex: ".+"
+        replacement: "rocksdb_session_state"
+        action: replace
+      - source_labels: [in_memory_state_id]
+        target_label: "store_type"
+        regex: ".+"
+        replacement: "in_memory_state"
+        action: replace
+      - source_labels: [in_memory_window_state_id]
+        target_label: "store_type"
+        regex: ".+"
+        replacement: "in_memory_window_state"
+        action: replace
+      - source_labels: [in_memory_lru_state_id]
+        target_label: "store_type"
+        regex: ".+"
+        replacement: "in_memory_lru_state"
+        action: replace
+      - source_labels: [in_memory_suppression_state_id]
+        target_label: "store_type"
+        regex: ".+"
+        replacement: "in_memory_suppression_state"
+        action: replace
   - job_name: 'opentelemetry'
     static_configs:
       - targets: ['otel:9091']

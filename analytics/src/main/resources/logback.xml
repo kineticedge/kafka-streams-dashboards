@@ -19,6 +19,9 @@
 
     <logger name="io.kineticedge" level="DEBUG"/>
 
+    <logger name="io.micrometer.prometheusmetrics.PrometheusMeterRegistry" level="DEBUG"/>
+    <logger name="io.micrometer.core.instrument.MeterRegistry" level="DEBUG"/>
+
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
     </root>

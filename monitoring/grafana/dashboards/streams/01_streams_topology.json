@@ -150,7 +150,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "label_replace(kafka_stream_processor_node_process{cluster_id=~\"${cluster}\"} * on (instance) group_left(application_id) kafka_streams_infor{application_id=~\"${application}\"} , \"subtopology\", \"$1\", \"task_id\", \"(.*)_.*\")",
+          "expr": "label_replace(kafka_stream_processor_node_process_total{cluster_id=~\"${cluster}\"} * on (instance) group_left(application_id) kafka_stream_application{application_id=~\"${application}\"} , \"subtopology\", \"$1\", \"task_id\", \"(.*)_.*\")",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -462,7 +462,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum (kafka_stream_processor_node_process{task_id=~\"([0-9]+)_(.+)\", cluster_id=~\"${cluster}\"} * on (instance) group_left(application_id) kafka_streams_infor{application_id=~\"$application\", instance=~\"$instance\"}) without()",
+          "expr": "sum (kafka_stream_processor_node_process_total{task_id=~\"([0-9]+)_(.+)\", cluster_id=~\"${cluster}\"} * on (instance) group_left(application_id) kafka_stream_application{application_id=~\"$application\", instance=~\"$instance\"}) without()",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -598,7 +598,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_infor{cluster_type=\"streams\"}, cluster_id)",
+        "definition": "label_values(kafka_stream_application{cluster_type=\"streams\"}, cluster_id)",
         "hide": 0,
         "includeAll": true,
         "label": "cluster",
@@ -606,7 +606,7 @@
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_infor{cluster_type=\"streams\"}, cluster_id)",
+          "query": "label_values(kafka_stream_application{cluster_type=\"streams\"}, cluster_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -629,14 +629,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_infor{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+        "definition": "label_values(kafka_stream_application{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
         "hide": 0,
         "includeAll": true,
         "multi": false,
         "name": "application",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_infor{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
+          "query": "label_values(kafka_stream_application{cluster_id=~\"${cluster}\", application_id=~\".+\"}, application_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -656,7 +656,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_streams_infor{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+        "definition": "label_values(kafka_stream_application{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": "instance",
@@ -664,7 +664,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_streams_infor{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
+          "query": "label_values(kafka_stream_application{cluster_type=\"streams\", cluster_id=~\"${cluster}\", application_id=~\"$application\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,

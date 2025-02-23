@@ -193,7 +193,7 @@ public class Streams {
 
     final Materialized<String, ProductAnalytic, WindowStore<Bytes, byte[]>> store = Materialized.<String, ProductAnalytic, WindowStore<Bytes, byte[]>>as("TUMBLING-aggregate-purchase-order")
             //.withRetention(Duration.ofHours(2L))
-            //.withCachingDisabled()
+            .withCachingDisabled()
             ;
 
     builder.<String, PurchaseOrder>stream(options.getTopic(), Consumed.as("TUMBLING-line-item"))
@@ -258,7 +258,7 @@ public class Streams {
 
     final Materialized<String, ProductAnalytic, WindowStore<Bytes, byte[]>> store = Materialized.<String, ProductAnalytic, WindowStore<Bytes, byte[]>>as("SLIDING-aggregate-purchase-order")
             //.withLoggingDisabled()
-            //.withCachingDisabled()
+            .withCachingDisabled()
             // if suppression is added, this is needed, otherwise the windowing causes confusion and a class-cast exception occurs
             .withKeySerde(Serdes.String())
             ;
@@ -301,7 +301,7 @@ public class Streams {
     final Materialized<String, ProductAnalytic, SessionStore<Bytes, byte[]>> store = Materialized.<String, ProductAnalytic, SessionStore<Bytes, byte[]>>as("SESSION-aggregate-purchase-order")
             //.withRetention(Duration.ofDays(1000L))
             //.withLoggingDisabled()
-            //.withCachingDisabled()
+            .withCachingDisabled()
             ;
 
     builder.<String, PurchaseOrder>stream(options.getTopic(), Consumed.as("SESSION-line-item"))
@@ -335,7 +335,7 @@ public class Streams {
 
     final Materialized<String, ProductAnalytic, KeyValueStore<Bytes, byte[]>> store = Materialized.<String, ProductAnalytic, KeyValueStore<Bytes, byte[]>>as("NONE-aggregate-purchase-order")
             //.withLoggingDisabled()
-            //.withCachingDisabled()
+            .withCachingDisabled()
             ;
 
     builder.<String, PurchaseOrder>stream(options.getTopic(), Consumed.as("NONE-line-item"))

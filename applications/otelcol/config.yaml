@@ -5,7 +5,7 @@ receivers:
       grpc:
         endpoint: 0.0.0.0:4317
       http:
-        endpoint: 0.0.0.0:55681
+        endpoint: 0.0.0.0:4318
 processors:
   memory_limiter:
     # check_interval is the time between measurements of memory usage for the
@@ -26,8 +26,9 @@ processors:
 extensions:
   health_check: {}
 exporters:
-  logging:
-    loglevel: info
+  debug:
+    verbosity: normal
+    #verbosity: detailed
   otlphttp:
     endpoint: "http://tempo:4318"
     tls:
@@ -42,14 +43,13 @@ exporters:
     metric_expiration: 180m
     resource_to_telemetry_conversion:
       enabled: true
-
 service:
   extensions: [health_check]
   pipelines:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [logging, otlphttp]
+      exporters: [debug, otlphttp]
     metrics:
       receivers: [otlp]
-      exporters: [logging, prometheus]
+      exporters: [debug, prometheus]

@@ -79,7 +79,7 @@ services:
       #- ./plugins:/var/lib/grafana/plugins
 
   tempo:
-    image: grafana/tempo:latest
+    image: grafana/tempo:2.6.1
     hostname: tempo
     container_name: ksdm-tempo
     healthcheck:

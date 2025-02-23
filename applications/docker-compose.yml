@@ -223,6 +223,7 @@ services:
   # tracing collector agent
   otel:
     image: otel/opentelemetry-collector:latest
+    #image: otel/opentelemetry-collector:0.69.0
     container_name: ksda-otel
     hostname: otel
     healthcheck:

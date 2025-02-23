@@ -254,9 +254,8 @@ public class Streams {
 
 
         final Materialized<String, PurchaseOrder, KeyValueStore<Bytes, byte[]>> materialized =
-                Materialized.<String, PurchaseOrder, KeyValueStore<Bytes, byte[]>>as("pickup-order-reduce-store");
-
-        //.withCachingDisabled();
+                Materialized.<String, PurchaseOrder, KeyValueStore<Bytes, byte[]>>as("pickup-order-reduce-store")
+            .withCachingDisabled();
 
 //        final Materialized<String, PurchaseOrder, WindowStore<Bytes, byte[]>> materializedW =
 //                Materialized.<String, PurchaseOrder, WindowStore<Bytes, byte[]>>as("pickup-order-reduce-store");

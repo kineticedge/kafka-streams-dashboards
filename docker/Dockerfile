@@ -8,7 +8,7 @@ RUN \
     curl -k -L -o jolokia-agent.jar "https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.7.2/jolokia-jvm-1.7.2.jar"
 
 RUN \
-    curl -k -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.33.2/opentelemetry-javaagent.jar
+    curl -k -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.13.1/opentelemetry-javaagent.jar
 
 FROM eclipse-temurin:21-jdk-jammy
 #FROM openjdk:17-jdk-slim
@@ -28,7 +28,7 @@ RUN \
 
 ENV \
     ENVIRONMENT="" \
-    OTEL_EXPORTER_OTLP_ENDPOINT="http://otel:4317" \
+    OTEL_EXPORTER_OTLP_ENDPOINT="http://otel:4318" \
     OTEL_METRICS_EXPORTER="none" \
     OTEL_SERVICE_NAME="__UNDEFINED__" \
     OTEL_TRACES_SAMPLER="parentbased_traceidratio" \

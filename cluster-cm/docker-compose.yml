@@ -14,7 +14,7 @@ services:
 
   # tracing collector agent
   broker-otel:
-    image: otel/opentelemetry-collector:0.119.0
+    image: otel/opentelemetry-collector:0.122.0
     container_name: ${COMPOSE_PROJECT_NAME}-broker-otel
     hostname: broker-otel
     healthcheck:

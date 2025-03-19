@@ -10,7 +10,7 @@ volumes:
 
 services:
   prometheus:
-    image: prom/prometheus:v2.47.2
+    image: prom/prometheus:v2.53.4
     hostname: prometheus
     container_name: ksdm-prometheus
     healthcheck:
@@ -46,8 +46,8 @@ services:
 #      - ./prometheus/micrometer_application_analytics.json:/etc/prometheus/micrometer_application_analytics.json
 
   grafana:
-    image: grafana/grafana:main
-    #image: grafana/grafana:9.4.7
+    image: grafana/grafana:11.5.2
+    #image: grafana/grafana:main
     hostname: grafana
     container_name: ksdm-grafana
     healthcheck:
@@ -80,6 +80,7 @@ services:
 
   tempo:
     image: grafana/tempo:2.6.1
+    #image: grafana/tempo:2.7.1
     hostname: tempo
     container_name: ksdm-tempo
     healthcheck:

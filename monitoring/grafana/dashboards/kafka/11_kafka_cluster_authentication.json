@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -18,10 +21,11 @@
       }
     ]
   },
-  "editable": true,
+  "description": "Apache Kafka resource usage and throughput",
+  "editable": false,
   "fiscalYearStartMonth": 0,
+  "gnetId": 721,
   "graphTooltip": 0,
-  "iteration": 1641072923668,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -30,13 +34,16 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "Messages/s",
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -48,13 +55,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -77,40 +84,50 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 11,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 2,
-    "interval" : "5s",
-    "links": [],
+      "id": 40,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
+          "calcs": [
+            "mean",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
-          "expr": "(kafka_network_requestmetrics_99thpercentile{job=~\"$job\", instance=~\"$instance\",name=\"TotalTimeMs\",request=\"Produce\",})",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "{{instance}}",
-          "refId": "C"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg (kafka_server_socket_server_metrics_successful_authentication_rate{job=~\"$job\", instance=~\"$instance\"}) by (listener)",
+          "interval": "",
+          "legendFormat": "{{listener}}",
+          "queryType": "randomWalk",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "title": "Total Time / Broker - Producer",
+      "title": "Successful Authentication Rate",
       "type": "timeseries"
     },
     {
@@ -118,13 +135,16 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "Messages/s",
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -136,13 +156,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -165,40 +185,50 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 11,
         "w": 12,
         "x": 12,
         "y": 0
       },
-      "id": 6,
-    "interval" : "5s",
-    "links": [],
+      "id": 41,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
+          "calcs": [
+            "mean",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
-          "expr": "avg by(name) (kafka_network_requestmetrics_99thpercentile{job=~\"$job\", instance=~\"$instance\",request=\"Produce\", name =~ \".+Ms\"})",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "{{name}}",
-          "refId": "C"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg (kafka_server_socket_server_metrics_failed_authentication_rate{job=~\"$job\", instance=~\"$instance\"}) by (listener)",
+          "interval": "",
+          "legendFormat": "{{listener}}",
+          "queryType": "randomWalk",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "title": "Request Time - Producer",
+      "title": "Failed Authentication Rate",
       "type": "timeseries"
     },
     {
@@ -206,13 +236,16 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "Messages/s",
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -224,13 +257,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -253,40 +286,49 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 11,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 11
       },
-      "id": 4,
-    "interval" : "5s",
-    "links": [],
+      "id": 38,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
-          "expr": "(kafka_network_requestmetrics_99thpercentile{job=~\"$job\", instance=~\"$instance\",name=\"TotalTimeMs\",request=\"FetchConsumer\",})",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "{{instance}}",
-          "refId": "C"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum (kafka_server_socket_server_metrics_successful_authentication_total{job=~\"$job\", instance=~\"$instance\"}) by (listener)",
+          "interval": "",
+          "legendFormat": "{{listener}}",
+          "queryType": "randomWalk",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "title": "Total Time / Broker - Consumer",
+      "title": "Successful Authentication Total",
       "type": "timeseries"
     },
     {
@@ -294,13 +336,16 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "Messages/s",
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -312,13 +357,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -341,223 +386,54 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 11,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 11
       },
-      "id": 8,
-    "interval" : "5s",
-    "links": [],
+      "id": 39,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
-          "expr": "avg by (name) (kafka_network_requestmetrics_99thpercentile{job=~\"$job\", instance=~\"$instance\",request=\"FetchConsumer\", name =~ \".+Ms\"})",
-          "format": "time_series",
-          "instant": false,
-          "intervalFactor": 2,
-          "legendFormat": "{{name}}",
-          "refId": "C"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum (kafka_server_socket_server_metrics_failed_authentication_total{job=~\"$job\", instance=~\"$instance\"}) by (listener)",
+          "interval": "",
+          "legendFormat": "{{listener}}",
+          "queryType": "randomWalk",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "title": "Request Time - Consumer",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "Messages/s",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 16
-      },
-      "id": 10,
-    "interval" : "5s",
-    "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.4.0-46516pre",
-      "targets": [
-        {
-          "expr": "(kafka_network_requestmetrics_99thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"TotalTimeMs\",request=\"FetchFollower\",})",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "{{instance}}",
-          "refId": "C"
-        }
-      ],
-      "title": "Total Time / Broker - Follower",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "Messages/s",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 16
-      },
-      "id": 12,
-    "interval" : "5s",
-    "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.4.0-46516pre",
-      "targets": [
-        {
-          "expr": "avg by (name) (kafka_network_requestmetrics_99thpercentile{job=~\"$job\", instance=~\"$instance\",request=\"FetchFollower\", name =~ \".+Ms\"})",
-          "format": "time_series",
-          "instant": false,
-          "intervalFactor": 2,
-          "legendFormat": "{{name}}",
-          "refId": "C"
-        }
-      ],
-      "title": "Request Time - Follower",
+      "title": "Failed Authentication Total",
       "type": "timeseries"
     }
   ],
   "refresh": "2s",
-  "schemaVersion": 34,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "kafka_cluster",
@@ -660,9 +536,9 @@
       "30d"
     ]
   },
-  "timezone": "",
-  "title": "06 - Request Metrics",
-  "uid": "kafka_cluster_request",
-  "version": 1,
+  "timezone": "browser",
+  "title": "11 - Authentications",
+  "uid": "kafka_cluster_authentications",
+  "version": 4,
   "weekStart": ""
 }

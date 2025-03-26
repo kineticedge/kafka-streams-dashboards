@@ -1,0 +1,13 @@
+
+[package]
+name = "producer"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.3", features = ["derive"] }
+rdkafka = { version = "0.37", features = ["cmake-build", "ssl", "dynamic_linking"] }
+tokio = { version = "1", features = ["full"] }
+futures = "0.3"
+futures-util = "0.3"
+

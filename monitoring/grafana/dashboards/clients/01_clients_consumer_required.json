@@ -22,44 +22,19 @@
     ]
   },
   "description": "Kafka Consumer - client metrics",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 34,
   "links": [],
-  "liveNow": false,
   "panels": [
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 9,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "\n* always reported as NaN, defect.\n\n* https://issues.apache.org/jira/browse/KAFKA-17230\n\n",
-        "mode": "markdown"
-      },
-      "pluginVersion": "11.2.0-190735",
-      "title": "Defect preventing -- waiting for AK 4.0",
-      "type": "text"
-    },
     {
       "datasource": {
         "default": true,
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "",
+      "description": "NaN if you using kafka-clients < 4.0\n\nhttps://issues.apache.org/jira/browse/KAFKA-17230",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -121,7 +96,7 @@
         "h": 17,
         "w": 12,
         "x": 0,
-        "y": 3
+        "y": 0
       },
       "id": 7,
       "options": {
@@ -138,10 +113,12 @@
           "sortDesc": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -150,10 +127,10 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(client_id, node_id, principal) (kafka_clients_org_apache_kafka_consumer_node_request_latency_avg{client_id=~\"$client_id\", principal=~\"$principal\"} >= 0)",
+          "expr": "sum by(client_id, client_source_address, node_id, principal) (kafka_clients_org_apache_kafka_consumer_node_request_latency_avg{client_id=~\"$client_id\", principal=~\"$principal\"} >= 0)",
           "instant": false,
           "interval": "",
-          "legendFormat": "{{client_id}} {{node_id}} ({{principal}})",
+          "legendFormat": "{{client_id}} / {{client_source_address}} ({{principal}}) | {{node_id}}",
           "refId": "B"
         }
       ],
@@ -166,7 +143,7 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "",
+      "description": "NaN if you using kafka-clients < 4.0\n\nhttps://issues.apache.org/jira/browse/KAFKA-17230",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -228,7 +205,7 @@
         "h": 17,
         "w": 12,
         "x": 12,
-        "y": 3
+        "y": 0
       },
       "id": 8,
       "options": {
@@ -245,10 +222,12 @@
           "sortDesc": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -257,10 +236,10 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(client_id, node_id, principal) (kafka_clients_org_apache_kafka_consumer_node_request_latency_max{client_id=~\"$client_id\", principal=~\"$principal\"} >= 0)",
+          "expr": "sum by(client_id, client_source_address, node_id, principal) (kafka_clients_org_apache_kafka_consumer_node_request_latency_max{client_id=~\"$client_id\", principal=~\"$principal\"} >= 0)",
           "instant": false,
           "interval": "",
-          "legendFormat": "{{client_id}} {{node_id}} ({{principal}})",
+          "legendFormat": "{{client_id}} / {{client_source_address}} ({{principal}}) | {{node_id}}",
           "refId": "B"
         }
       ],
@@ -335,7 +314,7 @@
         "h": 17,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 17
       },
       "id": 5,
       "options": {
@@ -352,10 +331,12 @@
           "sortDesc": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -364,10 +345,10 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(client_id, client_instance_id, principal) (last_over_time(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_id=~\"$client_id\", principal=~\"$principal\"}[1m]))",
+          "expr": "sum by(client_id, client_source_address, client_instance_id, principal) (last_over_time(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_id=~\"$client_id\", principal=~\"$principal\"}[1m]))",
           "instant": false,
           "interval": "",
-          "legendFormat": "{{client_id}} ({{client_instance_id}})",
+          "legendFormat": "{{client_id}} / {{client_source_address}} ({{principal}})",
           "refId": "B"
         }
       ],
@@ -375,8 +356,9 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "2s",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [
     "clients"
   ],
@@ -384,7 +366,6 @@
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -393,10 +374,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total,client_id)",
-        "hide": 0,
         "includeAll": true,
         "label": "client_id",
-        "multi": false,
         "name": "client_id",
         "options": [],
         "query": {
@@ -406,14 +385,11 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -422,10 +398,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_id=~\"$client_id\"},principal)",
-        "hide": 0,
         "includeAll": true,
         "label": "principal",
-        "multi": false,
         "name": "principal",
         "options": [],
         "query": {
@@ -435,12 +409,7 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       }
     ]
   },
@@ -461,18 +430,6 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "1m",
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
   "timezone": "",

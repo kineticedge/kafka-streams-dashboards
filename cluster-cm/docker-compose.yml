@@ -197,3 +197,18 @@ services:
 #      - broker-otel
 #    entrypoint: "sh -c 'while true; do sleep 30; done'"
 #    network_mode: "service:broker-otel"
+
+
+  kafka-exporter:
+    hostname: kafka-exporter
+    image: danielqsj/kafka-exporter:latest
+    container_name: kafka-exporter
+    healthcheck:
+      test: wget --spider http://localhost:9308/ || exit 1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "9308:9308"
+    command: --kafka.server=broker-1:9092 --kafka.server=broker-2:9092 --kafka.server=broker-3:9092

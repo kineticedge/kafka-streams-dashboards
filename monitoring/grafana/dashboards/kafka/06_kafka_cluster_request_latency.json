@@ -18,49 +18,25 @@
       }
     ]
   },
-  "description": "",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
-  "gnetId": 721,
   "graphTooltip": 0,
-  "iteration": 1641072990373,
+  "iteration": 1641072923668,
   "links": [],
   "liveNow": false,
   "panels": [
-    {
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 0,
-        "y": 0
-      },
-      "id": 17,
-      "options": {
-        "content": "![](https://raw.githubusercontent.com/kineticedge/dev-local/main/monitoring/static/producer_request_metrics.png)",
-        "mode": "markdown"
-      },
-      "pluginVersion": "8.4.0-46516pre",
-      "targets": [
-        {
-          "queryType": "randomWalk",
-          "refId": "A"
-        }
-      ],
-      "type": "text"
-    },
     {
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "",
+            "axisLabel": "Messages/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -72,13 +48,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -87,8 +63,94 @@
               "mode": "off"
             }
           },
-        "interval" : "5s",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+    "interval" : "5s",
     "links": [],
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.4.0-46516pre",
+      "targets": [
+        {
+          "expr": "(kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\", instance=~\"$instance\",name=\"TotalTimeMs\",request=\"Produce\",})",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{instance}}",
+          "refId": "C"
+        }
+      ],
+      "title": "Total Time / Broker - Producer",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "Messages/s",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -113,7 +175,9 @@
         "x": 12,
         "y": 0
       },
-      "id": 1,
+      "id": 6,
+    "interval" : "5s",
+    "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -127,14 +191,14 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"RequestQueueTimeMs\",request=\"Produce\"}",
-          "interval": "",
-          "legendFormat": "{{instance}}",
-          "queryType": "randomWalk",
-          "refId": "A"
+          "expr": "avg by(name) (kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\", instance=~\"$instance\",request=\"Produce\", name =~ \".+Ms\"})",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{name}}",
+          "refId": "C"
         }
       ],
-      "title": "Producer - RequestQueueTimeMs",
+      "title": "Request Time - Producer",
       "type": "timeseries"
     },
     {
@@ -147,65 +211,8 @@
           "color": {
             "mode": "palette-classic"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 6
-      },
-      "id": 7,
-    "interval" : "5s",
-    "links": [],
-      "options": {
-        "displayMode": "gradient",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "text": {}
-      },
-      "pluginVersion": "8.4.0-46516pre",
-      "targets": [
-        {
-          "expr": "avg (kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=~\"RequestQueueTimeMs|LocalTimeMs|RemoteTimeMs|ResponseQueueTimeMs|ResponseSendTimeMs\",request=\"Produce\"}) by (name)",
-          "format": "time_series",
-          "instant": false,
-          "interval": "",
-          "legendFormat": "{{name}}",
-          "queryType": "randomWalk",
-          "refId": "A"
-        }
-      ],
-      "title": "$percentile Percentile",
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisLabel": "",
+            "axisLabel": "Messages/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -217,13 +224,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -232,8 +239,94 @@
               "mode": "off"
             }
           },
-        "interval" : "5s",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 4,
+    "interval" : "5s",
     "links": [],
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.4.0-46516pre",
+      "targets": [
+        {
+          "expr": "(kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\", instance=~\"$instance\",name=\"TotalTimeMs\",request=\"FetchConsumer\",})",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{instance}}",
+          "refId": "C"
+        }
+      ],
+      "title": "Total Time / Broker - Consumer",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "Messages/s",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -258,7 +351,9 @@
         "x": 12,
         "y": 8
       },
-      "id": 9,
+      "id": 8,
+    "interval" : "5s",
+    "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -272,14 +367,15 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"LocalTimeMs\",request=\"Produce\"}",
-          "interval": "",
-          "legendFormat": "{{instance}}",
-          "queryType": "randomWalk",
-          "refId": "A"
+          "expr": "avg by (name) (kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\", instance=~\"$instance\",request=\"FetchConsumer\", name =~ \".+Ms\"})",
+          "format": "time_series",
+          "instant": false,
+          "intervalFactor": 2,
+          "legendFormat": "{{name}}",
+          "refId": "C"
         }
       ],
-      "title": "Producer - LocalTimeMs",
+      "title": "Request Time - Consumer",
       "type": "timeseries"
     },
     {
@@ -290,9 +386,36 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
-          "decimals": 2,
+          "custom": {
+            "axisLabel": "Messages/s",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -315,55 +438,46 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 14
+        "y": 16
       },
-      "id": 8,
+      "id": 10,
     "interval" : "5s",
     "links": [],
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
         },
-        "text": {},
-        "textMode": "value"
+        "tooltip": {
+          "mode": "single"
+        }
       },
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "exemplar": false,
-          "expr": "avg(kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"TotalTimeMs\",request=\"Produce\"})",
+          "expr": "(kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"TotalTimeMs\",request=\"FetchFollower\",})",
           "format": "time_series",
-          "instant": false,
-          "interval": "",
-          "legendFormat": "",
-          "queryType": "randomWalk",
-          "refId": "A"
+          "intervalFactor": 2,
+          "legendFormat": "{{instance}}",
+          "refId": "C"
         }
       ],
-      "title": "Producer - TotalTimeMs",
-      "type": "stat"
+      "title": "Total Time / Broker - Follower",
+      "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "",
+            "axisLabel": "Messages/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -375,13 +489,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -390,8 +504,6 @@
               "mode": "off"
             }
           },
-        "interval" : "5s",
-    "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -416,274 +528,9 @@
         "x": 12,
         "y": 16
       },
-      "id": 13,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.4.0-46516pre",
-      "targets": [
-        {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"RemoteTimeMs\",request=\"Produce\"}",
-          "interval": "",
-          "legendFormat": "{{instance}}",
-          "queryType": "randomWalk",
-          "refId": "A"
-        }
-      ],
-      "title": "Producer - RemoteTimeMs",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-        "interval" : "5s",
-    "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 22
-      },
-      "id": 10,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.4.0-46516pre",
-      "targets": [
-        {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"RequestBytes\",request=\"Produce\"}",
-          "interval": "",
-          "legendFormat": "{{instance}}",
-          "queryType": "randomWalk",
-          "refId": "A"
-        }
-      ],
-      "title": "Producer - RequestBytes",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-        "interval" : "5s",
-    "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 24
-      },
-      "id": 11,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.4.0-46516pre",
-      "targets": [
-        {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"ResponseQueueTimeMs\",request=\"Produce\"}",
-          "interval": "",
-          "legendFormat": "{{instance}}",
-          "queryType": "randomWalk",
-          "refId": "A"
-        }
-      ],
-      "title": "Producer - ResponseQueueTimeMs",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-        "interval" : "5s",
-    "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 32
-      },
       "id": 12,
+    "interval" : "5s",
+    "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -697,14 +544,15 @@
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\",instance=~\"$instance\",name=\"ResponseSendTimeMs\",request=\"Produce\"}",
-          "interval": "",
-          "legendFormat": "{{instance}}",
-          "queryType": "randomWalk",
-          "refId": "A"
+          "expr": "avg by (name) (kafka_network_requestmetrics_${percentile}thpercentile{job=~\"$job\", instance=~\"$instance\",request=\"FetchFollower\", name =~ \".+Ms\"})",
+          "format": "time_series",
+          "instant": false,
+          "intervalFactor": 2,
+          "legendFormat": "{{name}}",
+          "refId": "C"
         }
       ],
-      "title": "Producer - ResponseSendsTimeMs",
+      "title": "Request Time - Follower",
       "type": "timeseries"
     }
   ],
@@ -781,7 +629,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "99",
           "value": "99"
         },
@@ -791,7 +639,7 @@
         "name": "percentile",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "50",
             "value": "50"
           },
@@ -806,7 +654,7 @@
             "value": "95"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "99",
             "value": "99"
           },
@@ -854,9 +702,9 @@
       "30d"
     ]
   },
-  "timezone": "browser",
-  "title": "07 - Producer Metrics",
-  "uid": "kafka_cluster_producer",
+  "timezone": "",
+  "title": "06 - Request Metrics (Latency)",
+  "uid": "kafka_cluster_request_latency",
   "version": 1,
   "weekStart": ""
 }

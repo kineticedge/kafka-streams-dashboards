@@ -12,6 +12,12 @@ USERS=(
     "analytics-sliding"
     "analytics-session"
     "analytics-none"
+    "rust-producer"
+    "rust-consumer"
+    "zig-producer"
+    "zig-consumer"
+    "cli"
+    "kafka-ui"
 )
 
 BOOTSTRAP_SERVER=localhost:19092

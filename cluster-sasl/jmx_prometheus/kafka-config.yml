@@ -1,7 +1,7 @@
 
 lowercaseOutputName: true
 rules:
-- pattern: kafka.(.*)
+#- pattern: kafka.(.*)
 - pattern: java.lang<type=(.*)>
 - pattern: "kafka.server<type=app-info, id=(.+)><>(.*): (.*)"
   name: kafka_server_app_info_$2

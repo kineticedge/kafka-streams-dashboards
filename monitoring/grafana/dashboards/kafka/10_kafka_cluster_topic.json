@@ -21,7 +21,7 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "links": [],
@@ -1659,7 +1659,7 @@
     ]
   },
   "timezone": "",
-  "title": "09 - Topics",
+  "title": "10 - Topics",
   "uid": "kafka_cluster_topic",
   "version": 1,
   "weekStart": ""

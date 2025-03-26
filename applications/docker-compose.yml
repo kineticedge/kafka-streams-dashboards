@@ -190,7 +190,7 @@ services:
       OTEL_SERVICE_NAME: ANALYTICS_NONE
 
   nginx:
-    image: nginx:latest
+    image: nginx:1.27.4
     container_name: ksda-nginx
     hostname: nginx
     stop_grace_period: 30s

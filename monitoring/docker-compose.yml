@@ -7,6 +7,7 @@ volumes:
   prometheus: {}
   grafana: {}
   tempo: {}
+  kafka-ui: {}
 
 services:
   prometheus:
@@ -95,3 +96,26 @@ services:
     volumes:
       #- tempo:/tmp/tempo
       - ./tempo/config.yml:/etc/tempo/config.yml
+
+  kafka-ui:
+    image: kafbat/kafka-ui:v1.2.0
+    container_name: kafka-ui
+    healthcheck:
+      test: wget --spider --tries=1 http://localhost:8080/ || exit 1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - kafka-ui:/tmp
+    ports:
+      - "9101:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=kafka-core
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker-1:9092,broker-2:9092,broker-3:9092
+      - KAFKA_CLUSTERS_1_NAME=sasl-kafka-core
+      - KAFKA_CLUSTERS_1_BOOTSTRAPSERVERS=sasl-broker-1:9092,sasl-broker-2:9092,sasl-broker-3:9092
+      - KAFKA_CLUSTERS_1_PROPERTIES_SECURITY_PROTOCOL=SASL_PLAINTEXT
+      - KAFKA_CLUSTERS_1_PROPERTIES_SASL_MECHANISM=SCRAM-SHA-512
+      - KAFKA_CLUSTERS_1_PROPERTIES_SASL_JAAS_CONFIG=org.apache.kafka.common.security.scram.ScramLoginModule required username="kafka-ui" password="kafka-ui-password";

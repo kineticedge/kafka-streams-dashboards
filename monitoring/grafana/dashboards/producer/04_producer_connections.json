@@ -22,7 +22,7 @@
     ]
   },
   "description": "Java client Kafka Producer metrics",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "links": [],
@@ -222,7 +222,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_producer_connection_count{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"}[$__rate_interval])",
+          "expr": "delta(kafka_producer_connection_count{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
           "range": true,

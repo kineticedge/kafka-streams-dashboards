@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "consumer/rust", # Path to your Rust crate
+    "producer/rust", # Path to your Rust crate
+]

@@ -22,10 +22,10 @@
     ]
   },
   "description": "Java client Kafka Producer metrics",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 11,
   "links": [],
   "panels": [
     {
@@ -79,7 +79,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0-206727",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -88,7 +88,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "count (kafka_clients_org_apache_kafka_producer_connection_count{client_id=~\"$client_id\"})",
+          "expr": "count (kafka_clients_org_apache_kafka_producer_request_latency_avg{client_id=~\"$client_id\"})",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -151,11 +151,12 @@
           "values": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0-206727",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -164,7 +165,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(kafka_clients_org_apache_kafka_producer_connection_count{client_id=~\"$client_id\"} > 0) by (client_software_name, client_software_version)",
+          "expr": "count(kafka_clients_org_apache_kafka_producer_request_latency_avg{client_id=~\"$client_id\"} > 0) by (client_software_name, client_software_version)",
           "interval": "",
           "legendFormat": "{{client_software_name}}-{{client_software_version}}",
           "queryType": "randomWalk",
@@ -232,7 +233,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0-206727",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -300,7 +301,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0-206727",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -369,7 +370,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0-206727",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -441,7 +442,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0-206727",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -543,11 +544,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0-206727",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -559,7 +561,7 @@
           "expr": "kafka_clients_org_apache_kafka_producer_request_latency_avg{client_id=~\"$client_id\"}",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{client_id}} ({{instance}})",
+          "legendFormat": "{{client_id}} / {{client_source_address}}",
           "range": true,
           "refId": "A"
         }
@@ -648,11 +650,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0-206727",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -661,7 +664,7 @@
           },
           "editorMode": "code",
           "expr": "kafka_clients_org_apache_kafka_producer_record_queue_time_avg{client_id=~\"$client_id\"}",
-          "legendFormat": "{{client_id}} ({{instance}})",
+          "legendFormat": "{{client_id}} ({{client_source_address}})",
           "range": true,
           "refId": "A"
         }
@@ -751,11 +754,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0-206727",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -767,7 +771,7 @@
           "expr": "kafka_clients_org_apache_kafka_producer_buffer_available_bytes{client_id=~\"$client_id\"}",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{client_id}} ({{instance}})",
+          "legendFormat": "{{client_id}} ({{client_source_address}})",
           "range": true,
           "refId": "A"
         }
@@ -855,11 +859,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0-206727",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -871,7 +876,7 @@
           "expr": "kafka_clients_org_apache_kafka_producer_produce_throttle_time_avg{client_id=~\"$client_id\"}",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{client_id}} ({{instance}})",
+          "legendFormat": "{{client_id}} ({{client_source_address}})",
           "range": true,
           "refId": "A"
         }
@@ -898,14 +903,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_clients_org_apache_kafka_producer_connection_count,client_id)",
+        "definition": "label_values(kafka_clients_org_apache_kafka_producer_connection_creation_total,client_id)",
         "includeAll": true,
         "label": "client-id",
         "name": "client_id",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_clients_org_apache_kafka_producer_connection_count,client_id)",
+          "query": "label_values(kafka_clients_org_apache_kafka_producer_connection_creation_total,client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -936,6 +941,6 @@
   "timezone": "",
   "title": "02 - Clients - Producer Overview",
   "uid": "clients_producer_overview",
-  "version": 5,
+  "version": 1,
   "weekStart": ""
 }

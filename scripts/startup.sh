@@ -22,25 +22,25 @@ cd "$(dirname -- "$0")/.." || exit
 CLUSTERS=(
     "cluster-1"
     "cluster"
+    "cluster-native"
     "cluster-3ctrls"
     "cluster-hybrid"
     "cluster-zk"
-    "cluster-sasl"
     "cluster-lb"
-    "cluster-native"
     "cluster-cm"
+    "cluster-sasl"
 )
 
 CLUSTER_DESCRIPTIONS=(
     "cluster-1       --  1 node (broker and controller)"
-    "cluster         --  4 brokers, 1 raft controller"
+    "cluster         --  4 brokers, 1 raft controller, kafka-exporter"
+    "cluster-native  --  4 brokers, 1 raft controller, apache/kafka-native images"
     "cluster-3ctrls  --  4 brokers, 3 raft controllers"
     "cluster-hybrid  --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers"
     "cluster-zk      --  4 brokers, 1 zookeeper controller"
-    "cluster-sasl    --  3 brokers, 1 raft controller, with SASL authentication & otel collector client-metrics reporter"
     "cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)"
-    "cluster-native  --  4 brokers, 1 raft controller, apache/kafka-native images"
-    "cluster-cm      --  3 brokers, 1 raft controller, otel collector client-metrics reporter"
+    "cluster-cm      --  3 brokers, 1 raft controller, kafka-exporter, otel collector client-metrics reporter"
+    "cluster-sasl    --  3 brokers (SASL authentication), 1 raft controller, kafka-exporter, otel collector client-metrics reporter"
 )
 
 display_menu() {

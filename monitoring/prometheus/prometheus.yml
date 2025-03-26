@@ -49,6 +49,7 @@ scrape_configs:
     metrics_path: /metrics
     static_configs:
       - targets:
+        - sasl-controller-0:7071
         - sasl-broker-1:7071
         - sasl-broker-2:7071
         - sasl-broker-3:7071
@@ -65,6 +66,19 @@ scrape_configs:
     static_configs:
       - targets:
         - kafka-exporter:9308
+        labels:
+          job: "exporter_kafka-core"
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        target_label: instance
+        replacement: '$1'
+  - job_name: sasl_kafka_exporter
+    static_configs:
+      - targets:
+          - sasl-kafka-exporter:9308
+        labels:
+          job: "exporter_sasl-kafka-core"
     relabel_configs:
       - source_labels: [__address__]
         regex: '(.*):(.*)'

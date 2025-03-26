@@ -22,7 +22,7 @@
     ]
   },
   "description": "Apache Kafka resource usage and throughput",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "gnetId": 721,
   "graphTooltip": 0,

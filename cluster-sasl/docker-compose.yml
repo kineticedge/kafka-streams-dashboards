@@ -91,6 +91,7 @@ services:
       sasl-controller-0:
         condition: service_healthy
     ports:
+      - "9092:19092"
       - "19092:19092"
     volumes:
       - bk1:/var/lib/kafka/data
@@ -243,3 +244,32 @@ services:
       KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
       KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
       KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
+
+
+  sasl-kafka-exporter:
+    hostname: sasl-kafka-exporter
+    image: danielqsj/kafka-exporter:latest
+    container_name: ${COMPOSE_PROJECT_NAME}-sasl-kafka-exporter
+    healthcheck:
+      test: wget --spider http://localhost:9308/ || exit 1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      sasl-broker-1:
+        condition: service_healthy
+      sasl-broker-2:
+        condition: service_healthy
+      sasl-broker-3:
+        condition: service_healthy
+    ports:
+      - "9308:9308"
+    command: >
+      --kafka.server=sasl-broker-1:9092
+      --kafka.server=sasl-broker-2:9092
+      --kafka.server=sasl-broker-3:9092
+      --sasl.enabled
+      --sasl.mechanism=PLAIN
+      --sasl.username=kafka-admin
+      --sasl.password=kafka-admin-secret

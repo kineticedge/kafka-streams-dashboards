@@ -236,7 +236,7 @@ services:
       KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
 
   nginx:
-    image: nginx:latest
+    image: nginx:1.27.4
     container_name: ksda-nginx
     hostname: nginx
     stop_grace_period: 30s
@@ -268,7 +268,7 @@ services:
 
   # tracing collector agent
   otel:
-    image: otel/opentelemetry-collector:latest
+    image: otel/opentelemetry-collector:0.122.0
     container_name: ksda-otel
     hostname: otel
     healthcheck:

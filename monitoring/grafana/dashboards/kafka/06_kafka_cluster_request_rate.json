@@ -21,31 +21,30 @@
       }
     ]
   },
-  "description": "Apache Kafka resource usage and throughput",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
-  "gnetId": 721,
   "graphTooltip": 0,
+  "id": 43,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "requests/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -54,14 +53,15 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -70,6 +70,7 @@
               "mode": "off"
             }
           },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -84,33 +85,38 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "none"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 11,
+        "h": 12,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 40,
+      "id": 2,
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [
-            "mean",
-            "last"
+            "min",
+            "max",
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -118,16 +124,15 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "avg (kafka_server_socket_server_metrics_successful_authentication_rate{job=~\"$job\", instance=~\"$instance\"}) by (listener)",
-          "interval": "",
-          "legendFormat": "{{listener}}",
-          "queryType": "randomWalk",
+          "expr": "sum without(instance, version) (kafka_network_requestmetrics_oneminuterate{job=~\"$job\", name=\"RequestsPerSec\", instance=~\"$instance\"}) ",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{request}}",
           "range": true,
-          "refId": "A"
+          "refId": "C"
         }
       ],
-      "title": "Successful Authentication Rate",
+      "title": "Request Metrics",
       "type": "timeseries"
     },
     {
@@ -135,18 +140,20 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisGridShow": true,
+            "axisLabel": "count",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -155,14 +162,15 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -185,33 +193,61 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "none"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Produce"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 12,
         "w": 12,
         "x": 12,
         "y": 0
       },
-      "id": 41,
+      "id": 13,
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [
-            "mean",
-            "last"
+            "min",
+            "max",
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -219,16 +255,15 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "avg (kafka_server_socket_server_metrics_failed_authentication_rate{job=~\"$job\", instance=~\"$instance\"}) by (listener)",
-          "interval": "",
-          "legendFormat": "{{listener}}",
-          "queryType": "randomWalk",
+          "expr": "sum by (instance, name) (kafka_network_requestchannel_value{job=~\"$job\", instance=~\"$instance\", processor=\"\"}) ",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{name}} ({{instance}})",
           "range": true,
-          "refId": "A"
+          "refId": "C"
         }
       ],
-      "title": "Failed Authentication Rate",
+      "title": "Queue Size",
       "type": "timeseries"
     },
     {
@@ -236,18 +271,19 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "requests/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -256,14 +292,15 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -272,6 +309,7 @@
               "mode": "off"
             }
           },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -286,32 +324,38 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "none"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 11,
+        "h": 12,
         "w": 12,
         "x": 0,
-        "y": 11
+        "y": 12
       },
-      "id": 38,
+      "id": 14,
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [
-            "last"
+            "min",
+            "max",
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -319,122 +363,21 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum (kafka_server_socket_server_metrics_successful_authentication_total{job=~\"$job\", instance=~\"$instance\"}) by (listener)",
-          "interval": "",
-          "legendFormat": "{{listener}}",
-          "queryType": "randomWalk",
+          "expr": "sum without(version) (kafka_network_requestmetrics_oneminuterate{job=~\"$job\", name=\"RequestsPerSec\", instance=~\"$instance\"}) ",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{request}} ({{instance}})",
           "range": true,
-          "refId": "A"
+          "refId": "C"
         }
       ],
-      "title": "Successful Authentication Total",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 12,
-        "x": 12,
-        "y": 11
-      },
-      "id": 39,
-      "options": {
-        "legend": {
-          "calcs": [
-            "last"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.2.5",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum (kafka_server_socket_server_metrics_failed_authentication_total{job=~\"$job\", instance=~\"$instance\"}) by (listener)",
-          "interval": "",
-          "legendFormat": "{{listener}}",
-          "queryType": "randomWalk",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Failed Authentication Total",
+      "title": "Request Metrics / Broker",
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "2s",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 40,
   "tags": [
     "kafka_cluster",
     "kafka"
@@ -444,7 +387,6 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
           "text": "kafka-core",
           "value": "kafka-core"
         },
@@ -453,10 +395,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\"}, job)",
-        "hide": 0,
         "includeAll": false,
         "label": "job",
-        "multi": false,
         "name": "job",
         "options": [],
         "query": {
@@ -465,17 +405,11 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".*",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -484,10 +418,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(jvm_runtime_info{cluster_type=\"kafka\", job=\"$job\"}, instance)",
-        "hide": 0,
         "includeAll": true,
         "label": "instance",
-        "multi": false,
         "name": "instance",
         "options": [],
         "query": {
@@ -496,12 +428,7 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       }
     ]
   },
@@ -522,23 +449,11 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "1m",
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
-  "timezone": "browser",
-  "title": "10 - Authentications",
-  "uid": "kafka_cluster_authentications",
-  "version": 4,
+  "timezone": "",
+  "title": "06 - Request Metrics (Rate)",
+  "uid": "kafka_cluster_request_rate",
+  "version": 1,
   "weekStart": ""
 }

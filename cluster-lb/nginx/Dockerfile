@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:1.27.4
 
 RUN \
     apt-get update && \

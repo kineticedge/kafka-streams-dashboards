@@ -22,7 +22,7 @@
     ]
   },
   "description": "Kafka Consumer Java client metrics",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "links": [],

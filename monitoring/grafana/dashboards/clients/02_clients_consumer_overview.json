@@ -88,7 +88,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "count (kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_id=~\"$client_id\"} > 0)",
+          "expr": "count (kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"} > 0)",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -165,9 +165,9 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "count(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_id=~\"$client_id\"} > 0) by (client_software_name, client_software_version) ",
+          "expr": "count(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"} > 0) by (client_software_name, client_software_version) ",
           "interval": "",
-          "legendFormat": "{{client_software_name}} {{client_software_version}}",
+          "legendFormat": "{{client_software_name}}-{{client_software_version}}",
           "queryType": "randomWalk",
           "range": true,
           "refId": "A"
@@ -242,7 +242,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum (kafka_clients_org_apache_kafka_consumer_connection_count{client_id=~\"$client_id\"})",
+          "expr": "sum (kafka_clients_org_apache_kafka_consumer_connection_count{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"})",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -312,7 +312,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum (kafka_clients_org_apache_kafka_consumer_coordinator_commit_rate{client_id=~\"$client_id\"})",
+          "expr": "sum (kafka_clients_org_apache_kafka_consumer_coordinator_commit_rate{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"})",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -380,7 +380,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum (kafka_clients_org_apache_kafka_consumer_coordinator_rebalance_rate_per_hour{client_id=~\"$client_id\"} + kafka_clients_org_apache_kafka_consumer_coordinator_failed_rebalance_rate_per_hour{client_id=~\"$client_id\"})",
+          "expr": "sum (kafka_clients_org_apache_kafka_consumer_coordinator_rebalance_rate_per_hour{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"} + kafka_clients_org_apache_kafka_consumer_coordinator_failed_rebalance_rate_per_hour{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -448,7 +448,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum (kafka_clients_org_apache_kafka_consumer_coordinator_rebalance_total{client_id=~\"$client_id\"} + kafka_clients_org_apache_kafka_consumer_coordinator_failed_rebalance_total{client_id=~\"$client_id\"})",
+          "expr": "sum (kafka_clients_org_apache_kafka_consumer_coordinator_rebalance_total{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"} + kafka_clients_org_apache_kafka_consumer_coordinator_failed_rebalance_total{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"})",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -555,7 +555,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum (kafka_clients_org_apache_kafka_consumer_node_response_rate{client_id=~\"$client_id\"} > 0) by (client_instance_id, client_source_address, client_id)",
+          "expr": "sum (kafka_clients_org_apache_kafka_consumer_node_response_rate{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"} > 0) by (client_instance_id, client_source_address, client_id)",
           "instant": false,
           "interval": "",
           "legendFormat": "{{client_id}} / {{client_source_address}}",
@@ -659,7 +659,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "(kafka_clients_org_apache_kafka_consumer_fetch_manager_fetch_throttle_time_avg{client_id=~\"$client_id\"} >= 0)",
+          "expr": "(kafka_clients_org_apache_kafka_consumer_fetch_manager_fetch_throttle_time_avg{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"} >= 0)",
           "hide": false,
           "interval": "",
           "legendFormat": "{{client_id}} ({{client_source_address}})",
@@ -680,6 +680,29 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "label_values(kafka_clients_org_apache_kafka_consumer_node_request_latency_avg,client_software_name)",
+        "includeAll": true,
+        "label": "client_software_name",
+        "name": "client_software_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kafka_clients_org_apache_kafka_consumer_node_request_latency_avg,client_software_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
         "allValue": ".+",
         "current": {
           "text": "All",
@@ -689,14 +712,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total,client_id)",
+        "definition": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_software_name=~\"$client_software_name\"},client_id)",
         "includeAll": true,
         "label": "client-id",
         "name": "client_id",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total,client_id)",
+          "query": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_software_name=~\"$client_software_name\"},client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

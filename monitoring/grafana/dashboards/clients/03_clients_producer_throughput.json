@@ -120,7 +120,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_clients_org_apache_kafka_producer_record_send_total{client_id=~\"$client_id\"}[$__rate_interval])",
+          "expr": "rate(kafka_clients_org_apache_kafka_producer_record_send_total{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"}[$__rate_interval])",
           "hide": false,
           "interval": "",
           "legendFormat": "{{client_id}}",
@@ -223,7 +223,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_clients_org_apache_kafka_producer_outgoing_byte_total{client_id=~\"$client_id\"}[$__rate_interval])",
+          "expr": "rate(kafka_clients_org_apache_kafka_producer_outgoing_byte_total{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "{{client_id}}",
           "range": true,
@@ -325,7 +325,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(rate(kafka_clients_org_apache_kafka_producer_topic_record_send_total{client_id=~\"$client_id\", topic=~\".+\"}[$__rate_interval])) by (topic)",
+          "expr": "sum(rate(kafka_clients_org_apache_kafka_producer_topic_record_send_total{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\", topic=~\".+\"}[$__rate_interval])) by (topic)",
           "hide": false,
           "interval": "",
           "legendFormat": "{{topic}}",
@@ -428,7 +428,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(rate(kafka_clients_org_apache_kafka_producer_topic_byte_total{client_id=~\"$client_id\", topic=~\".+\"}[$__rate_interval])) by (topic)",
+          "expr": "sum(rate(kafka_clients_org_apache_kafka_producer_topic_byte_total{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\", topic=~\".+\"}[$__rate_interval])) by (topic)",
           "hide": false,
           "interval": "",
           "legendFormat": "{{topic}}",
@@ -447,6 +447,29 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "label_values(kafka_clients_org_apache_kafka_producer_node_request_latency_avg,client_software_name)",
+        "includeAll": true,
+        "label": "client_software_name",
+        "name": "client_software_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kafka_clients_org_apache_kafka_producer_node_request_latency_avg,client_software_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
         "allValue": ".+",
         "current": {
           "text": "All",
@@ -456,14 +479,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_clients_org_apache_kafka_producer_connection_count,client_id)",
+        "definition": "label_values(kafka_clients_org_apache_kafka_producer_connection_count{client_software_name=~\"$client_software_name\"},client_id)",
         "includeAll": true,
         "label": "client-id",
         "name": "client_id",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_clients_org_apache_kafka_producer_connection_count,client_id)",
+          "query": "label_values(kafka_clients_org_apache_kafka_producer_connection_count{client_software_name=~\"$client_software_name\"},client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

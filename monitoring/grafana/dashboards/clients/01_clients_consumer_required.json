@@ -373,14 +373,37 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total,client_id)",
+        "definition": "label_values(kafka_clients_org_apache_kafka_consumer_node_request_latency_avg,client_software_name)",
+        "includeAll": true,
+        "label": "client_software_name",
+        "name": "client_software_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kafka_clients_org_apache_kafka_consumer_node_request_latency_avg,client_software_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_software_name=~\"$client_software_name\"},client_id)",
         "includeAll": true,
         "label": "client_id",
         "name": "client_id",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total,client_id)",
+          "query": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_software_name=~\"$client_software_name\"},client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

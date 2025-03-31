@@ -7,6 +7,7 @@ alias dc='docker compose'
 (cd applications; dc down -v)
 (cd applications-sasl; dc down -v)
 (cd monitoring; dc down -v)
+(cd ui; dc down -v)
 
 # just go through all clusters, regardless of which one was started.
 (cd cluster; dc down -v)

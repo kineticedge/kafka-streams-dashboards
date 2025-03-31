@@ -12,7 +12,12 @@ services:
     image: quay.io/kroxylicious/kroxylicious:0.11.0
     container_name: kroxylicious
     hostname: kroxylicious
-#    command: --config /config.yaml
+    healthcheck:
+      test: curl -s http://localhost:9190/metrics || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
     command: ["--config", "/config.yaml"]
     volumes:
       - ./kroxylicious.yaml:/config.yaml
@@ -27,11 +32,14 @@ services:
     image: kafbat/kafka-ui:v1.2.0
     container_name: kafka-ui
     healthcheck:
-      test: curl --fail http://localhost:8080/ || exit 1
+      test: wget --spider http://localhost:8080/ || exit 1
       start_period: 10s
       interval: 5s
       timeout: 5s
       retries: 3
+    depends_on:
+      kroxylicious:
+        condition: service_healthy
     volumes:
       - kafka-ui:/tmp
       #- ./minimal-config.yml:/config.yml

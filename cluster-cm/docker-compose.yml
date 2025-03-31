@@ -191,14 +191,6 @@ services:
       KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
       KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
 
-#  diag-container:
-#    image: busybox
-#    depends_on:
-#      - broker-otel
-#    entrypoint: "sh -c 'while true; do sleep 30; done'"
-#    network_mode: "service:broker-otel"
-
-
   kafka-exporter:
     hostname: kafka-exporter
     image: danielqsj/kafka-exporter:latest
@@ -209,6 +201,21 @@ services:
       interval: 5s
       timeout: 5s
       retries: 3
+    depends_on:
+      broker-1:
+        condition: service_healthy
+      broker-2:
+        condition: service_healthy
+      broker-3:
+        condition: service_healthy
     ports:
       - "9308:9308"
     command: --kafka.server=broker-1:9092 --kafka.server=broker-2:9092 --kafka.server=broker-3:9092
+
+#  diag-container:
+#    image: busybox
+#    depends_on:
+#      - broker-otel
+#    entrypoint: "sh -c 'while true; do sleep 30; done'"
+#    network_mode: "service:broker-otel"
+

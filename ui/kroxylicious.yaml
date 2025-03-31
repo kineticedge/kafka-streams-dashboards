@@ -1,0 +1,67 @@
+  management:
+    endpoints:
+      prometheus: {}
+  virtualClusters:
+    - name: my-cluster-proxy
+      gateways:
+        - name: mygateway
+#          plaintext:
+#            host: 0.0.0.0
+#            port: 9990
+          portIdentifiesNode:
+            bootstrapAddress: kroxylicious:9990
+            brokerStartPort: 9991
+            advertisedBrokerAddressPattern: kroxylicious
+            nodeIdRanges:
+              - name: mixed
+                start: 1
+                end: 4
+#            nodeIdToFixedPort:
+#              0: 9990  # Broker 0 -> port 9990
+#              1: 9991  # Broker 0 -> port 9990
+#              2: 9992  # Broker 1 -> port 9991
+#              3: 9993  # Broker 2 -> port 9992
+#              4: 9994  # Broker 3 -> port 9993
+#          portIdentifiesNode:
+#            bootstrapAddress: 0.0.0.0:9990
+#            nodes:
+#              - advertisedAddress: kroxylicious:9990
+#                port: 9990
+#              - advertisedAddress: kroxylicious:9991
+#                port: 9991
+#              - advertisedAddress: kroxylicious:9992
+#                port: 9992
+#              - advertisedAddress: kroxylicious:9993
+#                port: 9993
+      targetCluster:
+        # declares the kafka cluster that is being proxied
+        bootstrapServers: broker-1:9092
+      logFrames: false
+  filterDefinitions:
+    - name: fetch
+      type: io.kineticedge.ksd.kroxylicious.filters.FetchResponseTransformation
+      config:
+        transformation: io.kineticedge.ksd.kroxylicious.filters.JsonMasking
+        transformationConfig:
+          charset: UTF-8
+          maskType: MASK
+          fields:
+            - price
+            - postalCode
+# future plan, N configurations.
+#        configurations:
+#          - topics:
+#              - a
+#              - b
+#              - c
+#            transformation: io.kineticedge.ksd.kroxylicious.filters.JsonMasking
+#            transformationConfig:
+#              charset: UTF-8
+#              maskType: REMOVE
+#              fields:
+#                - price
+#                - postalCode
+  defaultFilters:
+    - fetch
+  loggers:
+    io.kroxylicious.proxy.plugin: TRACE

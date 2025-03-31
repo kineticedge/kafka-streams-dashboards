@@ -15,7 +15,6 @@ val dockerBuild by tasks.registering(Exec::class) {
     inputs.files("Dockerfile")
     commandLine("docker", "build", "-t", "ksd_app:latest", ".")
     //outputs.upToDateWhen { !project.hasProperty("force-docker") }
-
     doFirst {
         exec {
             isIgnoreExitValue = true

@@ -1,0 +1,50 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+volumes:
+  kafka-ui: {}
+
+services:
+
+  kroxylicious:
+    image: quay.io/kroxylicious/kroxylicious:0.11.0
+    container_name: kroxylicious
+    hostname: kroxylicious
+#    command: --config /config.yaml
+    command: ["--config", "/config.yaml"]
+    volumes:
+      - ./kroxylicious.yaml:/config.yaml
+      - ./kroxylicious-filters/build/libs/kroxylicious-filters-1.0.jar:/opt/kroxylicious/libs/kroxylicious-filters-1.0.jar
+    ports:
+      - "9990:9990"
+      - "9991:9991"
+      - "9992:9992"
+      - "9993:9993"
+
+  kafka-ui:
+    image: kafbat/kafka-ui:v1.2.0
+    container_name: kafka-ui
+    healthcheck:
+      test: curl --fail http://localhost:8080/ || exit 1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - kafka-ui:/tmp
+      #- ./minimal-config.yml:/config.yml
+    ports:
+      - "9101:8080"
+    restart: always
+    environment:
+#      DYNAMIC_CONFIG_ENABLED: 'true'
+#      DYNAMIC_CONFIG_PATH: /config.yml
+      - KAFKA_CLUSTERS_0_NAME=kafka-core
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kroxylicious:9990
+#      - KAFKA_CLUSTERS_1_NAME=sasl-kafka-core
+#      - KAFKA_CLUSTERS_1_BOOTSTRAPSERVERS=sasl-broker-1:9092,sasl-broker-2:9092,sasl-broker-3:9092
+#      - KAFKA_CLUSTERS_1_PROPERTIES_SECURITY_PROTOCOL=SASL_PLAINTEXT
+#      - KAFKA_CLUSTERS_1_PROPERTIES_SASL_MECHANISM=PLAIN
+#      - KAFKA_CLUSTERS_1_PROPERTIES_SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule required username="kafka-ui" password="kafka-ui-password";

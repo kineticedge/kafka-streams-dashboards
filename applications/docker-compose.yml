@@ -21,6 +21,7 @@ services:
       - ./scripts:/scripts
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
     environment:
+      #BOOTSTRAP_SERVERS: kroxylicious:9990
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       CLIENT_ID_PREFIX: "producer"
       MAX_SKU: 100

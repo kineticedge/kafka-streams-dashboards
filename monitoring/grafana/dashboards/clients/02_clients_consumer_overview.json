@@ -22,10 +22,10 @@
     ]
   },
   "description": "Java client Kafka Producer metrics",
-  "editable": false,
+  "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 14,
+  "id": 28,
   "links": [],
   "panels": [
     {
@@ -56,7 +56,7 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 4,
+        "w": 3,
         "x": 0,
         "y": 0
       },
@@ -88,7 +88,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "count (kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"} > 0)",
+          "expr": "count (kafka_clients_org_apache_kafka_consumer_connection_count{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"} > 0)",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -126,8 +126,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 4,
-        "x": 4,
+        "w": 6,
+        "x": 3,
         "y": 0
       },
       "id": 61,
@@ -165,7 +165,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "count(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"} > 0) by (client_software_name, client_software_version) ",
+          "expr": "count(kafka_clients_org_apache_kafka_consumer_connection_count{client_software_name=~\"$client_software_name\", client_id=~\"$client_id\"} > 0) by (client_software_name, client_software_version) ",
           "interval": "",
           "legendFormat": "{{client_software_name}}-{{client_software_version}}",
           "queryType": "randomWalk",
@@ -210,8 +210,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 4,
-        "x": 8,
+        "w": 3,
+        "x": 9,
         "y": 0
       },
       "id": 63,
@@ -712,14 +712,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_software_name=~\"$client_software_name\"},client_id)",
+        "definition": "label_values(kafka_clients_org_apache_kafka_consumer_node_request_latency_avg{client_software_name=~\"$client_software_name\"},client_id)",
         "includeAll": true,
         "label": "client-id",
         "name": "client_id",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_clients_org_apache_kafka_consumer_connection_creation_total{client_software_name=~\"$client_software_name\"},client_id)",
+          "query": "label_values(kafka_clients_org_apache_kafka_consumer_node_request_latency_avg{client_software_name=~\"$client_software_name\"},client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -750,6 +750,6 @@
   "timezone": "",
   "title": "02 - Clients - Consumer Overview",
   "uid": "clients_consumer_overview",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }

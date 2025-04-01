@@ -22,11 +22,11 @@
     ]
   },
   "description": "Kafka Consumer Java client metrics",
-  "editable": false,
+  "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 13,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -40,11 +40,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -53,6 +55,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -107,11 +110,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.3",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -120,7 +124,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(kafka_consumer_fetch_manager_fetch{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}[$__rate_interval])",
+          "expr": "rate(kafka_consumer_fetch_manager_fetch_total{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\"}[$__rate_interval])",
           "instant": false,
           "interval": "",
           "legendFormat": "{{client_id}} ({{instance}})",
@@ -142,11 +146,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -155,6 +161,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -209,11 +216,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.3",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -242,11 +250,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -255,6 +265,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -311,11 +322,12 @@
           "sortDesc": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.3",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -346,11 +358,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -359,6 +373,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -412,11 +427,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.3",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -447,11 +463,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -460,6 +478,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -514,11 +533,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.3",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -538,9 +558,9 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "2s",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 40,
   "tags": [
     "consumer"
   ],
@@ -549,7 +569,6 @@
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -558,10 +577,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(jvm_runtime_info{cluster_type=~\"streams|producer|consumer\"},job)",
-        "hide": 0,
         "includeAll": true,
         "label": "job",
-        "multi": false,
         "name": "job",
         "options": [],
         "query": {
@@ -570,17 +587,11 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -589,10 +600,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\"},instance)",
-        "hide": 0,
         "includeAll": true,
         "label": "instance",
-        "multi": false,
         "name": "instance",
         "options": [],
         "query": {
@@ -601,17 +610,11 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -620,10 +623,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
-        "hide": 0,
         "includeAll": true,
         "label": "client-id",
-        "multi": false,
         "name": "client_id",
         "options": [],
         "query": {
@@ -632,12 +633,7 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       }
     ]
   },
@@ -658,18 +654,6 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "1m",
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
   "timezone": "",

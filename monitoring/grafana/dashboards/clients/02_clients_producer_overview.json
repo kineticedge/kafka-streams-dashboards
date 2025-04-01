@@ -22,10 +22,10 @@
     ]
   },
   "description": "Java client Kafka Producer metrics",
-  "editable": false,
+  "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 11,
+  "id": 29,
   "links": [],
   "panels": [
     {
@@ -56,7 +56,7 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 4,
+        "w": 3,
         "x": 0,
         "y": 0
       },
@@ -126,8 +126,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 4,
-        "x": 4,
+        "w": 6,
+        "x": 3,
         "y": 0
       },
       "id": 61,
@@ -210,8 +210,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 4,
-        "x": 8,
+        "w": 3,
+        "x": 9,
         "y": 0
       },
       "id": 63,
@@ -926,14 +926,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_clients_org_apache_kafka_producer_connection_creation_total{client_software_name=~\"$client_software_name\"},client_id)",
+        "definition": "label_values(kafka_clients_org_apache_kafka_producer_node_request_latency_avg{client_software_name=~\"$client_software_name\"},client_id)",
         "includeAll": true,
         "label": "client-id",
         "name": "client_id",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_clients_org_apache_kafka_producer_connection_creation_total{client_software_name=~\"$client_software_name\"},client_id)",
+          "query": "label_values(kafka_clients_org_apache_kafka_producer_node_request_latency_avg{client_software_name=~\"$client_software_name\"},client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -964,6 +964,6 @@
   "timezone": "",
   "title": "02 - Clients - Producer Overview",
   "uid": "clients_producer_overview",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

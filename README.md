@@ -2,7 +2,7 @@
 # Kafka Streams Dashboards
 
 ## TL;TR
-* You will need to have installed Java 17 or later and Docker.
+* You will need to have installed Java 21 or later and Docker.
 * Setup and configuration all in the `./scripts/startup.sh` script; execute it from the root directory to get everything running.
 * Select `(1) cluster-1` or `(2) cluster` for your first exploration of this project.
 * Goto [localhost:3000](http://localhost:3000) to explore the dashboards.
@@ -54,25 +54,35 @@ will be prompted to select an Apache Kafka Cluster to start. Typically, I sugges
 realistic experience, but if you have limited memory/cpu on your machine, use `(1) cluster-1`.
 
 ```
+Select a cluster:
+
     1. cluster-1       --  1 node (broker and controller)
-    2. cluster         --  4 brokers, 1 raft controller
-    3. cluster-3ctrls  --  4 brokers, 3 raft controllers
-    4. cluster-hybrid  --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers
-    5. cluster-zk      --  4 brokers, 1 zookeeper controller
-    6. cluster-sasl    --  3 brokers, 1 raft controller, with SASL authentication & otel collector client-metrics reporter
+    2. cluster         --  4 brokers, 1 raft controller, kafka-exporter
+    3. cluster-native  --  4 brokers, 1 raft controller, apache/kafka-native images
+    4. cluster-3ctrls  --  4 brokers, 3 raft controllers
+    5. cluster-hybrid  --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers
+    6. cluster-zk      --  4 brokers, 1 zookeeper controller
     7. cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)
-    8. cluster-native  --  4 brokers, 1 raft controller, apache/kafka-native images
-    9. cluster-cm      --  3 brokers, 1 raft controller, otel collector client-metrics reporter
+    8. cluster-cm      --  3 brokers, 1 raft controller, kafka-exporter, otel collector client-metrics reporter
+    9. cluster-sasl    --  3 brokers (SASL authentication), 1 raft controller, kafka-exporter, otel collector client-metrics reporter
+
+Enter the number of your choice: _
 ```
 
-The other options are for more advance scenarios. `(3) cluster-3ctrls` is a typical deployment (3+ brokers and 3 controllers).
-The hybrid `(4) cluster-hybrid` is to ensure that the Kafka Cluster dashboards correctly handle metrics "math" by having a node
-that is both a `broker` and `controller` while also having nodes that are just `broker` and just `controller`. The `(5) cluster-zk` is 
-to make sure the dashboards still support `zookeeper`. `(6) cluster-sasl` is to be able to check the `authentication` dashboard
+The other options are for more advance scenarios. `(4) cluster-3ctrls` is a typical deployment (3+ brokers and 3 controllers).
+The hybrid `(5) cluster-hybrid` is to ensure that the Kafka Cluster dashboards correctly handle metrics "math" by having a node
+that is both a `broker` and `controller` while also having nodes that are just `broker` and just `controller`. The `(6) cluster-zk` is 
+to make sure the dashboards still support `zookeeper`. `(9) cluster-sasl` is to be able to check the `authentication` dashboard
 provided in the Kafka Cluster dashboards, it is also to show how security works with setting up a Kafka Cluster. Be sure to generate
 the *certificates* [readme](./cluster-sasl/certificates/README.md). The last cluster `(7) cluster-lb` has an nginx proxy for each broker that allows you to navigate
 into it and use Linux's traffic-controller `tc` to add network latencies. The best way to learn if your dashboards are useful, is to 
 observe them when things are not going well; this provides that scenario.
+
+If you want to explore KIP-714 dashboards, be sure to use the `(8) cluster-cm` or `(9) cluster-sasl` dashboards.
+These include the server configuration and otel collector for the client metrics can make their way to prometheus.
+
+If you want to the native images at work, check out `(3) cluster-native`. Broker metrics are not available from the native images.
+Use this images for quick deployments for integration testing or limited resource environments.
 
 ### Grafana Dashboard
 
@@ -271,10 +281,17 @@ These applications are build with the following open-source libraries.
 * apache-commons-csv
 * apache-commons-lang3
 * jcommander
+* micrometer
 
 ### Lombok
 
-While I do not use `lombok` for enterprise applications, it does come in handle for demonstration projects to minimize on the boiler-plate code that is shown.
+While I do not use `lombok` for enterprise applications, it does come in handy for demonstration projects to minimize on the boiler-plate code that is shown.
+
+If you are using an IDE, like Intellij IDEA to explore codebase, you may need to enable annotation processing.
+
+* Intellij IDEA Setting
+
+  * Settings > Build, Execution, Deployment > Compiler > Annotation Processors - [X] Enable annotation processing
 
 ### Framework
 

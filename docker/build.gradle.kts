@@ -13,19 +13,19 @@ val extractDependencies by tasks.registering(Copy::class) {
 
 val dockerBuild by tasks.registering(Exec::class) {
     inputs.files("Dockerfile")
-    commandLine("docker", "build", "-t", "ksd_app:latest", ".")
+    commandLine("/usr/local/bin/docker", "build", "-t", "ksd_app:latest", ".")
     //outputs.upToDateWhen { !project.hasProperty("force-docker") }
     doFirst {
         exec {
             isIgnoreExitValue = true
-            commandLine("docker", "tag", "ksd_app:latest", "ksd_app:prev")
+            commandLine("/usr/local/bin/docker", "tag", "ksd_app:latest", "ksd_app:prev")
         }
     }
 
     doLast {
         exec {
             isIgnoreExitValue = true
-            commandLine("docker", "rmi", "ksd_app:prev")
+            commandLine("/usr/local/bin/docker", "rmi", "ksd_app:prev")
         }
     }
 }

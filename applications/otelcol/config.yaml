@@ -1,34 +1,17 @@
 receivers:
-  opencensus: {}
   otlp:
     protocols:
-      grpc:
-        endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
+      grpc:
+        endpoint: 0.0.0.0:4317
+
 processors:
-  memory_limiter:
-    # check_interval is the time between measurements of memory usage for the
-    # purposes of avoiding going over the limits. Defaults to zero, so no
-    # checks will be performed. Values below 1 second are not recommended since
-    # it can result in unnecessary CPU consumption.
-    check_interval: 5s
-    # Maximum amount of memory, in MiB, targeted to be allocated by the process heap.
-    # Note that typically the total memory usage of process will be about 50MiB higher
-    # than this value.
-    limit_mib: 1900
-    # The queued_retry processor uses a bounded queue to relay batches from the receiver or previous
-    # processor to the next processor.
-  batch:
-    send_batch_size: 256
-    send_batch_max_size: 512
-    timeout: 5s
-extensions:
-  health_check: {}
+  batch: {}
+
 exporters:
   debug:
-    verbosity: normal
-    #verbosity: detailed
+    verbosity: detailed
   otlphttp:
     endpoint: "http://tempo:4318"
     tls:
@@ -43,13 +26,18 @@ exporters:
     metric_expiration: 180m
     resource_to_telemetry_conversion:
       enabled: true
+
 service:
-  extensions: [health_check]
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [memory_limiter, batch]
+      processors: [batch]
       exporters: [debug, otlphttp]
     metrics:
       receivers: [otlp]
+      processors: [batch]
       exporters: [debug, prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug]

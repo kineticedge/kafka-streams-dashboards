@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
+//@Setter
 public abstract class BaseOptions {
 
     @Parameter(names = "--help", help = true, hidden = true)

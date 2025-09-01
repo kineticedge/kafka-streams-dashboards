@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @ToString
 @Getter
-@Setter
+//@Setter
 public class Options extends BaseOptions {
 
     public static enum WindowType {

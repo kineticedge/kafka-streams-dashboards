@@ -1,17 +1,12 @@
 package io.kineticedge.ksd.analytics.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
-@Getter
-@AllArgsConstructor
-@EqualsAndHashCode(of = {"start", "end"})
+
 public class Window implements Comparable<Window> {
 
     public static final Window NONE = new Window(0L, 0L);
@@ -21,17 +16,35 @@ public class Window implements Comparable<Window> {
     private final long start;
     private final long end;
 
-    @Override
+
+  public Window(long start, long end) {
+    this.start = start;
+    this.end = end;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    Window window = (Window) o;
+    return start == window.start && end == window.end;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(start, end);
+  }
+
+  @Override
     public int compareTo(final Window o) {
         if (this == o) {
             return 0;
-        } else if (start < o.getStart()) {
+        } else if (start < o.start) {
             return -1;
-        } else if (start > o.getStart()) {
+        } else if (start > o.start) {
             return 1;
-        } else if (end < o.getEnd()) {
+        } else if (end < o.end) {
             return -1;
-        } else if (end > o.getEnd()) {
+        } else if (end > o.end) {
             return 1;
         } else {
             return 0;

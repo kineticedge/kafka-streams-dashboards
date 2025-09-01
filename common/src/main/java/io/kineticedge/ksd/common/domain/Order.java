@@ -1,36 +1,34 @@
 package io.kineticedge.ksd.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Data
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "$type")
-public class Order {
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "$type")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record Order(
+        String orderId,
+        String userId,
+        String storeId,
+        List<LineItem> items,
+        BigDecimal tax
+) {
 
-    @Data
-    public static class LineItem {
-        private String sku;
-        private int orderedQuantity;
-        private int quantity;
-        private BigDecimal quotedPrice;
-        private BigDecimal price;
-    }
+  public record LineItem(
+          String sku,
+          int orderedQuantity,
+          int quantity,
+          BigDecimal quotedPrice,
+          BigDecimal price
+  ) {
+  }
 
-    private String orderId;
-    private String userId;
-    private String storeId;
-
-    private List<LineItem> items;
-
-    private BigDecimal tax;
-
-    @JsonIgnore
-    public BigDecimal getTotal() {
-        return null;
-    }
+  @JsonIgnore
+  public BigDecimal getTotal() {
+    return null;
+  }
 
 }

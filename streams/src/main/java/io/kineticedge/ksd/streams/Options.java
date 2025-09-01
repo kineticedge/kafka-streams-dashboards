@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @ToString
 @Getter
-@Setter
+//@Setter
 public class Options extends BaseOptions  {
 
     @Parameter(names = { "-g", "--application-id" }, description = "application id")

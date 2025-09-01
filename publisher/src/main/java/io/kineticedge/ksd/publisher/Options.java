@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter
-@Setter
+//@Setter
 public class Options extends BaseOptions {
 
     @Parameter(names = { "--line-items" }, description = "use x:y for a range, single value for absolute")

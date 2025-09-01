@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
+//@Setter
 public class Options extends BaseOptions {
 
     @Parameter(names = { "--changelog-topic" }, description = "")

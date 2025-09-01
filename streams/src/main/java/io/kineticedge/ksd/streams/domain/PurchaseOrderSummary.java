@@ -39,9 +39,9 @@ public class PurchaseOrderSummary {
         return new PurchaseOrderSummary(
                 purchaseOrder.getOrderId(),
                 purchaseOrder.getUserId(),
-                purchaseOrder.getUser().getName(),
+                purchaseOrder.getUser().name(),
                 purchaseOrder.getStoreId(),
-                purchaseOrder.getStore().getName(),
+                purchaseOrder.getStore().name(),
                 purchaseOrder.getItems().stream().map(i -> new Item(i.getSku(), Integer.toString(i.getQuantity()), "" + i.getPrice())).collect(Collectors.toList()),
                 convert(purchaseOrder.getTimestamp())
         );

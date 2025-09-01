@@ -327,7 +327,7 @@ public class Streams {
                 .flatMap((k, v) -> v.getItems().stream().map(item -> KeyValue.pair(item.getSku(), v)).collect(Collectors.toList()),
                         Named.as("purchase-order-products-flatmap"))
                 .join(products, (purchaseOrder, product) -> {
-                    purchaseOrder.getItems().stream().filter(item -> item.getSku().equals(product.getSku())).forEach(item -> item.setPrice(product.getPrice()));
+                    purchaseOrder.getItems().stream().filter(item -> item.getSku().equals(product.sku())).forEach(item -> item.setPrice(product.price()));
                     //pause(RANDOM.nextInt(1000));
                     return purchaseOrder;
                 }, Joined.as("purchase-order-join-product"))

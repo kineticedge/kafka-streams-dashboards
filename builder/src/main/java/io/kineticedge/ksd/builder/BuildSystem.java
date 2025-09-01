@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.admin.AdminClient;
@@ -191,8 +192,8 @@ public class BuildSystem {
     IntStream.range(0, options.getNumberOfStores()).forEach(i -> {
       Store store = getRandomStore(i);
 
-      log.debug("Sending key={}, value={}", store.getStoreId(), store);
-      kafkaProducer.send(new ProducerRecord<>(options.getStoreTopic(), null, store.getStoreId(), store), (metadata, exception) -> {
+      log.debug("Sending key={}, value={}", store.storeId(), store);
+      kafkaProducer.send(new ProducerRecord<>(options.getStoreTopic(), null, store.storeId(), store), (metadata, exception) -> {
         if (exception != null) {
           log.error("error producing to kafka", exception);
         } else {
@@ -207,8 +208,8 @@ public class BuildSystem {
     IntStream.range(0, options.getNumberOfUsers()).forEach(i -> {
       User user = getRandomUser(i);
 
-      log.debug("Sending key={}, value={}", user.getUserId(), user);
-      kafkaProducer.send(new ProducerRecord<>(options.getUserTopic(), null, user.getUserId(), user), (metadata, exception) -> {
+      log.debug("Sending key={}, value={}", user.userId(), user);
+      kafkaProducer.send(new ProducerRecord<>(options.getUserTopic(), null, user.userId(), user), (metadata, exception) -> {
         if (exception != null) {
           log.error("error producing to kafka", exception);
         } else {
@@ -223,8 +224,8 @@ public class BuildSystem {
     IntStream.range(0, options.getNumberOfProducts()).forEach(i -> {
       Product product = getRandomProduct(i);
 
-      log.debug("Sending key={}, value={}", product.getSku(), product);
-      kafkaProducer.send(new ProducerRecord<>(options.getProductTopic(), null, product.getSku(), product), (metadata, exception) -> {
+      log.debug("Sending key={}, value={}", product.sku(), product);
+      kafkaProducer.send(new ProducerRecord<>(options.getProductTopic(), null, product.sku(), product), (metadata, exception) -> {
         if (exception != null) {
           log.error("error producing to kafka", exception);
         } else {
@@ -254,37 +255,29 @@ public class BuildSystem {
   }
 
   private User getRandomUser(int userId) {
-    final User user = new User();
-
-    user.setUserId(Integer.toString(userId));
-    user.setName(generateName());
-    user.setEmail(user.getName() + "@foo.com");
-
-    return user;
+    String name = generateName();
+    return new User(Integer.toString(userId), name, name + "@foo.com");
   }
 
   private Product getRandomProduct(int sku) {
-    final Product product = new Product();
-
-    product.setSku(StringUtils.leftPad(Integer.toString(sku), 10, '0'));
-    product.setPrice(BigDecimal.valueOf(RANDOM.nextDouble() * 100.).setScale(2, RoundingMode.HALF_EVEN));
-
-    return product;
+    return new Product(
+            StringUtils.leftPad(Integer.toString(sku), 10, '0'),
+            RandomStringUtils.randomAlphabetic(10),
+            "",
+            BigDecimal.valueOf(RANDOM.nextDouble() * 100.).setScale(2, RoundingMode.HALF_EVEN),
+            Map.of()
+    );
   }
 
   private Store getRandomStore(int storeId) {
-    final Store store = new Store();
-
-    store.setStoreId(Integer.toString(storeId));
-    store.setName(generateName());
-
-    Zip zip = getRandomZip();
-
-    store.setPostalCode(zip.getZip());
-    store.setCity(zip.getCity());
-    store.setState(zip.getState());
-
-    return store;
+    final Zip zip = getRandomZip();
+    return new Store(
+            Integer.toString(storeId),
+            generateName(),
+            zip.zip(),
+            zip.city(),
+            zip.state()
+    );
   }
 
   private Zip getRandomZip() {
@@ -308,11 +301,12 @@ public class BuildSystem {
 
       CSVParser parser = new CSVParser(reader, format);
 
-      for (CSVRecord record : parser) {
-        final Zip zip = new Zip();
-        zip.setZip(record.get("zipcode"));
-        zip.setCity(record.get("city"));
-        zip.setState(record.get("state_abbr"));
+      for (CSVRecord rec : parser) {
+        final Zip zip = new Zip(
+                rec.get("zipcode"),
+                rec.get("city"),
+                rec.get("state_abbr")
+        );
         list.add(zip);
       }
 

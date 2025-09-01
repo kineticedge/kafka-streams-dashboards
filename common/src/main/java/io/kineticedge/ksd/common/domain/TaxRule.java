@@ -2,7 +2,6 @@ package io.kineticedge.ksd.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.Data;
 
 import java.math.BigDecimal;
 

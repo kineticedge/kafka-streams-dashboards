@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-from confluent_kafka import Consumer, KafkaError, KafkaException, libversion
-import sys
 import argparse
+import sys
+from confluent_kafka import Consumer, KafkaError, KafkaException, libversion
 
 
 def consume_messages(topics):

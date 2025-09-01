@@ -3,8 +3,6 @@ package io.kineticedge.ksd.restore;
 import io.kineticedge.ksd.common.domain.ProductAnalytic;
 import io.kineticedge.ksd.tools.serde.JsonDeserializer;
 import io.kineticedge.ksd.tools.serde.JsonSerializer;
-import java.time.Duration;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -14,13 +12,18 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Map;
 
-@Slf4j
 public class Restore {
 
-    private final Options options;
+  private static final Logger log = LoggerFactory.getLogger(Restore.class);
+
+  private final Options options;
 
     public Restore(final Options options) {
         this.options = options;

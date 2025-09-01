@@ -1,7 +1,7 @@
 package io.kineticedge.ksd.tools.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,8 +11,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-@Slf4j
 public final class PropertyUtils {
+
+  private static final Logger log = LoggerFactory.getLogger(PropertyUtils.class);
 
   private PropertyUtils() {
   }

@@ -4,16 +4,19 @@ import io.kineticedge.ksd.common.domain.PurchaseOrder;
 import io.kineticedge.ksd.streams.domain.By;
 import io.kineticedge.ksd.streams.domain.ByOrderId;
 import io.kineticedge.ksd.streams.domain.PurchaseOrderSummary;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.kafka.streams.state.ValueAndTimestamp;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
+
 public class StateObserver {
+
+  private static final Logger log = LoggerFactory.getLogger(StateObserver.class);
 
   private final KafkaStreams streams;
   private final String storeName;

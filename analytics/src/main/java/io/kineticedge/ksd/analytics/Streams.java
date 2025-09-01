@@ -15,7 +15,6 @@ import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.binder.kafka.KafkaStreamsMetrics;
 import io.micrometer.prometheusmetrics.PrometheusConfig;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.header.Headers;
@@ -64,8 +63,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-@Slf4j
 public class Streams {
+
+  private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(Streams.class);
 
   private static final boolean INCLUDE_REREAD_TASK = true;
 

@@ -4,7 +4,6 @@ import io.kineticedge.ksd.analytics.domain.By;
 import io.kineticedge.ksd.analytics.domain.BySku;
 import io.kineticedge.ksd.analytics.domain.ByWindow;
 import io.kineticedge.ksd.common.domain.ProductAnalytic;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.kstream.Windowed;
@@ -15,8 +14,9 @@ import org.apache.kafka.streams.state.ReadOnlySessionStore;
 import org.apache.kafka.streams.state.ReadOnlyWindowStore;
 import org.apache.kafka.streams.state.ValueAndTimestamp;
 
-@Slf4j
 public class StateObserver {
+
+  private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(StateObserver.class);
 
   private final KafkaStreams streams;
 

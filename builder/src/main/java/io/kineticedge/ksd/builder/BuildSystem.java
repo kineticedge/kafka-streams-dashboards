@@ -6,7 +6,6 @@ import io.kineticedge.ksd.common.domain.User;
 import io.kineticedge.ksd.common.domain.Zip;
 import io.kineticedge.ksd.tools.config.KafkaEnvUtil;
 import io.kineticedge.ksd.tools.serde.JsonSerializer;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -22,6 +21,8 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.errors.TopicExistsException;
 import org.apache.kafka.common.errors.UnknownTopicOrPartitionException;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,8 +39,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Slf4j
 public class BuildSystem {
+
+  private static final Logger log = LoggerFactory.getLogger(BuildSystem.class);
+
 
   // use -1 for replication factor leaving it to the cluster's default setting.
   // this ensures that the cluster-1 cluster (that is one node) works.

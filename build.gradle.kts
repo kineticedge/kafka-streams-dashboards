@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion.VERSION_21
+//import org.gradle.api.JavaVersion.VERSION_24
 import org.gradle.jvm.tasks.Jar
 
 val logback_version: String by project
@@ -45,15 +47,13 @@ subprojects.filter { it.name != "metrics-reporter" }.forEach {
     it.plugins.apply("application")
 
     it.java {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = VERSION_21
+        targetCompatibility = VERSION_21
     }
 
     it.dependencies {
-
         implementation("io.micrometer:micrometer-registry-prometheus:$micrometer_version")
         implementation("io.micrometer:micrometer-core:$micrometer_version")
-
         implementation("ch.qos.logback:logback-classic:$logback_version")
         implementation("org.jcommander:jcommander:$jcommander_version")
         implementation("com.fasterxml.jackson.core:jackson-core:$jackson_version")
@@ -65,15 +65,7 @@ subprojects.filter { it.name != "metrics-reporter" }.forEach {
                 strictly(kafka_version)
             }
         }
-
         implementation("org.slf4j:slf4j-api:$slf4j_version")
-
-        // lombok dependencies
-        compileOnly("org.projectlombok:lombok:$lombok_version")
-        annotationProcessor("org.projectlombok:lombok:$lombok_version")
-
-        testCompileOnly("org.projectlombok:lombok:$lombok_version")
-        testAnnotationProcessor("org.projectlombok:lombok:$lombok_version")
     }
 
     it.tasks.test {

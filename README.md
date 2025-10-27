@@ -200,6 +200,17 @@ more sampling is needed to get a better display of data, or if it is just the na
 
 ![Kafka Streams Tasks (ratio)](./doc/12-tasks-ratio.png)
 
+### 13 - Topics Combined
+
+
+### 14 - Core Insights
+
+* Gives a quick overview of the core metrics of the Kafka Streams application.
+* This is a good starting point for understanding the application.
+* Potential issues can be detected here, after which you can dive deeper into the other dashboards.
+
+![Kafka Streams Core Insights](./doc/14-core-insights.png)
+
 ## Docker 
 
 * This project leverages docker and docker compose for easy of demonstration.

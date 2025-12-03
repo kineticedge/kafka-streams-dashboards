@@ -30,7 +30,6 @@ services:
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
-      KAFKA_LOG_DIRS: /var/lib/kafka/data
       KAFKA_LISTENERS: CONTROLLER://:9093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -70,7 +69,6 @@ services:
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
-      KAFKA_LOG_DIRS: /var/lib/kafka/data
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -108,7 +106,6 @@ services:
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
-      KAFKA_LOG_DIRS: /var/lib/kafka/data
       KAFKA_NODE_ID: 2
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -146,7 +143,6 @@ services:
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
-      KAFKA_LOG_DIRS: /var/lib/kafka/data
       KAFKA_NODE_ID: 3
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -184,7 +180,6 @@ services:
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
-      KAFKA_LOG_DIRS: /var/lib/kafka/data
       KAFKA_NODE_ID: 4
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT

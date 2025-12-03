@@ -2,8 +2,7 @@
   {
     "targets": [
       "ksda-publisher-1:7071",
-      "ksda-publisher-2:7071",
-      "host.docker.internal:7071"
+      "ksda-publisher-2:7071"
     ],
     "labels": {
       "cluster_type": "producers",

@@ -26,5 +26,3 @@ public record Product(
   }
 
 }
-
-

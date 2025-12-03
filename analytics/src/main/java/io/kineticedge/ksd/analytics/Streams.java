@@ -1,7 +1,6 @@
 package io.kineticedge.ksd.analytics;
 
 import io.kineticedge.ksd.analytics.util.FixedKeyRecordFactory;
-import io.kineticedge.ksd.common.domain.Product;
 import io.kineticedge.ksd.common.domain.ProductAnalytic;
 import io.kineticedge.ksd.common.domain.ProductAnalyticOut;
 import io.kineticedge.ksd.common.domain.PurchaseOrder;
@@ -24,15 +23,12 @@ import org.apache.kafka.common.metrics.JmxReporter;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.KeyValue;
-import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler;
 import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
 import org.apache.kafka.streams.kstream.Consumed;
-import org.apache.kafka.streams.kstream.GlobalKTable;
 import org.apache.kafka.streams.kstream.Grouped;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Materialized;
@@ -50,22 +46,12 @@ import org.apache.kafka.streams.processor.StateStore;
 import org.apache.kafka.streams.processor.api.FixedKeyProcessor;
 import org.apache.kafka.streams.processor.api.FixedKeyProcessorContext;
 import org.apache.kafka.streams.processor.api.FixedKeyRecord;
-import org.apache.kafka.streams.query.QueryResult;
-import org.apache.kafka.streams.query.RangeQuery;
-import org.apache.kafka.streams.query.StateQueryRequest;
-import org.apache.kafka.streams.query.StateQueryResult;
-import org.apache.kafka.streams.query.WindowKeyQuery;
-import org.apache.kafka.streams.query.WindowRangeQuery;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.KeyValueStore;
-import org.apache.kafka.streams.state.QueryableStoreTypes;
-import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.apache.kafka.streams.state.ReadOnlySessionStore;
 import org.apache.kafka.streams.state.SessionStore;
 import org.apache.kafka.streams.state.TimestampedKeyValueStore;
 import org.apache.kafka.streams.state.ValueAndTimestamp;
 import org.apache.kafka.streams.state.WindowStore;
-import org.apache.kafka.streams.state.WindowStoreIterator;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -73,14 +59,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Timer;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Streams {
 
@@ -92,8 +73,6 @@ public class Streams {
 
   //private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
   private static final DateTimeFormatter TIME_FORMATTER_SSS = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
-
-  private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);
 
   private Map<String, Object> properties(final Options options) {
     final Map<String, Object> defaults = Map.ofEntries(
@@ -198,12 +177,6 @@ public class Streams {
     }));
 
     servletDeployment.start();
-
-    final AiAnalysis aiAnalysis = new AiAnalysis(streams, Duration.ofSeconds(options.getWindowSize()));
-    scheduler.scheduleAtFixedRate(() -> {
-      aiAnalysis.inquire();
-    }, 10_000L, 60_000L, TimeUnit.MILLISECONDS);
-
   }
 
   private StreamsBuilder streamsBuilder() {
@@ -217,12 +190,9 @@ public class Streams {
     };
   }
 
-
   private StreamsBuilder streamsBuilderTumbling() {
 
     final StreamsBuilder builder = new StreamsBuilder();
-
-    GlobalKTable<String, Product> products = builder.globalTable(options.getProductTopic(), Consumed.as("product"), Materialized.as("product"));
 
     final Materialized<String, ProductAnalytic, WindowStore<Bytes, byte[]>> store = Materialized.<String, ProductAnalytic, WindowStore<Bytes, byte[]>>as("TUMBLING-aggregate-purchase-order")
             //.withRetention(Duration.ofHours(2L))

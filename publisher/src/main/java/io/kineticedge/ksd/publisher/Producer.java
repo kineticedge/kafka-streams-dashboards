@@ -33,28 +33,25 @@ public class Producer {
 
   private final Options options;
 
-  private final ProductSelector productSelector;
-
   public Producer(final Options options) {
     this.options = options;
-    this.productSelector = new ProductSelector(options.getSkewed().orElse(null));
   }
 
-//  private String getRandomSku(int index) {
-//
-//    if (options.getSkus() == null) {
-//      return StringUtils.leftPad(Integer.toString(RANDOM.nextInt(options.getMaxSku())), 10, '0');
-//    } else {
-//
-//      final int productId = options.getSkus().get(index);
-//
-//      if (productId < 0 || productId >= options.getMaxSku()) {
-//        throw new IllegalArgumentException("invalid product number");
-//      }
-//
-//      return StringUtils.leftPad(Integer.toString(productId), 10, '0');
-//    }
-//  }
+  private String getRandomSku(int index) {
+
+    if (options.getSkus() == null) {
+      return StringUtils.leftPad(Integer.toString(RANDOM.nextInt(options.getMaxSku())), 10, '0');
+    } else {
+
+      final int productId = options.getSkus().get(index);
+
+      if (productId < 0 || productId >= options.getMaxSku()) {
+        throw new IllegalArgumentException("invalid product number");
+      }
+
+      return StringUtils.leftPad(Integer.toString(productId), 10, '0');
+    }
+  }
 
   private String getRandomUser() {
     return Integer.toString(RANDOM.nextInt(options.getNumberOfUsers()));
@@ -97,9 +94,7 @@ public class Producer {
             .boxed()
             .map(i -> {
               final PurchaseOrder.LineItem item = new PurchaseOrder.LineItem();
-//              item.setSku(getRandomSku(i));
-              var p = productSelector.getProducts(1).get(0);
-              item.setSku(p.sku());
+              item.setSku(getRandomSku(i));
               item.setQuantity(getRandomQuantity());
               item.setQuotedPrice(null); // TODO remove from domain
               return item;

@@ -4,6 +4,7 @@ val quartz_version: String by project
 
 dependencies {
     implementation(project(":common"))
+    implementation(project(":observer"))
     implementation("org.apache.kafka:kafka-streams:$kafka_version")
 }
 

@@ -32,9 +32,11 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -72,6 +74,7 @@ public class BuildSystem {
 
   private final Options options;
   private final List<Zip> zips = loadZipcodes();
+  private final List<Product> products = loadProducts();
 
   public BuildSystem(final Options options) {
     this.options = options;
@@ -224,9 +227,8 @@ public class BuildSystem {
     kafkaProducer.flush();
 
     log.info("populating products");
-    IntStream.range(0, options.getNumberOfProducts()).forEach(i -> {
-      Product product = getRandomProduct(i);
 
+    products.forEach(product -> {
       log.debug("Sending key={}, value={}", product.sku(), product);
       kafkaProducer.send(new ProducerRecord<>(options.getProductTopic(), null, product.sku(), product), (metadata, exception) -> {
         if (exception != null) {
@@ -236,6 +238,19 @@ public class BuildSystem {
         }
       });
     });
+
+//    IntStream.range(0, options.getNumberOfProducts()).forEach(i -> {
+//      Product product = getRandomProduct(i);
+//
+//      log.debug("Sending key={}, value={}", product.sku(), product);
+//      kafkaProducer.send(new ProducerRecord<>(options.getProductTopic(), null, product.sku(), product), (metadata, exception) -> {
+//        if (exception != null) {
+//          log.error("error producing to kafka", exception);
+//        } else {
+//          log.debug("topic={}, partition={}, offset={}", metadata.topic(), metadata.partition(), metadata.offset());
+//        }
+//      });
+//    });
 
     kafkaProducer.flush();
     kafkaProducer.close();
@@ -286,6 +301,56 @@ public class BuildSystem {
   private Zip getRandomZip() {
     return zips.get(RANDOM.nextInt(zips.size()));
   }
+
+  //    ////productType,modelNumber,price,color,released,description,reviewScore,reviewCount,ramSize,ramType,storageSize,storageType,cpu,cpuCores,gpuCores,weight,screenRatio,screenSize
+  private static List<Product> loadProducts() {
+
+    final List<Product> list = new ArrayList<>();
+
+    final Set<String> notAttributes = Set.of("sku", "modelNumber", "description", "price");
+
+    try {
+
+      CSVFormat format = CSVFormat.Builder.create(CSVFormat.RFC4180)
+              .setHeader()
+              .setDelimiter(',')
+              .build();
+
+      InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("products.csv");
+      InputStreamReader reader = new InputStreamReader(input);
+
+      CSVParser parser = new CSVParser(reader, format);
+
+
+      final List<String> attributeNames = parser.getHeaderNames().stream()
+              .filter(s -> !notAttributes.contains(s))
+              .toList();
+
+      for (CSVRecord rec : parser) {
+
+        Map<String, Object> attributes = new HashMap<>();
+        attributeNames.forEach(value -> attributes.put(value, rec.get(value)));
+
+        final Product product = new Product(
+                StringUtils.leftPad(rec.get("sku"), 10, '0'),
+                rec.get("modelNumber"),
+                rec.get("description"),
+                new BigDecimal(rec.get("price")),
+                attributes
+        );
+
+        list.add(product);
+      }
+
+      parser.close();
+
+    } catch (final IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return list;
+  }
+
 
   private static List<Zip> loadZipcodes() {
 

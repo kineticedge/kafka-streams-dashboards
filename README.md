@@ -312,3 +312,7 @@ If you are using an IDE, like Intellij IDEA to explore codebase, you may need to
 ### Tools
 
 * See Tools [README](./tools/README.md) for the benefits this can provide.
+
+### Additional Resources
+
+* Please checkout out [Kinetic Edge](https://www.kineticedge.io) and check out insight to see articles that are related to this project.

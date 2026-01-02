@@ -1,4 +1,4 @@
-import org.gradle.api.JavaVersion.VERSION_21
+import org.gradle.api.JavaVersion.VERSION_25
 //import org.gradle.api.JavaVersion.VERSION_24
 import org.gradle.jvm.tasks.Jar
 
@@ -47,8 +47,8 @@ subprojects.filter { it.name != "metrics-reporter" }.forEach {
     it.plugins.apply("application")
 
     it.java {
-        sourceCompatibility = VERSION_21
-        targetCompatibility = VERSION_21
+        sourceCompatibility = VERSION_25
+        targetCompatibility = VERSION_25
     }
 
     it.dependencies {

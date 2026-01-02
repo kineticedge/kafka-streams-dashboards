@@ -1,5 +1,6 @@
 
 val kafka_version: String by project
+val netty_version: String by project
 
 plugins {
     application
@@ -10,6 +11,9 @@ dependencies {
     implementation(project(":common"))
     implementation("org.apache.kafka:kafka-streams:$kafka_version")
     //implementation("io.undertow:undertow-servlet:$undertow_version")
+
+    implementation("io.netty:netty-transport:${netty_version}")
+    implementation("io.netty:netty-codec-http:${netty_version}")
 }
 
 application {

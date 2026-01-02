@@ -16,6 +16,21 @@ public class Main {
 
 		stream.start(options);
 
+
+		/*
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+    try {
+        // 1. Stop HTTP server immediately (non-blocking)
+        server.stop();
+
+        // 2. Close Streams with a tight timeout
+        streams.close(Duration.ofSeconds(3));
+
+    } catch (Exception e) {
+        log.error("Shutdown error", e);
+    }
+}));
+		 */
 	}
 
 }

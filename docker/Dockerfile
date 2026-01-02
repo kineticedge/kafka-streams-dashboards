@@ -1,19 +1,22 @@
-FROM eclipse-temurin:21-jdk-jammy AS build
+#FROM eclipse-temurin:21-jdk-jammy AS build
+FROM eclipse-temurin:25-jdk-jammy AS build
+
 #FROM openjdk:17-jdk-slim AS build
 
 RUN \
     apt-get update && \
     apt-get install -y curl && \
-    curl -k -L -o jmx_prometheus_javaagent.jar https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/1.0.1/jmx_prometheus_javaagent-1.0.1.jar && \
+    curl -k -L -o jmx_prometheus_javaagent.jar https://github.com/prometheus/jmx_exporter/releases/download/1.5.0/jmx_prometheus_javaagent-1.5.0.jar && \
     curl -k -L -o jolokia-agent.jar "https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.7.2/jolokia-jvm-1.7.2.jar"
 
 #    curl -k -L -o jolokia-agent.jar "https://repo1.maven.org/maven2/org/jolokia/jolokia-agent-jvm/2.3.0/jolokia-agent-jvm-2.3.0.jar"
 #https://github.com/prometheus/jmx_exporter/releases/download/1.4.0/jmx_prometheus_javaagent-1.4.0.jar
 
 RUN \
-    curl -k -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.19.0/opentelemetry-javaagent.jar
+    curl -k -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.23.0/opentelemetry-javaagent.jar
 
-FROM eclipse-temurin:21-jdk-jammy
+FROM eclipse-temurin:25-jdk-jammy
+#FROM eclipse-temurin:21-jdk-jammy
 #FROM openjdk:17-jdk-slim
 
 RUN \
@@ -36,8 +39,11 @@ ENV \
     OTEL_SERVICE_NAME="__UNDEFINED__" \
     OTEL_TRACES_SAMPLER="parentbased_traceidratio" \
     OTEL_TRACES_SAMPLER_ARG="0.05" \
-    JAVA_OPTS="-javaagent:/jmx_prometheus_javaagent.jar=7071:/jmx-exporter-config.yml -javaagent:/jolokia-agent.jar=port=7072,host=* -javaagent:/opentelemetry-javaagent.jar"
+    JAVA_OPTS="--enable-native-access=ALL-UNNAMED -javaagent:/jmx_prometheus_javaagent.jar=7071:/jmx-exporter-config.yml -javaagent:/jolokia-agent.jar=port=7072,host=* -javaagent:/opentelemetry-javaagent.jar"
     #JAVA_OPTS="-javaagent:/jmx_prometheus_javaagent.jar=7071:/jmx-exporter-config.yml -javaagent:/jolokia-agent.jar=port=7072,host=*"
+
+    # using "--enable-native-access=ALL-UNNAMED" due warning from RocksDB with Java 25
+    #   java.lang.System::loadLibrary has been called by org.rocksdb.RocksDB in an unnamed module (file:/app/streams-1.0/lib/rocksdbjni-9.7.3.jar)
 
 #OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_RECEIVE_TELEMETRY_ENABLED
 

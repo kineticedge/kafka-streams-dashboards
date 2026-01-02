@@ -10,6 +10,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StoreQueryParameters;
+import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.kafka.streams.state.ValueAndTimestamp;
@@ -56,11 +57,12 @@ public class StatePurger {
   private void purge() {
     try {
       ReadOnlyKeyValueStore<String, ValueAndTimestamp<ProductAnalytic>> store = streams.store(StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.timestampedKeyValueStore()));
-      store.all().forEachRemaining(i -> {
-        log.info("TOMBSTONING {}", i.key);
-        producer.send(new ProducerRecord<>(topic, null, i.key, null));
-      });
-
+      try (KeyValueIterator<String, ValueAndTimestamp<ProductAnalytic>> iterator = store.all()) {
+        iterator.forEachRemaining(i -> {
+          log.info("TOMBSTONING {}", i.key);
+          producer.send(new ProducerRecord<>(topic, null, i.key, null));
+        });
+      }
       producer.flush();
     } catch (final Exception e) {
       log.error("e={}", e.getMessage(), e);

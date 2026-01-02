@@ -18,9 +18,10 @@ import java.util.Optional;
 public class RocksDBConfig extends AbstractConfig {
 
   private static final String GLOBAL_PREFIX = "rocksdb.";
-  //private static final String STORE_PREFIX = "rocksdb.store.{{store}}.";
+  private static final String STORE_PREFIX = "rocksdb.store.{{store}}.";
 
   // CORE
+  public static final String SHARED_BLOCK_CACHE_SIZE = "shared.block.cache.size"; // <- a single cache used for all state-stores
   public static final String BLOCK_CACHE_SIZE = "block.cache.size";
   public static final String COMPACTION_STYLE = "compaction.style";
   public static final String COMPRESSION_TYPE = "compression.type";
@@ -41,27 +42,31 @@ public class RocksDBConfig extends AbstractConfig {
   public static final String STATS_DUMP_PERIOD_SEC = "stats.dump.period.sec";
 
 
-  //public static final String STATS_ENABLE = "stats.enable";
-
-//  public static final double ROCKSDB_MEMORY_WRITE_BUFFER_RATIO_DEFAULT = 0.5; // 50%
-//  public static final double ROCKSDB_MEMORY_HIGH_PRIORITY_POOL_RATIO_DEFAULT = 0.1; // 10%
-//  private static final boolean ROCKSDB_MEMORY_STRICT_CAPACITY_LIMIT_DEFAULT = false;
-
-
   RocksDBConfig(final String storeName, final Map<String, ?> originals) {
     super(configDef(), resolve(storeName, originals), Collections.emptyMap(), false);
   }
 
+  // to configure a store named 'foo-bar', 'FOO-BAR', 'FOO.BAR, 'FOO_BAR', etc. use the prefix 'rocksdb.store.foobar'.
+  //
+  // the reason for this is the rules of how configurations are created and how apache kafka assumes all properties are lowercase and delimited by a period.
+  // if the application has distinct store name of 'foo-bar' and 'foobar', it really should be refactored.
+  private static String normalizeStoreName(String storeName) {
+    return storeName.toLowerCase().replaceAll("[^a-z0-9]", "");
+  }
+
   private static Map<String, ?> resolve(String storeName, Map<String, ?> originals) {
+
     final Map<String, Object> map = new HashMap<>();
     map.putAll(Utils.entriesWithPrefix(originals, GLOBAL_PREFIX, true));
-    //map.putAll(Utils.entriesWithPrefix(originals, STORE_PREFIX.replace("{{store}}", storeName), true));
+    // TODO remove rocksdb.store.{{store}}.shared.block.cache.size <- not allowed...
+    map.putAll(Utils.entriesWithPrefix(originals, STORE_PREFIX.replace("{{store}}", normalizeStoreName(storeName)), true));
     return map;
   }
 
   static ConfigDef configDef() {
     return new ConfigDef()
             //CORE
+            .define(SHARED_BLOCK_CACHE_SIZE, ConfigDef.Type.LONG, null, ConfigDef.Importance.MEDIUM, "a single cache used by all state-stores, total size to be used for caching uncompressed data blocks")
             .define(BLOCK_CACHE_SIZE, ConfigDef.Type.LONG, null, ConfigDef.Importance.MEDIUM, "total size to be used for caching uncompressed data blocks")
             .define(COMPACTION_STYLE, ConfigDef.Type.STRING, null, new CompactionStyleValidator(), ConfigDef.Importance.LOW, "compaction style")
             .define(COMPRESSION_TYPE, ConfigDef.Type.STRING, null, new CompressionTypeValidator(), ConfigDef.Importance.LOW, "compression type")
@@ -69,7 +74,7 @@ public class RocksDBConfig extends AbstractConfig {
             .define(MAX_BACKGROUND_JOBS, ConfigDef.Type.INT, null, ConfigDef.Importance.MEDIUM, "maximum number of concurrent background jobs (both flushes and compactions combined)")
             .define(MAX_WRITE_BUFFER_NUMBER, ConfigDef.Type.INT, null, ConfigDef.Importance.MEDIUM, "maximum number of memtables in memory before flushing to SST files")
             .define(WRITE_BUFFER_SIZE, ConfigDef.Type.LONG, null, ConfigDef.Importance.MEDIUM, "size of a single memtable")
-            //LOGING
+            //LOGGING
             .define(LOG_DIR, ConfigDef.Type.STRING, null, ConfigDef.Importance.MEDIUM, "log directory")
             .define(LOG_LEVEL, ConfigDef.Type.STRING, null, new InfoLogLevelValidator(), ConfigDef.Importance.MEDIUM, "logging level")
             .define(LOG_MAX_FILE_SIZE, ConfigDef.Type.INT, null, ConfigDef.Importance.MEDIUM, "rocksDB maximum log file size")
@@ -97,9 +102,13 @@ public class RocksDBConfig extends AbstractConfig {
 //    return Optional.ofNullable(getBoolean(MEMORY_MANAGED));
 //  }
 
-//  Optional<Long> getBlockCacheSize() {
-//    return Optional.ofNullable(getLong(BLOCK_CACHE_SIZE));
-//  }
+  Optional<Long> getSharedBlockCacheSize() {
+    return Optional.ofNullable(getLong(SHARED_BLOCK_CACHE_SIZE));
+  }
+
+  Optional<Long> getBlockCacheSize() {
+    return Optional.ofNullable(getLong(BLOCK_CACHE_SIZE));
+  }
 
 //  Optional<Double> getMemoryHighPrioPoolRatio() {
 //    return Optional.ofNullable(getDouble(MEMORY_HIGH_PRIORITY_POOL_RATIO));

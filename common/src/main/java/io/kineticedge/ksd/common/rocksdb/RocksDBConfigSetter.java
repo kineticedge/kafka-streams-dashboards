@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 
 /**
@@ -15,35 +16,101 @@ import java.util.Map;
  */
 public class RocksDBConfigSetter implements org.apache.kafka.streams.state.RocksDBConfigSetter {
 
-  private static final Logger log = LoggerFactory.getLogger(RocksDBConfigSetter.class);
+    private static final Logger log = LoggerFactory.getLogger(RocksDBConfigSetter.class);
 
-  //public static final long ROCKSDB_BLOCK_CACHE_SIZE_DEFAULT = 50 * 1024 * 1024; // 50 MB
+    /**
+     * Matches segments like ".1766580780000" or ".1766580780000.1766580780000" at the end of a string.
+     * Restricts the numeric part to 10-20 digits to avoid matching version numbers like ".v1" or ".1".
+     */
+    private static final Pattern WINDOWED_SEGMENT_PATTERN = Pattern.compile("\\.[0-9]{10,20}(\\.[0-9]{10,20})?$");
+    //private static final Pattern WINDOWED_SEGMENT_PATTERN = Pattern.compile("\\.[0-9]+(\\.[0-9]+)?$");
 
-  private Statistics statistics;
+    private Statistics statistics;
 
-  @Override
-  public void setConfig(final String storeName, final Options options, final Map<String, Object> configs) {
+    // A new RocksDBConfigSetter is created for each state-store, so this has to be static.
+    // (assumption that this would be created once and called / state-store was incorrect).
+    private static RocksDBCacheManager manager;
 
-    RocksDBConfig rocksDBConfig = new RocksDBConfig(storeName, configs);
+    @Override
+    public void setConfig(final String rawStoreName, final Options options, final Map<String, Object> configs) {
 
-    rocksDBConfig.getCompactionStyle().ifPresent(options::setCompactionStyle);
-    rocksDBConfig.getCompressionType().ifPresent(options::setCompressionType);
-    rocksDBConfig.getMaxBackgroundJobs().ifPresent(options::setMaxBackgroundJobs);
-    rocksDBConfig.getMaxOpenFile().ifPresent(options::setMaxOpenFiles);
-    rocksDBConfig.getMaxWriteBufferNumber().ifPresent(options::setMaxWriteBufferNumber);
-    rocksDBConfig.getWriteBufferSize().ifPresent(options::setWriteBufferSize);
+        final String storeName = maybeExtractBaseStoreName(rawStoreName);
 
-    rocksDBConfig.getMaxLogFileSize().ifPresent(options::setMaxLogFileSize);
-    rocksDBConfig.getLogDir().ifPresent(options::setDbLogDir);
-    rocksDBConfig.getLogLevel().ifPresent(options::setInfoLogLevel);
-    rocksDBConfig.getDumpPeriodSec().ifPresent(options::setStatsDumpPeriodSec);
+        log.debug("Setting RocksDB config for store: {} ({}) identity={}", storeName, rawStoreName, System.identityHashCode(this));
 
+        RocksDBConfig rocksDBConfig = new RocksDBConfig(storeName, configs);
 
-    final BlockBasedTableConfig blockBasedTableConfig = (BlockBasedTableConfig) options.tableFormatConfig();
+        rocksDBConfig.getCompactionStyle().ifPresent(options::setCompactionStyle);
+        rocksDBConfig.getCompressionType().ifPresent(options::setCompressionType);
+        rocksDBConfig.getMaxBackgroundJobs().ifPresent(options::setMaxBackgroundJobs);
+        rocksDBConfig.getMaxOpenFile().ifPresent(options::setMaxOpenFiles);
+        rocksDBConfig.getMaxWriteBufferNumber().ifPresent(options::setMaxWriteBufferNumber);
+        rocksDBConfig.getWriteBufferSize().ifPresent(options::setWriteBufferSize);
 
+        rocksDBConfig.getMaxLogFileSize().ifPresent(options::setMaxLogFileSize);
+        rocksDBConfig.getLogDir().ifPresent(options::setDbLogDir);
+        rocksDBConfig.getLogLevel().ifPresent(options::setInfoLogLevel);
+        rocksDBConfig.getDumpPeriodSec().ifPresent(options::setStatsDumpPeriodSec);
 
-//    aused by: java.lang.NullPointerException: Cannot invoke "org.apache.kafka.streams.state.internals.RocksDBStore$ColumnFamilyAccessor.addToBatch(byte[], byte[], org.rocksdb.WriteBatchInterface)" because "this.cfAccessor" is null
+        final BlockBasedTableConfig blockBasedTableConfig = (BlockBasedTableConfig) options.tableFormatConfig();
 
+//        options.setMaxWriteBufferNumber(2);
+//        options.setWriteBufferSize(64 * 1024);
+//        //?????
+//        blockBasedTableConfig.setCacheIndexAndFilterBlocks(true);
+//        blockBasedTableConfig.setPinTopLevelIndexAndFilter(true);
+//        blockBasedTableConfig.setCacheIndexAndFilterBlocks(true);
+//        blockBasedTableConfig.setCacheIndexAndFilterBlocksWithHighPriority(true);
+//        blockBasedTableConfig.setBlockSize(128);
+
+        rocksDBConfig.getBlockCacheSize().ifPresentOrElse(cacheSize -> {
+            blockBasedTableConfig.setBlockCache(BlockCacheCreator.createCache(cacheSize));
+        }, () -> {
+            // use the shared cache for this state-store
+            rocksDBConfig.getSharedBlockCacheSize().ifPresent(sharedBlockCacheSize -> {
+                if (manager == null) {
+                    manager = new RocksDBCacheManager(sharedBlockCacheSize);
+                }
+                blockBasedTableConfig.setBlockCache(manager.register(storeName));
+            });
+        });
+
+        options.setTableFormatConfig(blockBasedTableConfig);
+
+        // log.warn("DEBUG_STORE " + storeName + " using Cache Instance: " + System.identityHashCode(manager.getSharedCache()));
+    }
+
+    @Override
+    public void close(final String rawStoreName, final Options options) {
+
+        final String storeName = maybeExtractBaseStoreName(rawStoreName);
+
+        log.info("Closing additional resources for RocksDB store {}", storeName);
+
+        // manager.close();
+        if (manager != null) {
+            manager.unregister(storeName);
+        }
+
+        if (statistics != null) {
+            statistics.close();
+            statistics = null;
+        }
+    }
+
+    //1766580780000
+
+    private static String maybeExtractBaseStoreName(String storeName) {
+        if (storeName == null) {
+            return null;
+        }
+        return WINDOWED_SEGMENT_PATTERN.matcher(storeName).replaceAll("");
+    }
+
+////    public static void main(String[] string) {
+////        System.out.println(maybeExtractBaseStoreName("HOPPING-aggregate-purchase-order.3.1766581920000"));
+//    }
+}
 
 //    if (rocksDBConfig.isStatisticsEnable()) {
 //
@@ -59,20 +126,7 @@ public class RocksDBConfigSetter implements org.apache.kafka.streams.state.Rocks
 //    }
 
 
-    //
+//
 
-   // options.setWriteBufferSize(1);
+// options.setWriteBufferSize(1);
 
-  }
-
-  @Override
-  public void close(final String storeName, final Options options) {
-    log.info("Closing additional resources for RocksDB store {}", storeName);
-
-    if (statistics != null) {
-      statistics.close();
-      statistics = null;
-    }
-  }
-
-}

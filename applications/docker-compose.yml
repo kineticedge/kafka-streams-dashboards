@@ -25,8 +25,8 @@ services:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       CLIENT_ID_PREFIX: "producer"
       MAX_SKU: 100
-      PAUSE: 2000
-      LINE_ITEM_COUNT: "1-4"
+      PAUSE: 1000
+      LINE_ITEM_COUNT: "1-6"
       OTEL_SERVICE_NAME: PUBLISHER
 
   stream:
@@ -38,10 +38,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    #ports:
-    #  - "7072:7072"
+#    restart: on-failure
     deploy:
-      replicas: 2
+      replicas: 1
     # provides network privileges to allow 'tc' to be used
     cap_add:
       - NET_ADMIN
@@ -54,6 +53,7 @@ services:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       CLIENT_ID_PREFIX: "stream"
       OTEL_SERVICE_NAME: STREAMS
+      #JDK_JAVA_OPTIONS: "-XX:+UseCompactObjectHeaders"
 
   analytics-sliding:
     image: ksd_app:latest

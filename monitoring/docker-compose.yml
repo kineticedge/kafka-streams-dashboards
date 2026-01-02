@@ -10,12 +10,49 @@ volumes:
   kafka-ui: {}
 
 services:
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    hostname: cadvisor
+    container_name: ksdm-cadvisor
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/metrics"]
+      start_period: 5s
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    ports:
+      - "8099:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  container-info:
+    build: ./container-info
+    hostname: container_info
+    container_name: ksdm-container_info
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9323/metrics')"]
+      start_period: 5s
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    user: root
+    ports:
+      - "9323:9323"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+
   prometheus:
-    image: prom/prometheus:v3.5.0
+    image: prom/prometheus:v3.8.1
     hostname: prometheus
     container_name: ksdm-prometheus
     healthcheck:
-      test: wget --spider http://localhost:9090/ || exit 1
+      test: ["CMD", "wget", "--spider", "http://localhost:9090/"]
       start_period: 5s
       interval: 5s
       timeout: 5s
@@ -43,16 +80,16 @@ services:
       - ./prometheus/application_publisher.json:/etc/prometheus/application_publisher.json
       - ./prometheus/application_sasl_streams.json:/etc/prometheus/application_sasl_streams.json
       - ./prometheus/application_sasl_analytics.json:/etc/prometheus/application_sasl_analytics.json
-#      - ./prometheus/micrometer_application_streams.json:/etc/prometheus/micrometer_application_streams.json
-#      - ./prometheus/micrometer_application_analytics.json:/etc/prometheus/micrometer_application_analytics.json
+      #- ./prometheus/micrometer_application_streams.json:/etc/prometheus/micrometer_application_streams.json
+      #- ./prometheus/micrometer_application_analytics.json:/etc/prometheus/micrometer_application_analytics.json
 
   grafana:
-    image: grafana/grafana:12.1.0
+    image: grafana/grafana:12.3.1
     #image: grafana/grafana:main
     hostname: grafana
     container_name: ksdm-grafana
     healthcheck:
-      test: wget --spider --tries=1 http://localhost:3000/api/health || exit 1
+      test: [ "CMD", "wget", "--spider", "--tries=1", "http://localhost:3000/api/health" ]
       start_period: 10s
       interval: 5s
       timeout: 5s
@@ -85,7 +122,7 @@ services:
     hostname: tempo
     container_name: ksdm-tempo
     healthcheck:
-      test: wget --spider http://localhost:3200/status || exit 1
+      test: ["CMD", "wget", "--spider", "--tries=1", "http://localhost:3200/status"]
       start_period: 10s
       interval: 5s
       timeout: 5s

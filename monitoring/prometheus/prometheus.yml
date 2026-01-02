@@ -164,6 +164,19 @@ scrape_configs:
   - job_name: 'broker-opentelemetry'
     static_configs:
       - targets: ['broker-otel:9091']
+  - job_name: 'cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['cadvisor:8080']
+    metric_relabel_configs:
+      - source_labels: [id]
+        target_label: id
+        regex: '/docker/(.*)'
+        replacement: '$1'
+  - job_name: 'container-info'
+    static_configs:
+      - targets: ['container-info:9323']
+
 
 #  - job_name: XXXX
 #    dns_sd_configs:

@@ -211,3 +211,5 @@ rules:
     task_id: "$2"
     processor_node_id: "$3"
     topic: "$4"
+
+- pattern: rocksdb.shared.cache<type=(.+)<>(.+):.+

@@ -9,10 +9,13 @@ import io.kineticedge.ksd.common.rocksdb.RocksDBConfigSetter;
 import io.kineticedge.ksd.tools.config.KafkaEnvUtil;
 import io.kineticedge.ksd.tools.config.PropertyUtils;
 import io.kineticedge.ksd.tools.serde.JsonSerde;
+import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.binder.kafka.KafkaStreamsMetrics;
+import io.micrometer.core.instrument.config.MeterFilter;
+import io.micrometer.core.instrument.config.MeterFilterReply;
 import io.micrometer.prometheusmetrics.PrometheusConfig;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -62,6 +65,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Streams {
 
@@ -140,11 +145,35 @@ public class Streams {
     });
 
     final PrometheusMeterRegistry prometheusMeterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+
+    prometheusMeterRegistry.config().meterFilter(new MeterFilter() {
+      @Override
+      public MeterFilterReply accept(io.micrometer.core.instrument.Meter.Id id) {
+        if (id.getName().contains("number.open.files")) {
+          log.debug("removing problematic metric {}", id.getName());
+          return MeterFilterReply.DENY;
+        }
+        return MeterFilterReply.NEUTRAL;
+      }
+
+      @Override
+      public Meter.Id map(Meter.Id id) {
+        // Use Stream.concat to build the final tag list in one pipeline
+        var tags = Stream.concat(
+                id.getTags().stream().filter(t -> !t.getKey().equals("kafka.version")),
+                Stream.of(Tag.of("application_id", options.getApplicationId())
+                )
+        ).collect(Collectors.toList());
+        return new Meter.Id(id.getName(), Tags.of(tags), id.getBaseUnit(), id.getDescription(), id.getType());
+      }
+    });
+
     final KafkaStreamsMetrics kafkaStreamsMetrics = new KafkaStreamsMetrics(streams);
     kafkaStreamsMetrics.bindTo(Metrics.globalRegistry);
     Metrics.globalRegistry.gauge(
             "kafka_stream_application",
-            Tags.of(Tag.of("application.id", options.getApplicationId())),
+            Tags.empty(),
+            //Tags.of(Tag.of("application.id", options.getApplicationId())),
             streams,
             s -> switch (s.state()) {
               case RUNNING -> 1.0;
@@ -462,10 +491,8 @@ public class Streams {
                   @Override
                   public void punctuate(long timestamp) {
                     log.info("running punctuate, timestamp={}", timestamp);
-
                     StateStore store = context.getStateStore("NONE_REPARTITIONED-aggregate-purchase-order");
-
-                    System.out.println(">>>>> + " + store.getClass());
+                    // todo
                   }
                 });
               }
@@ -482,7 +509,7 @@ public class Streams {
 
     KStream<String, ProductAnalytic> restore = builder
             .<String, ProductAnalytic>stream(options.getRepartitionTopicRestore(), Consumed.as("NONE_REPARTITIONED-restore"))
-            .peek((k, v) -> log.info("!!!! key={}", k), Named.as("NONE_REPARTITIONED-restore-peek-incoming"))
+            .peek((k, v) -> log.info("key={}", k), Named.as("NONE_REPARTITIONED-restore-peek-incoming"))
             .processValues(() -> new FixedKeyProcessor<String, ProductAnalytic, ProductAnalytic>() {
 
               private FixedKeyProcessorContext<String, ProductAnalytic> context;

@@ -11,29 +11,30 @@ volumes:
 
 services:
 
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    hostname: cadvisor
-    container_name: ksdm-cadvisor
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/metrics"]
-      start_period: 5s
-      interval: 5s
-      timeout: 3s
-      retries: 3
-    ports:
-      - "8099:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+#  cadvisor:
+#    image: gcr.io/cadvisor/cadvisor:latest
+#    hostname: cadvisor
+#    container_name: ksdm-cadvisor
+#    healthcheck:
+#      test: ["CMD", "wget", "-qO-", "http://localhost:8080/metrics"]
+#      start_period: 5s
+#      interval: 5s
+#      timeout: 3s
+#      retries: 3
+#    ports:
+#      - "8099:8080"
+#    volumes:
+#      - /:/rootfs:ro
+#      - /var/run:/var/run:rw
+#      - /sys:/sys:ro
+#      - /var/lib/docker/:/var/lib/docker:ro
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   container-info:
     build: ./container-info
-    hostname: container_info
-    container_name: ksdm-container_info
+    hostname: container-info
+    container_name: ksdm-container-info
+    pid: "host"
     healthcheck:
       test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9323/metrics')"]
       start_period: 5s
@@ -45,7 +46,7 @@ services:
       - "9323:9323"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   prometheus:
     image: prom/prometheus:v3.8.1

@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 40,
+  "id": 18,
   "links": [],
   "panels": [
     {
@@ -83,7 +83,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -166,7 +166,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -248,7 +248,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -314,7 +314,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -380,7 +380,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -446,7 +446,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -512,7 +512,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -578,7 +578,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -645,7 +645,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -738,7 +738,7 @@
         "sizing": "manual",
         "valueMode": "color"
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "editorMode": "code",
@@ -807,7 +807,7 @@
         "sizing": "manual",
         "valueMode": "color"
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "editorMode": "code",
@@ -869,7 +869,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -967,7 +967,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 200
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "disableTextWrap": false,
@@ -1082,7 +1082,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2132,7 +2132,7 @@
         "content": "",
         "mode": "html"
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "title": "Memory",
       "type": "text"
     },
@@ -2151,9 +2151,13 @@
             "cellOptions": {
               "type": "auto"
             },
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
+          "noValue": "No Shared Cache Defined",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2172,24 +2176,16 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 7,
+        "w": 8,
         "x": 0,
         "y": 29
       },
       "id": 40,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "editorMode": "code",
@@ -2256,6 +2252,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2266,6 +2263,7 @@
             }
           },
           "mappings": [],
+          "noValue": "No Shared Cache Defined",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2282,7 +2280,7 @@
       "gridPos": {
         "h": 8,
         "w": 8,
-        "x": 7,
+        "x": 8,
         "y": 29
       },
       "id": 38,
@@ -2299,7 +2297,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2376,6 +2374,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2386,6 +2385,7 @@
             }
           },
           "mappings": [],
+          "noValue": "No Shared Cache Defined",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2402,7 +2402,7 @@
       "gridPos": {
         "h": 8,
         "w": 8,
-        "x": 15,
+        "x": 16,
         "y": 29
       },
       "id": 39,
@@ -2419,7 +2419,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2514,7 +2514,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2574,6 +2574,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2593,7 +2594,7 @@
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "decbytes"
         },
         "overrides": []
       },
@@ -2603,11 +2604,16 @@
         "x": 8,
         "y": 37
       },
-      "id": 35,
+      "id": 42,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "min",
+            "max",
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
@@ -2617,7 +2623,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2627,19 +2633,19 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg by(state_id, store_type) (kafka_stream_state_block_cache_usage{job=~\"$job\", instance=~\"$instance\", thread_id=~\"$thread\"} / kafka_stream_state_block_cache_capacity{job=~\"$job\", instance=~\"$instance\", thread_id=~\"$thread\"})",
+          "expr": "\nmax by(state_id, instance) (\n  kafka_stream_state_block_cache_usage{job=~\"$job\", thread_id=~\"$thread\"}\n    * on(state_id, instance) group_left()\n      rocksdb_shared_cache_block_cache_store_sharedcacheenabled{}\n)\nor\nsum by(state_id, instance) (\n  kafka_stream_state_block_cache_usage{job=~\"$job\", thread_id=~\"$thread\"}\n)",
           "format": "heatmap",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
           "interval": "",
-          "legendFormat": "{{state_id}}",
+          "legendFormat": "{{instance}} | {{state_id}} {{xtra}}",
           "range": true,
           "refId": "A",
           "useBackend": false
         }
       ],
-      "title": "Block Cache Capacity",
+      "title": "Block Cache Usage",
       "transformations": [
         {
           "id": "rowsToFields",
@@ -2661,6 +2667,41 @@
           "color": {
             "mode": "palette-classic"
           },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -2671,7 +2712,7 @@
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -2681,32 +2722,26 @@
         "x": 16,
         "y": 37
       },
-      "id": 12,
+      "id": 35,
       "options": {
-        "displayMode": "basic",
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "min",
+            "max",
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "hidden",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2714,22 +2749,30 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(state_id) (kafka_stream_state_block_cache_usage{job=~\"$job\", thread_id=~\"$thread\"})",
+          "expr": "\n\n\navg by(state_id, instance) (\n  ((kafka_stream_state_block_cache_usage{job=~\"$job\", instance=~\"$instance\", thread_id=~\"$thread\"} / kafka_stream_state_block_cache_capacity{job=~\"$job\", instance=~\"$instance\", thread_id=~\"$thread\"}))\n    * on(state_id, instance) group_left()\n      rocksdb_shared_cache_block_cache_store_sharedcacheenabled{}\n)\nor\navg by(state_id, instance) (\n  ((kafka_stream_state_block_cache_usage{job=~\"$job\", instance=~\"$instance\", thread_id=~\"$thread\"} / kafka_stream_state_block_cache_capacity{job=~\"$job\", instance=~\"$instance\", thread_id=~\"$thread\"}))\n)",
           "format": "heatmap",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
           "interval": "",
-          "legendFormat": "{{state_id}}",
+          "legendFormat": "{{instance}}|{{state_id}}",
           "range": true,
           "refId": "A",
           "useBackend": false
         }
       ],
-      "title": "Block Cache Usage",
-      "type": "bargauge"
+      "title": "Block Cache Capacity",
+      "transformations": [
+        {
+          "id": "rowsToFields",
+          "options": {
+            "mappings": []
+          }
+        }
+      ],
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -2787,7 +2830,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2813,6 +2856,201 @@
       "type": "bargauge"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "description": "Off-heap memory used for RocksDB’s block cache, summed by Kafka Streams state store. This cache is used by RocksDB to efficiently process read requests, without having to read data from disk. If it reaches the default of 50MB per RocksDB store, then you might have to increase it for better read performance. When increasing it, watch out for the memory configuration of your server/container to avoid OOM issues, as this is off-heap memory.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 45
+      },
+      "id": 41,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "\nmax by(state_id, instance) (\n  kafka_stream_state_block_cache_capacity{job=~\"$job\", thread_id=~\"$thread\"}\n    * on(state_id, instance) group_left()\n      rocksdb_shared_cache_block_cache_store_sharedcacheenabled{}\n)\nor\nsum by(state_id, instance) (\n  kafka_stream_state_block_cache_capacity{job=~\"$job\", thread_id=~\"$thread\"}\n)",
+          "format": "heatmap",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{instance}} | {{state_id}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Block Cache Capacity",
+      "transformations": [
+        {
+          "id": "rowsToFields",
+          "options": {
+            "mappings": []
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "description": "Off-heap memory used for RocksDB’s block cache, summed by Kafka Streams state store. This cache is used by RocksDB to efficiently process read requests, without having to read data from disk. If it reaches the default of 50MB per RocksDB store, then you might have to increase it for better read performance. When increasing it, watch out for the memory configuration of your server/container to avoid OOM issues, as this is off-heap memory.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 45
+      },
+      "id": 12,
+      "options": {
+        "displayMode": "basic",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "hidden",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(state_id, instance) (\n  kafka_stream_state_block_cache_usage{job=~\"$job\", thread_id=~\"$thread\"}\n    * on(state_id, instance) group_left()\n      rocksdb_shared_cache_block_cache_store_sharedcacheenabled{}\n)\nor\nsum by(state_id, instance) (\n  kafka_stream_state_block_cache_usage{job=~\"$job\", thread_id=~\"$thread\"}\n)",
+          "format": "heatmap",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{state_id}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Block Cache Usage",
+      "type": "bargauge"
+    },
+    {
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -2833,7 +3071,7 @@
         "content": "",
         "mode": "html"
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "title": "Disk",
       "type": "text"
     },
@@ -2893,7 +3131,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2974,7 +3212,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -3020,14 +3258,14 @@
         "content": "",
         "mode": "html"
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.3.1",
       "title": "Health",
       "type": "text"
     }
   ],
   "preload": false,
   "refresh": "5s",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "streams"
   ],
@@ -3116,5 +3354,5 @@
   "timezone": "browser",
   "title": "00 - Summary",
   "uid": "streams_summary",
-  "version": 1
+  "version": 3
 }

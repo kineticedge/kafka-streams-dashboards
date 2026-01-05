@@ -39,7 +39,7 @@ ENV \
     OTEL_SERVICE_NAME="__UNDEFINED__" \
     OTEL_TRACES_SAMPLER="parentbased_traceidratio" \
     OTEL_TRACES_SAMPLER_ARG="0.05" \
-    JAVA_OPTS="--enable-native-access=ALL-UNNAMED -javaagent:/jmx_prometheus_javaagent.jar=7071:/jmx-exporter-config.yml -javaagent:/jolokia-agent.jar=port=7072,host=* -javaagent:/opentelemetry-javaagent.jar"
+    JAVA_OPTS="-XX:+UseG1GC --enable-native-access=ALL-UNNAMED -javaagent:/jmx_prometheus_javaagent.jar=7071:/jmx-exporter-config.yml -javaagent:/jolokia-agent.jar=port=7072,host=* -javaagent:/opentelemetry-javaagent.jar"
     #JAVA_OPTS="-javaagent:/jmx_prometheus_javaagent.jar=7071:/jmx-exporter-config.yml -javaagent:/jolokia-agent.jar=port=7072,host=*"
 
     # using "--enable-native-access=ALL-UNNAMED" due warning from RocksDB with Java 25

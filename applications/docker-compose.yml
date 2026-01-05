@@ -25,7 +25,7 @@ services:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       CLIENT_ID_PREFIX: "producer"
       MAX_SKU: 100
-      PAUSE: 1000
+      PAUSE: 100
       LINE_ITEM_COUNT: "1-6"
       OTEL_SERVICE_NAME: PUBLISHER
 
@@ -41,6 +41,10 @@ services:
 #    restart: on-failure
     deploy:
       replicas: 1
+      resources:
+        limits:
+          memory: 800M
+#    mem_limit: 1g
     # provides network privileges to allow 'tc' to be used
     cap_add:
       - NET_ADMIN
@@ -53,7 +57,10 @@ services:
       BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
       CLIENT_ID_PREFIX: "stream"
       OTEL_SERVICE_NAME: STREAMS
+      #MALLOC_ARENA_MAX: 2
+      #JDK_JAVA_OPTIONS: "-XX:NativeMemoryTracking=summary"
       #JDK_JAVA_OPTIONS: "-XX:+UseCompactObjectHeaders"
+      #JDK_JAVA_OPTIONS: "-Xss512k -Xshare:off -XX:MaxDirectMemorySize=128m "
 
   analytics-sliding:
     image: ksd_app:latest

@@ -57,10 +57,10 @@ public class RocksDBConfigSetter implements org.apache.kafka.streams.state.Rocks
 //        options.setMaxWriteBufferNumber(2);
 //        options.setWriteBufferSize(64 * 1024);
 //        //?????
+        blockBasedTableConfig.setCacheIndexAndFilterBlocks(true);
+        blockBasedTableConfig.setPinTopLevelIndexAndFilter(true);
 //        blockBasedTableConfig.setCacheIndexAndFilterBlocks(true);
-//        blockBasedTableConfig.setPinTopLevelIndexAndFilter(true);
-//        blockBasedTableConfig.setCacheIndexAndFilterBlocks(true);
-//        blockBasedTableConfig.setCacheIndexAndFilterBlocksWithHighPriority(true);
+        blockBasedTableConfig.setCacheIndexAndFilterBlocksWithHighPriority(true);
 //        blockBasedTableConfig.setBlockSize(128);
 
         rocksDBConfig.getBlockCacheSize().ifPresentOrElse(cacheSize -> {

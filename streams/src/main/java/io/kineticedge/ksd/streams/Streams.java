@@ -22,6 +22,7 @@ import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.metrics.JmxReporter;
 import org.apache.kafka.common.metrics.Sensor;
 import org.apache.kafka.common.serialization.Serdes;
@@ -30,6 +31,8 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.TaskMetadata;
+import org.apache.kafka.streams.ThreadMetadata;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler;
 import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
@@ -41,6 +44,7 @@ import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Named;
 import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.processor.TaskId;
 import org.apache.kafka.streams.processor.api.FixedKeyProcessor;
 import org.apache.kafka.streams.processor.api.FixedKeyProcessorContext;
 import org.apache.kafka.streams.processor.api.FixedKeyRecord;
@@ -55,6 +59,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -208,9 +213,9 @@ public class Streams {
                 // Use Stream.concat to build the final tag list in one pipeline
                 var tags = Stream.concat(
                         id.getTags().stream().filter(t -> !t.getKey().equals("kafka.version")),
-                                Stream.of(Tag.of("application_id", options.getApplicationId())
-                                )
-                        ).collect(Collectors.toList());
+                        Stream.of(Tag.of("application_id", options.getApplicationId())
+                        )
+                ).collect(Collectors.toList());
                 return new Meter.Id(id.getName(), Tags.of(tags), id.getBaseUnit(), id.getDescription(), id.getType());
             }
         });
@@ -239,6 +244,27 @@ public class Streams {
         );
 
         Metrics.globalRegistry.add(prometheusMeterRegistry);
+
+        streams.setStateListener((newState, oldState) -> {
+            if (newState == KafkaStreams.State.RUNNING) {
+                // Query the local threads for metadata
+                Set<ThreadMetadata> localThreads = streams.metadataForLocalThreads();
+                for (ThreadMetadata thread : localThreads) {
+                    System.out.println("Thread: " + thread.threadName());
+                    // Get Active Tasks
+                    for (TaskMetadata task : thread.activeTasks()) {
+                        TaskId taskId = task.taskId();
+                        Set<TopicPartition> partitions = task.topicPartitions();
+                        System.out.println("  Active Task ID: " + taskId);
+                        System.out.println("  Assigned Partitions: " + partitions);
+                    }
+                    // Get Standby Tasks
+                    for (TaskMetadata task : thread.standbyTasks()) {
+                        System.out.println("  Standby Task ID: " + task.taskId());
+                    }
+                }
+            }
+        });
 
         streams.start();
 
@@ -372,7 +398,11 @@ public class Streams {
                     //pause(RANDOM.nextInt(1000));
                     return purchaseOrder;
                 }, Joined.as("purchase-order-join-product"))
-                .peek((k, v) -> log.info("[purchase-order-join-product] key={}, timestamp={}", k, LocalDateTime.now()))
+                .peek((k, v) -> {
+                            //causes so many headaches -- pause(RANDOM.nextInt(1000));
+                            log.info("[purchase-order-join-product] key={}, timestamp={}", k, LocalDateTime.now());
+                        }
+                )
                 .groupBy((k, v) -> v.getOrderId(), Grouped.as("pickup-order-groupBy-orderId"))
 //                .windowedBy(TimeWindows.of(Duration.ofSeconds(options.getWindowSize()))
 //                        .grace(Duration.ofSeconds(options.getGracePeriod())))

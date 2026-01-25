@@ -62,6 +62,23 @@ scrape_configs:
         regex: '(.*):(.*)'
         target_label: instance
         replacement: '$1'
+
+  - job_name: koffset
+    scrape_interval: 5s
+    metrics_path: /metrics
+    params:
+      primary: ["true"]
+    static_configs:
+      - targets:
+          - koffset:8080
+        labels:
+          job: "koffset-kafka-core"
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        target_label: instance
+        replacement: '$1'
+
   - job_name: kafka_exporter
     static_configs:
       - targets:

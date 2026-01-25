@@ -194,13 +194,12 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
 
-
-  kafka-exporter:
-    hostname: kafka-exporter
-    image: danielqsj/kafka-exporter:latest
-    container_name: kafka-exporter
+  koffset:
+    hostname: koffset
+    image: ghcr.io/kineticedge/koffset-exporter:0.0.1
+    container_name: ${COMPOSE_PROJECT_NAME}-koffset
     healthcheck:
-      test: wget --spider http://localhost:9308/ || exit 1
+      test: wget --spider http://localhost:8080/healthz || exit 1
       start_period: 10s
       interval: 5s
       timeout: 5s
@@ -213,5 +212,6 @@ services:
       broker-3:
         condition: service_healthy
     ports:
-      - "9308:9308"
-    command: --kafka.server=broker-1:9092 --kafka.server=broker-2:9092 --kafka.server=broker-3:9092
+      - "8899:8080"
+    environment:
+      KOFFSET_KAFKA_BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092

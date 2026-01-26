@@ -123,7 +123,7 @@ if [[ "$CLUSTER" == "cluster-sasl" ]]; then
   APPLICATIONS_DIR="applications-sasl"
 fi
 
-./gradlew build -x test
+./gradlew build -x test -P slimDist=true
 
 (cd builder; ./run.sh)
 (cd monitoring; docker compose up -d)

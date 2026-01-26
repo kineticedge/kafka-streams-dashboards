@@ -193,25 +193,3 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
-
-  koffset:
-    hostname: koffset
-    image: ghcr.io/kineticedge/koffset-exporter:0.0.1
-    container_name: ${COMPOSE_PROJECT_NAME}-koffset
-    healthcheck:
-      test: wget --spider http://localhost:8080/healthz || exit 1
-      start_period: 10s
-      interval: 5s
-      timeout: 5s
-      retries: 3
-    depends_on:
-      broker-1:
-        condition: service_healthy
-      broker-2:
-        condition: service_healthy
-      broker-3:
-        condition: service_healthy
-    ports:
-      - "8899:8080"
-    environment:
-      KOFFSET_KAFKA_BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092

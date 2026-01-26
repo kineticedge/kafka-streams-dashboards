@@ -301,6 +301,8 @@ public class Streams {
 
         final Server servletDeployment2 = new Server(observer, prometheusMeterRegistry, options.getPort());
         servletDeployment2.start();
+
+
     }
 
     private StreamsBuilder streamsBuilder(final Options options) {

@@ -135,3 +135,25 @@ services:
       #- tempo:/tmp/tempo
       - ./tempo/config.yml:/etc/tempo/config.yml
 
+  koffset:
+    hostname: koffset
+    image: ghcr.io/kineticedge/koffset-exporter:0.0.1
+    container_name: ${COMPOSE_PROJECT_NAME}-koffset
+    healthcheck:
+      test: wget --spider http://localhost:8080/healthz || exit 1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "8899:8080"
+    environment:
+      KOFFSET_KAFKA_BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+
+  kafka-lag-exporter:
+    hostname: kafka-lag-exporter
+    image: seglo/kafka-lag-exporter:0.8.2
+    container_name: ${COMPOSE_PROJECT_NAME}-kafka-lag-exporter
+    platform: linux/amd64
+    volumes:
+      - ./kafka-lag-exporter.conf:/opt/docker/conf/application.conf

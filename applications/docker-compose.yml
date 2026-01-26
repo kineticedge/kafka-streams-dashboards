@@ -62,6 +62,30 @@ services:
       #JDK_JAVA_OPTIONS: "-XX:+UseCompactObjectHeaders"
       #JDK_JAVA_OPTIONS: "-Xss512k -Xshare:off -XX:MaxDirectMemorySize=128m "
 
+#  stream-native:
+#    image: stream-native:latest
+#    stop_grace_period: 120s
+#    healthcheck:
+#      test: /healthcheck-streams.sh || exit 1
+#      start_period: 10s
+#      interval: 10s
+#      timeout: 5s
+#      retries: 3
+#    deploy:
+#      replicas: 1
+#      resources:
+#        limits:
+#          memory: 800M
+#    cap_add:
+#      - NET_ADMIN
+#    volumes:
+#      - ./streams.properties:/streams.properties
+#      - ./scripts:/scripts
+#    environment:
+#      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+#      CLIENT_ID_PREFIX: "stream"
+#      OTEL_SERVICE_NAME: STREAMS
+
   analytics-sliding:
     image: ksd_app:latest
     stop_grace_period: 120s

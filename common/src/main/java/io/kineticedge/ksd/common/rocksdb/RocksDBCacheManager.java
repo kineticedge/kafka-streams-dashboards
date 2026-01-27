@@ -18,19 +18,25 @@ public class RocksDBCacheManager {
 
     public RocksDBCacheManager(long capacityBytes) {
         this.sharedCache = BlockCacheCreator.createCache(capacityBytes);
-        RocksDBCacheMetrics.registerJmx("shared", sharedCache, capacityBytes);
+        RocksDBCacheMetricsJmx.registerCache("shared", sharedCache, capacityBytes);
+        RocksDBCacheMetricsMicrometer.registerCache("shared", sharedCache, capacityBytes);
     }
 
     public void close() {
-        stores.forEach(s -> RocksDBCacheMetrics.unregister("shared", s));
+        stores.forEach(s -> {
+            RocksDBCacheMetricsJmx.unregisterStore("shared", s);
+            RocksDBCacheMetricsMicrometer.unregisterStore("shared", s);
+        });
         stores.clear();
-        RocksDBCacheMetrics.unregisterJmx("shared");
+        //RocksDBCacheMetrics.unregisterJmx("shared");
+        // RocksDBCacheMetrics.unregisterMicrometer("shared");
     }
 
     // would be possible to have separate shared stores at some point
     public Cache register(String storeName) {
         stores.add(storeName);
-        RocksDBCacheMetrics.register("shared", storeName);
+        RocksDBCacheMetricsJmx.registerStore("shared", storeName);
+        RocksDBCacheMetricsMicrometer.registerStore("shared", storeName);
         return sharedCache;
     }
 
@@ -41,7 +47,8 @@ public class RocksDBCacheManager {
 //            // not removing metric -- which means if there was a way to dynamically change store configs
 //            // at real-time, reporting could not properly reflect, but I do not expect that that
 //            // will be the case
-//            //RocksDBCacheMetrics.unregister("shared", storeName);
+//            //RocksDBCacheMetricsJmx.unregister("shared", storeName);
+//            //RocksDBCacheMetricsMicrometer.unregister("shared", storeName);
 //            //stores.remove(storeName);
 //        }
     }

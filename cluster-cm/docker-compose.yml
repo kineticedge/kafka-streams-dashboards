@@ -38,14 +38,19 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-controller-0
     stop_grace_period: 120s
     healthcheck:
-      test: nc -z localhost 9093 || exit 1
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.controller:type=KafkaController,name=ActiveControllerCount/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[01]([,}])'"
+        ]
       start_period: 5s
       interval: 5s
       timeout: 5s
       retries: 3
     volumes:
       - ct0:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -60,9 +65,10 @@ services:
       KAFKA_MIN_INSYNC_REPLICAS: 2
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       #KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
 #      KAFKA_METRIC_REPORTER: io.kineticedge.ksd.metrics.reporter.ClientOtlpMetricsReporter
 #      OTEL_EXPORTER_OTLP_ENDPOINT: 127.0.0.1:4317
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
   broker-1:
     image: ${IMAGE}:${VERSION}
@@ -85,7 +91,8 @@ services:
       - '17071:7071'
     volumes:
       - bk1:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
       - ./metrics-reporter-1.0-all.jar:/opt/kafka/libs/metrics-reporter.jar
     environment:
@@ -103,11 +110,12 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
       #Clients have a MetricsReporter.class while the broker has a KafkaMetricsReporter.class.
       KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
       KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
   broker-2:
     image: ${IMAGE}:${VERSION}
@@ -127,7 +135,8 @@ services:
       - '29092:29092'
     volumes:
       - bk2:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
       - ./metrics-reporter-1.0-all.jar:/opt/kafka/libs/metrics-reporter.jar
     environment:
@@ -145,10 +154,11 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
       KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
       KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
   broker-3:
     image: ${IMAGE}:${VERSION}
@@ -168,7 +178,8 @@ services:
       - '39092:39092'
     volumes:
       - bk3:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
       - ./metrics-reporter-1.0-all.jar:/opt/kafka/libs/metrics-reporter.jar
     environment:
@@ -186,10 +197,11 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
       KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
       KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
   kafka-exporter:
     hostname: kafka-exporter

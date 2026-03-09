@@ -15,6 +15,10 @@ Configuration:
         - ref: Console
 
     Logger:
+      - name: org.apache.kafka.common.utils.AppInfoParser
+        level: info
+      - name: kafka.server.KafkaRaftServer
+        level: info
       - name: org.apache.kafka
         level: info
       - name: kafka

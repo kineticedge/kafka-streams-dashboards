@@ -26,7 +26,6 @@ services:
       retries: 3
     volumes:
       - ct0:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -40,7 +39,6 @@ services:
       KAFKA_MIN_INSYNC_REPLICAS: 2
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
-      #JAVA_TOOL_OPTIONS: "-javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*"
 
   broker-1:
     platform: ${PLATFORM}
@@ -63,7 +61,6 @@ services:
       - '17071:7071'
     volumes:
       - bk1:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -81,7 +78,6 @@ services:
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: true
       KAFKA_METRIC_REPORTERS:
-#      KAFKA_OPTS: "-javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*"
 
 
   broker-2:
@@ -103,7 +99,6 @@ services:
       - '29092:29092'
     volumes:
       - bk2:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -141,7 +136,6 @@ services:
       - '39092:39092'
     volumes:
       - bk3:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -179,7 +173,6 @@ services:
       - '49092:49092'
     volumes:
       - bk4:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"

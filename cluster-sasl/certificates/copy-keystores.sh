@@ -7,5 +7,6 @@ cd ${BASE}
 
 cp ${SECRETS}/kafka.key ${SECRETS}/kafka.server.truststore.jks ../secrets
 cp ${SECRETS}/kafka.server.truststore.jks ../secrets
+cp ${SECRETS}/kafka.server.truststore.jks ../../applications-sasl/security
 cp ${SECRETS}/sasl-*.jks ../secrets
 

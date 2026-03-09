@@ -26,15 +26,16 @@ services:
       interval: 5s
       timeout: 5s
       retries: 3
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-      KAFKA_OPTS: "-Dzookeeper.4lw.commands.whitelist=ruok,stat -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/zookeeper-config.yml"
     volumes:
       - zk:/var/lib/zookeeper/data
       - zk_log:/var/lib/zookeeper/log
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/zookeeper/secrets
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      KAFKA_OPTS: "-Dzookeeper.4lw.commands.whitelist=ruok,stat -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/zookeeper-config.yml"
 
   broker-1:
     platform: ${PLATFORM}
@@ -43,7 +44,11 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-broker-1
     stop_grace_period: 120s
     healthcheck:
-      test: nc -z localhost 9092 || exit 1
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
       start_period: 5s
       interval: 5s
       timeout: 5s
@@ -53,10 +58,12 @@ services:
         condition: service_healthy
     ports:
       - '19092:19092'
+      - '9092:19092'
       - '17071:7071'
     volumes:
       - bk1:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
     environment:
       KAFKA_BROKER_ID: 1
@@ -69,9 +76,10 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
-      KAFKA_METRIC_REPORTERS: ' '
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
 
   broker-2:
@@ -81,7 +89,11 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-broker-2
     stop_grace_period: 120s
     healthcheck:
-      test: nc -z localhost 9092 || exit 1
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
       start_period: 5s
       interval: 5s
       timeout: 5s
@@ -93,7 +105,8 @@ services:
       - '29092:29092'
     volumes:
       - bk2:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
     environment:
       KAFKA_BROKER_ID: 2
@@ -106,9 +119,10 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_METRIC_REPORTERS: ' '
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
   broker-3:
     platform: ${PLATFORM}
@@ -129,7 +143,8 @@ services:
       - '39092:39092'
     volumes:
       - bk3:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
     environment:
       KAFKA_BROKER_ID: 3
@@ -142,9 +157,10 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_METRIC_REPORTERS: ' '
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
   broker-4:
     platform: ${PLATFORM}
@@ -153,7 +169,11 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-broker-4
     stop_grace_period: 120s
     healthcheck:
-      test: nc -z localhost 9092 || exit 1
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
       start_period: 5s
       interval: 5s
       timeout: 5s
@@ -165,7 +185,8 @@ services:
       - '49092:49092'
     volumes:
       - bk4:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
     environment:
       KAFKA_BROKER_ID: 4
@@ -178,9 +199,10 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_METRIC_REPORTERS: ' '
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
 #  schema-registry:
 #    image: confluentinc/cp-schema-registry:${VERSION}

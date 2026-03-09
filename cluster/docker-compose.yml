@@ -28,8 +28,8 @@ services:
           "wget -qO- 'http://localhost:7072/jolokia/read/kafka.controller:type=KafkaController,name=ActiveControllerCount/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[01]([,}])'"
         ]
       start_period: 5s
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 2s
       retries: 3
     volumes:
       - ct0:/var/lib/kafka/data
@@ -64,8 +64,8 @@ services:
           "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
         ]
       start_period: 5s
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 2s
       retries: 3
     depends_on:
       controller-0:
@@ -110,8 +110,8 @@ services:
           "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
         ]
       start_period: 5s
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 2s
       retries: 3
     depends_on:
       controller-0:
@@ -153,8 +153,8 @@ services:
           "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
         ]
       start_period: 5s
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 2s
       retries: 3
     depends_on:
       controller-0:
@@ -196,8 +196,8 @@ services:
           "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
         ]
       start_period: 5s
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 2s
       retries: 3
     depends_on:
       controller-0:

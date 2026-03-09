@@ -37,14 +37,19 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-sasl-controller-0
     stop_grace_period: 120s
     healthcheck:
-      test: nc -z localhost 9091 || exit 1
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.controller:type=KafkaController,name=ActiveControllerCount/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[01]([,}])'"
+        ]
       start_period: 5s
       interval: 5s
       timeout: 5s
       retries: 3
     volumes:
       - ct0:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
     #      - ./controller.sh:/tmp/controller.sh
     #    command: "bash -c '/tmp/controller.sh && /etc/confluent/docker/run'"
@@ -68,13 +73,15 @@ services:
       KAFKA_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
       KAFKA_SUPER_USERS: User:kafka-admin;User:kafka-broker;User:kafka-broker-v2
-      KAFKA_OPTS: >-
-        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
-        -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
-        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
       KAFKA_SASL_MECHANISM_CONTROLLER_PROTOCOL: PLAIN
+      KAFKA_OPTS: >-
+        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
+        -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml 
+        -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
   sasl-broker-1:
     image: apache/kafka:${VERSION}
@@ -82,7 +89,11 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-sasl-broker-1
     stop_grace_period: 120s
     healthcheck:
-      test: nc -z localhost 9092 || exit 1
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
       start_period: 5s
       interval: 5s
       timeout: 5s
@@ -95,7 +106,8 @@ services:
       - "19092:19092"
     volumes:
       - bk1:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets/
       - ./metrics-reporter-1.0-all.jar:/opt/kafka/libs/metrics-reporter.jar
     environment:
@@ -121,10 +133,6 @@ services:
       KAFKA_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
       KAFKA_SUPER_USERS: User:kafka-admin;User:kafka-broker;User:kafka-broker-v2
-      KAFKA_OPTS: >-
-        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
-        -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
-        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
@@ -132,6 +140,12 @@ services:
       KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
       KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
       KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
+      KAFKA_OPTS: >-
+        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
+        -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml 
+        -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
   sasl-broker-2:
     image: apache/kafka:${VERSION}
@@ -139,7 +153,11 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-sasl-broker-2
     stop_grace_period: 120s
     healthcheck:
-      test: nc -z localhost 9092 || exit 1
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
       start_period: 5s
       interval: 5s
       timeout: 5s
@@ -151,7 +169,8 @@ services:
       - "29092:29092"
     volumes:
       - bk2:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets/
       - ./metrics-reporter-1.0-all.jar:/opt/kafka/libs/metrics-reporter.jar
     environment:
@@ -177,10 +196,6 @@ services:
       KAFKA_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
       KAFKA_SUPER_USERS: User:kafka-admin;User:kafka-broker
-      KAFKA_OPTS: >-
-        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf 
-        -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
-        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
@@ -188,6 +203,12 @@ services:
       KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
       KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
       KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
+      KAFKA_OPTS: >-
+        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
+        -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml 
+        -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
   sasl-broker-3:
     image: apache/kafka:${VERSION}
@@ -195,7 +216,11 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-sasl-broker-3
     stop_grace_period: 120s
     healthcheck:
-      test: nc -z localhost 9092 || exit 1
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
       start_period: 5s
       interval: 5s
       timeout: 5s
@@ -207,7 +232,8 @@ services:
       - "39092:39092"
     volumes:
       - bk3:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets/
       - ./metrics-reporter-1.0-all.jar:/opt/kafka/libs/metrics-reporter.jar
     environment:
@@ -233,10 +259,6 @@ services:
       KAFKA_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
       KAFKA_SUPER_USERS: User:kafka-admin;User:kafka-broker
-      KAFKA_OPTS: >-
-        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf 
-        -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
-        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN,SCRAM-SHA-512
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
@@ -244,6 +266,12 @@ services:
       KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
       KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter,io.kineticedge.ksd.metrics.reporter.ClientTelemetryMetricsReporter
       KAFKA_METRIC_REPORTERS_CLIENTTELEMETRY_ENDPOINT: broker-otel:4317
+      KAFKA_OPTS: >-
+        -Djava.security.auth.login.config=/etc/kafka/secrets/broker_jaas.conf
+        -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml 
+        -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
 
 
   sasl-kafka-exporter:

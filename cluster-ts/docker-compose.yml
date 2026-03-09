@@ -68,10 +68,8 @@ services:
     volumes:
       - ct0:/var/lib/kafka/data
       - ../ja:/opt/ja
-      - ./ja-config:/opt/ja-config
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
-      - ./log4j.properties:/etc/kafka/log4j.properties
-      - ./log4j2.yaml:/etc/kafka/log4j2.yaml
       - ./plugins:/opt/kafka/plugins
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -84,10 +82,8 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_MIN_INSYNC_REPLICAS: 2
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
-      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/ja-config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
-      #KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml
-      #KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j.properties"
-      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/etc/kafka/log4j2.yaml"      #
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
       KAFKA_CLASSPATH: "/opt/kafka/libs/*:/opt/kafka/plugins/*"
       #
       ## this one is needed in controller, or you cannot create the topic with this configuration -- unsure (however) if other settings need to be here.
@@ -132,9 +128,8 @@ services:
       # had to use local filesystem, as directory isn't mount, so creates as root and appuser fails due to permission issues
       - ./ts-cache/1:/opt/kafka-tiered-storage-cache
       - ../ja:/opt/ja
-      - ./ja-config:/opt/ja-config
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
-      - ./log4j.properties:/etc/kafka/log4j.properties
       - ./plugins:/opt/kafka/plugins
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -150,8 +145,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
-      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/ja-config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
-      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j.properties"
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
       #
       KAFKA_CLASSPATH: "/opt/kafka/libs/*:/opt/kafka/plugins/*"
       #
@@ -211,9 +206,8 @@ services:
       - bk2:/var/lib/kafka/data
       - ./ts-cache/2:/opt/kafka-tiered-storage-cache
       - ../ja:/opt/ja
-      - ./ja-config:/opt/ja-config
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
-      - ./log4j.properties:/etc/kafka/log4j.properties
       - ./plugins:/opt/kafka/plugins
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -229,8 +223,8 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/ja-config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
-      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j.properties"
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
       #
       KAFKA_CLASSPATH: "/opt/kafka/libs/*:/opt/kafka/plugins/*"
       #
@@ -289,9 +283,8 @@ services:
       - bk3:/var/lib/kafka/data
       - ./ts-cache/3:/opt/kafka-tiered-storage-cache
       - ../ja:/opt/ja
-      - ./ja-config:/opt/ja-config
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
-      - ./log4j.properties:/etc/kafka/log4j.properties
       - ./plugins:/opt/kafka/plugins
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -307,8 +300,8 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/ja-config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
-      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j.properties"
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
       #
       KAFKA_CLASSPATH: "/opt/kafka/libs/*:/opt/kafka/plugins/*"
       #
@@ -368,9 +361,8 @@ services:
       - bk4:/var/lib/kafka/data
       - ./ts-cache/4:/opt/kafka-tiered-storage-cache
       - ../ja:/opt/ja
-      - ./ja-config:/opt/ja-config
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
-      - ./log4j.properties:/etc/kafka/log4j.properties
       - ./plugins:/opt/kafka/plugins
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -386,8 +378,8 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/ja-config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
-      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j.properties"
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
       #
       KAFKA_CLASSPATH: "/opt/kafka/libs/*:/opt/kafka/plugins/*"
       #

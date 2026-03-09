@@ -40,6 +40,7 @@ ca_crt=${SECRETS}/ca.crt
 #cat < ./openssl.cnf > ${req_cnf}
 #cat <<EOF >> ${req_cnf}
 #[SAN]
+#subjectAltName=DNS:${i}, DNS:localhost
 #subjectAltName=DNS:${i}, DNS:${i}.${INTERNAL_DOMAIN}, DNS:${i}.${EXTERNAL_DOMAIN}
 #EOF
 
@@ -67,7 +68,7 @@ openssl req -text -noout -verify -in ${req}
 
 cat <<EOF > ${cnf}
 [ext]
-subjectAltName=DNS:${i}, DNS:${i}.${INTERNAL_DOMAIN}, DNS:${i}.${EXTERNAL_DOMAIN}
+subjectAltName=DNS:${i}, DNS:${i}.${INTERNAL_DOMAIN}, DNS:${i}.${EXTERNAL_DOMAIN}, DNS:localhost
 extendedKeyUsage=critical,serverAuth,clientAuth
 basicConstraints=critical,CA:FALSE
 keyUsage=critical,digitalSignature,keyEncipherment

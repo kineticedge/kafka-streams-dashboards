@@ -29,6 +29,7 @@ CLUSTERS=(
     "cluster-lb"
     "cluster-cm"
     "cluster-sasl"
+    "cluster-ts"
 )
 
 CLUSTER_DESCRIPTIONS=(
@@ -41,6 +42,7 @@ CLUSTER_DESCRIPTIONS=(
     "cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)"
     "cluster-cm      --  3 brokers, 1 raft controller, kafka-exporter, otel collector client-metrics reporter"
     "cluster-sasl    --  3 brokers (SASL authentication), 1 raft controller, kafka-exporter, otel collector client-metrics reporter"
+    "cluster-ts      --  4 brokers, 1 raft controller, minio, and aiven remote storage for tiered storage"
 )
 
 display_menu() {

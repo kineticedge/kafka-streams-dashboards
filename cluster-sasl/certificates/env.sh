@@ -8,12 +8,14 @@ declare -a MACHINES=(
   "sasl-broker-1"
   "sasl-broker-2"
   "sasl-broker-3"
+  "kafka"
+  "client"
   )
 
 #
 # domains for Subject Alternate Names (SANs)
 #
-INTERNAL_DOMAIN=foo
+INTERNAL_DOMAIN=localhost
 EXTERNAL_DOMAIN=bar
 
 CA_SUBJECT="/C=US/O=ORG/CN=Root CA"

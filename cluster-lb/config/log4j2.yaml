@@ -1,0 +1,21 @@
+Configuration:
+  status: warn
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%d{ISO8601} %-5p [%t] %c: %m%n"
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console
+
+    Logger:
+      - name: org.apache.kafka
+        level: info
+      - name: kafka
+        level: info

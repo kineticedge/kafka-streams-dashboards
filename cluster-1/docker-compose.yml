@@ -15,7 +15,11 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-broker-1
     stop_grace_period: 120s
     healthcheck:
-      test: nc -z localhost 9092 || exit 1
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
       start_period: 5s
       interval: 5s
       timeout: 5s
@@ -26,7 +30,8 @@ services:
       - '17071:7071'
     volumes:
       - bk1:/var/lib/kafka/data
-      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ../ja:/opt/ja
+      - ./config:/opt/config
       - ./secrets:/etc/kafka/secrets
     environment:
       CLUSTER_ID: "0000000000000000000000"
@@ -45,4 +50,5 @@ services:
       KAFKA_DEFAULT_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"

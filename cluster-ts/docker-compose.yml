@@ -83,7 +83,7 @@ services:
       KAFKA_MIN_INSYNC_REPLICAS: 2
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
-      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
+      #KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
       KAFKA_CLASSPATH: "/opt/kafka/libs/*:/opt/kafka/plugins/*"
       #
       ## this one is needed in controller, or you cannot create the topic with this configuration -- unsure (however) if other settings need to be here.
@@ -146,7 +146,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
-      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
+      #KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
       #
       KAFKA_CLASSPATH: "/opt/kafka/libs/*:/opt/kafka/plugins/*"
       #
@@ -224,7 +224,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
-      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
+      #KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
       #
       KAFKA_CLASSPATH: "/opt/kafka/libs/*:/opt/kafka/plugins/*"
       #
@@ -301,7 +301,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
-      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
+      #KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
       #
       KAFKA_CLASSPATH: "/opt/kafka/libs/*:/opt/kafka/plugins/*"
       #
@@ -379,7 +379,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
-      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
+      #KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/opt/config/log4j2.yaml"
       #
       KAFKA_CLASSPATH: "/opt/kafka/libs/*:/opt/kafka/plugins/*"
       #

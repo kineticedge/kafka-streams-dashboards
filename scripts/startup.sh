@@ -190,6 +190,17 @@ fi
 (cd monitoring; docker compose up -d)
 #(cd monitoring; docker compose up -d $(docker compose config --services | grep -v tempo))
 
+
+#
+# Tier Storage 
+#
+if [[ "$CLUSTER" == "cluster-ts" ]]; then
+  kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name orders-pickup --alter --add-config remote.storage.enable=true,segment.bytes=1048576,local.retention.bytes=1,retention.bytes=10000000000000,segment.ms=30000
+  kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name orders-purchase --alter --add-config remote.storage.enable=true,segment.bytes=1048576,local.retention.bytes=1,retention.bytes=10000000000000,segment.ms=30000
+fi
+
+
+
 (cd "$APPLICATIONS_DIR"; SECURITY=oauth docker compose up -d)
 #(cd "$APPLICATIONS_DIR"; docker compose up -d publisher stream analytics-tumbling)
 #(cd "$APPLICATIONS_DIR"; docker compose up -d $(docker compose config --services | grep -v otel))

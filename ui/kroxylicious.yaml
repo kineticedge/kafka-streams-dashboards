@@ -10,7 +10,7 @@
 #            port: 9990
           portIdentifiesNode:
             bootstrapAddress: kroxylicious:9990
-            brokerStartPort: 9991
+            nodeStartPort: 9991
             advertisedBrokerAddressPattern: kroxylicious
             nodeIdRanges:
               - name: mixed
@@ -63,5 +63,5 @@
 #                - postalCode
   defaultFilters:
     - fetch
-  loggers:
-    io.kroxylicious.proxy.plugin: TRACE
+
+

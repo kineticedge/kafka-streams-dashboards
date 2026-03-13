@@ -72,7 +72,7 @@ services:
       - "--web.enable-remote-write-receiver"
       # not actual setting...- "--query.staleness-delta=60s"
     ports:
-      - "9090:9090"
+      - "9099:9090"
     volumes:
       - prometheus:/prometheus
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -137,7 +137,8 @@ services:
 
   koffset:
     hostname: koffset
-    image: ghcr.io/kineticedge/koffset-exporter:0.0.1
+    #image: ghcr.io/kineticedge/koffset-exporter:0.0.1
+    image: koffset-exporter:latest
     container_name: ${COMPOSE_PROJECT_NAME}-koffset
     healthcheck:
       test: wget --spider http://localhost:8080/healthz || exit 1

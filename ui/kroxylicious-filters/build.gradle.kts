@@ -15,8 +15,8 @@ java {
 
 dependencies {
 
-    compileOnly("io.kroxylicious:kroxylicious-api:0.11.0")
-    compileOnly("org.apache.kafka:kafka-clients:3.4.0")
+    compileOnly("io.kroxylicious:kroxylicious-api:0.19.0")
+    compileOnly("org.apache.kafka:kafka-clients:4.1.1")
     implementation("org.slf4j:slf4j-api:2.0.7")
 
 //    implementation(project(":common"))

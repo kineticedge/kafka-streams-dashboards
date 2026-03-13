@@ -1,7 +1,6 @@
 #!/bin/bash
 
-BASE=$(dirname "$0")
-cd ${BASE}
+cd "$(dirname -- "$0")" || exit
 
 ./create-ca.sh
 [ $? -eq 1 ] && echo "unable to create CA certificate" && exit 1

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-BASE=$(dirname "$0")
-cd ${BASE}
+cd "$(dirname -- "$0")" || exit
+
 . ./env.sh
 
 ca_password=${CA_PASSWORD}

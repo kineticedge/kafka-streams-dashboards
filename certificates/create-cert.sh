@@ -5,8 +5,8 @@ if [ $# -lt 1 ]; then
   exit
 fi
 
-BASE=$(dirname "$0")
-cd ${BASE}
+cd "$(dirname -- "$0")" || exit
+
 . ./env.sh
 
 HOSTNAME=$1

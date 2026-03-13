@@ -1,4 +1,6 @@
+#!/bin/sh
 
+cd "$(dirname -- "$0")" || exit
 
 mkdir -p ./plugins
 

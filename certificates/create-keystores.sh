@@ -1,13 +1,13 @@
 #!/bin/bash
 
-BASE=$(dirname "$0")
-cd ${BASE}
+cd "$(dirname -- "$0")" || exit
+
 . ./env.sh
 
 heading "creating keystores"
 
 for i in ${MACHINES[@]}; do
-  ${BASE}/create-keystore.sh ${i}
+  ./create-keystore.sh ${i}
   [ $? -eq 1 ] && echo "unable to create keystore for ${i}" && exit 1
 done
 

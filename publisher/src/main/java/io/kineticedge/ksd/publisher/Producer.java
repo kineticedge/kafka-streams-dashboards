@@ -2,6 +2,7 @@ package io.kineticedge.ksd.publisher;
 
 import io.kineticedge.ksd.common.domain.PurchaseOrder;
 import io.kineticedge.ksd.tools.config.KafkaEnvUtil;
+import io.kineticedge.ksd.tools.config.PropertyUtils;
 import io.kineticedge.ksd.tools.serde.JsonSerializer;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -213,6 +214,7 @@ public class Producer {
 
     Map<String, Object> map = new HashMap<>(defaults);
 
+    map.putAll(PropertyUtils.loadProperties("/security/credentials.properties"));
 
     map.putAll(new KafkaEnvUtil().to("KAFKA_"));
 

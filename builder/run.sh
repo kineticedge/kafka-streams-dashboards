@@ -8,7 +8,7 @@ gradle assemble > /dev/null
 
 MAIN="io.kineticedge.ksd.builder.Main"
 
-IS_SASL=$(docker inspect -f '{{.State.Running}}' ksdsc-sasl-broker-1 2>/dev/null || echo "false")
+IS_SASL=$(docker inspect -f '{{.State.Running}}' ksdsc-sasl-broker-1 2>/dev/null || docker inspect -f '{{.State.Running}}' ksdsco-sasl-broker-1 2>/dev/null || echo "false")
 
 if [ "$IS_SASL" == "true" ]; then
   echo ""

@@ -9,6 +9,9 @@ dependencies {
 
     implementation("io.netty:netty-transport:${netty_version}")
     implementation("io.netty:netty-codec-http:${netty_version}")
+
+    runtimeOnly("org.bitbucket.b_c:jose4j:0.9.6")
+
 }
 
 application {

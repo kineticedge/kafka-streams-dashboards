@@ -12,10 +12,16 @@ build
 /applications/stores/*
 /applications-sasl/stores/*
 
+/certificates/secrets/*
+
 /cluster*/plugins
 /cluster-sasl/certificates/secrets/*
 /cluster-sasl/secrets/*.jks
 /cluster-sasl/secrets/kafka.key
+
+/applications-sasl/security/*.jks
+/applications-sasl/security/*.properties
+
 
 target
 

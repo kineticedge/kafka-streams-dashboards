@@ -29,40 +29,82 @@ CLUSTERS=(
     "cluster-lb"
     "cluster-cm"
     "cluster-sasl"
+    "cluster-sasl-oauth"
     "cluster-ts"
 )
 
 CLUSTER_DESCRIPTIONS=(
-    "cluster-1       --  1 node (broker and controller)"
-    "cluster         --  4 brokers, 1 raft controller, kafka-exporter"
-    "cluster-native  --  4 brokers, 1 raft controller, apache/kafka-native images"
-    "cluster-3ctrls  --  4 brokers, 3 raft controllers"
-    "cluster-hybrid  --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers"
-    "cluster-zk      --  4 brokers, 1 zookeeper controller"
-    "cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)"
-    "cluster-cm      --  3 brokers, 1 raft controller, kafka-exporter, otel collector client-metrics reporter"
-    "cluster-sasl    --  3 brokers (SASL authentication), 1 raft controller, kafka-exporter, otel collector client-metrics reporter"
-    "cluster-ts      --  4 brokers, 1 raft controller, minio, and aiven remote storage for tiered storage"
+    "cluster            --  4 brokers, 1 raft controller, kafka-exporter"
+    "cluster-1          --  1 node (broker and controller)"
+    "cluster-native     --  4 brokers, 1 raft controller, apache/kafka-native images"
+    "cluster-3ctrls     --  4 brokers, 3 raft controllers"
+    "cluster-hybrid     --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers"
+    "cluster-zk         --  4 brokers, 1 zookeeper controller"
+    "cluster-lb         --  4 brokers, 1 raft controller, an nginx lb (9092)"
+    "cluster-cm         --  3 brokers, 1 raft controller, kafka-exporter, otel collector client-metrics reporter"
+    "cluster-sasl       --  3 brokers (SASL authentication), 1 raft controller, kafka-exporter, otel collector client-metrics reporter"
+    "cluster-sasl-oauth --  3 brokers (SASL oauthbearer authentication), 1 raft controller"
+    "cluster-ts         --  4 brokers, 1 raft controller, minio, and aiven remote storage for tiered storage"
 )
+
+#display_menu() {
+#    heading "Select a cluster:"
+#    for ((i=1; i<=${#CLUSTERS[@]}; i++)); do
+#        subheading "    $i. ${CLUSTER_DESCRIPTIONS[$i-1]}"
+#    done
+#    echo ""
+#}
 
 display_menu() {
     heading "Select a cluster:"
-    for ((i=1; i<=${#CLUSTERS[@]}; i++)); do
-        subheading "    $i. ${CLUSTER_DESCRIPTIONS[$i-1]}"
+    for ((i=0; i<${#CLUSTERS[@]}; i++)); do
+        if (( i < 10 )); then
+            label="$i"
+        else
+            # 10 → A, 11 → B, ...
+            letter_index=$(( i - 10 + 65 ))   # ASCII A = 65
+            label=$(printf "\\x$(printf %x "$letter_index")")
+        fi
+
+        subheading "    $label. ${CLUSTER_DESCRIPTIONS[$i]}"
     done
     echo ""
 }
 
+
 if [ $# -eq 0 ]; then
   display_menu
   tput setaf 3; printf "Enter the number of your choice: "; tput sgr 0
+
   read -p "" choice
-  if [[ $choice -ge 1 && $choice -le ${#CLUSTERS[@]} ]]; then
-    CLUSTER=${CLUSTERS[$choice-1]}
+  choice=$(echo "$choice" | tr '[:lower:]' '[:upper:]')
+
+  if [[ $choice =~ ^[0-9]$ ]]; then
+      idx=$choice
+
+  elif [[ $choice =~ ^[A-Z]$ ]]; then
+      # A → 10, B → 11, ...
+      idx=$(( $(printf "%d" "'$choice") - 65 + 10 ))
+
   else
-    echo "invalid selection"
-    exit
+      echo "invalid selection"
+      exit 1
   fi
+
+  if (( idx >= 0 && idx < ${#CLUSTERS[@]} )); then
+      CLUSTER=${CLUSTERS[$idx]}
+  else
+      echo "invalid selection"
+      exit 1
+  fi
+
+#  read -p "" choice
+#  if [[ $choice -ge 1 && $choice -le ${#CLUSTERS[@]} ]]; then
+#    CLUSTER=${CLUSTERS[$choice-1]}
+#  else
+#    echo "invalid selection"
+#    exit
+#  fi
 else
   CLUSTER=$1
   shift
@@ -105,6 +147,11 @@ fi
 
 heading "starting kafka cluster $CLUSTER"
 
+if [ "$CLUSTER" == "cluster-ts" ]; then
+  echo "installing tier-storage jar files (from Aiven)"
+  ./cluster-ts/setup.sh
+fi
+
 (cd $CLUSTER; docker compose up -d --wait)
 
 #if [[ "$CLUSTER" == "cluster-cm" || "$CLUSTER" == "cluster-sasl" ]]; then
@@ -123,6 +170,18 @@ if [[ "$CLUSTER" == "cluster-sasl" ]]; then
   kafka-client-metrics --bootstrap-server localhost:19092 --command-config ./cluster-sasl/secrets/admin.conf --alter --name EVERYTHING --metrics org.apache.kafka.  --interval 10000
 
   APPLICATIONS_DIR="applications-sasl"
+
+  echo "creating the client side configuration needed to connect with scram"
+  ./applications-sasl/create-credentials.sh scram
+
+fi
+
+if [[ "$CLUSTER" == "cluster-sasl-oauth" ]]; then
+  heading "creating acls (with full access) for applications."
+  #./cluster-sasl-oauth/create-acls.sh
+  APPLICATIONS_DIR="applications-sasl"
+  echo "creating the client side configuration needed to connect with oauth"
+  ./applications-sasl/create-credentials.sh oauth
 fi
 
 ./gradlew build -x test -P slimDist=true
@@ -131,6 +190,6 @@ fi
 (cd monitoring; docker compose up -d)
 #(cd monitoring; docker compose up -d $(docker compose config --services | grep -v tempo))
 
-(cd "$APPLICATIONS_DIR"; docker compose up -d)
+(cd "$APPLICATIONS_DIR"; SECURITY=oauth docker compose up -d)
 #(cd "$APPLICATIONS_DIR"; docker compose up -d publisher stream analytics-tumbling)
 #(cd "$APPLICATIONS_DIR"; docker compose up -d $(docker compose config --services | grep -v otel))

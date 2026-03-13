@@ -35,6 +35,8 @@ for i in /dependencies/*; do
 done
 shopt -u nullglob
 
+JAVA_OPTS="${JAVA_OPTS_BASE} ${JAVA_OPTS}"
+
 COMMAND="/app/${PROJECT}/bin/${APPLICATION}"
 
 #

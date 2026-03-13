@@ -20,20 +20,21 @@ services:
       - ./publisher-1.0.tar:/app.tar
       - ./scripts:/scripts
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
-      - ./security/kafka.server.truststore.jks:/truststore.jks
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-publisher.properties:/security/credentials.properties
     environment:
       BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
       CLIENT_ID_PREFIX: "producer"
       MAX_SKU: 100
       PAUSE: 200
       LINE_ITEM_COUNT: "1-4"
       OTEL_SERVICE_NAME: PUBLISHER
-      #
-      KAFKA_SECURITY_PROTOCOL: SASL_SSL
-      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
-      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="publisher" password="publisher-password";
-      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
 
   stream:
     image: ksd_app:latest
@@ -58,17 +59,18 @@ services:
       - ./streams.properties:/streams.properties
       - ./scripts:/scripts
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
-      - ./security/kafka.server.truststore.jks:/truststore.jks
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-streams.properties:/security/credentials.properties
     environment:
       BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
       CLIENT_ID_PREFIX: "stream"
       OTEL_SERVICE_NAME: STREAMS
-      #
-      KAFKA_SECURITY_PROTOCOL: SASL_SSL
-      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
-      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="streams" password="streams-password";
-      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
 
   analytics-sliding:
     image: ksd_app:latest
@@ -88,20 +90,21 @@ services:
       - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
-      - ./security/kafka.server.truststore.jks:/truststore.jks
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-analytics-sliding.properties:/security/credentials.properties
     environment:
       BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
       APPLICATION_ID: "analytics-sliding"
       CLIENT_ID_PREFIX: "analytics-sliding"
       WINDOW_TYPE: SLIDING
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_SLIDING
-      #
-      KAFKA_SECURITY_PROTOCOL: SASL_SSL
-      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
-      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="analytics-sliding" password="analytics-sliding-password";
-      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
 
   analytics-tumbling:
     image: ksd_app:latest
@@ -121,20 +124,21 @@ services:
       - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
-      - ./security/kafka.server.truststore.jks:/truststore.jks
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-analytics-tumbling.properties:/security/credentials.properties
     environment:
       BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
       APPLICATION_ID: "analytics-tumbling"
       CLIENT_ID_PREFIX: "analytics-tumbling"
       WINDOW_TYPE: TUMBLING
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_TUMBLING
-      #
-      KAFKA_SECURITY_PROTOCOL: SASL_SSL
-      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
-      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="analytics-tumbling" password="analytics-tumbling-password";
-      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
 
   analytics-hopping:
     image: ksd_app:latest
@@ -154,20 +158,21 @@ services:
       - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
-      - ./security/kafka.server.truststore.jks:/truststore.jks
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-analytics-hopping.properties:/security/credentials.properties
     environment:
       BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
       APPLICATION_ID: "analytics-hopping"
       CLIENT_ID_PREFIX: "analytics-hopping"
       WINDOW_TYPE: HOPPING
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_HOPPING
-      #
-      KAFKA_SECURITY_PROTOCOL: SASL_SSL
-      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
-      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="analytics-hopping" password="analytics-hopping-password";
-      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
 
   analytics-session:
     image: ksd_app:latest
@@ -187,20 +192,22 @@ services:
       - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
-      - ./security/kafka.server.truststore.jks:/truststore.jks
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-analytics-session.properties:/security/credentials.properties
     environment:
       BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
       APPLICATION_ID: "analytics-session"
       CLIENT_ID_PREFIX: "analytics-session"
       WINDOW_TYPE: SESSION
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_SESSION
       #
-      KAFKA_SECURITY_PROTOCOL: SASL_SSL
-      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
-      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="analytics-session" password="analytics-session-password";
-      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
 
   analytics-none:
     image: ksd_app:latest
@@ -220,20 +227,22 @@ services:
       - ./analytics.properties:/analytics.properties
       - ./scripts:/scripts
       - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
-      - ./security/kafka.server.truststore.jks:/truststore.jks
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-analytics-none.properties:/security/credentials.properties
     environment:
       BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
       APPLICATION_ID: "analytics-none"
       CLIENT_ID_PREFIX: "analytics-none"
       WINDOW_TYPE: NONE
       COMMIT_INTERVAL: 100
       OTEL_SERVICE_NAME: ANALYTICS_NONE
       #
-      KAFKA_SECURITY_PROTOCOL: SASL_SSL
-      KAFKA_SASL_MECHANISM: SCRAM-SHA-512
-      KAFKA_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username="analytics-none" password="analytics-none-password";
-      KAFKA_SSL_TRUSTSTORE_LOCATION: /truststore.jks
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
 
   nginx:
     image: nginx:1.27.4

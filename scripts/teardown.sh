@@ -19,5 +19,7 @@ alias dc='docker compose'
 (cd cluster-lb; dc down -v)
 (cd cluster-native; dc down -v)
 (cd cluster-cm; dc down -v)
+(cd cluster-ts; dc down -v)
+(cd cluster-sasl-oauth; dc down -v)
 
 #docker network rm ksd

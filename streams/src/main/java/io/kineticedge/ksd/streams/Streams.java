@@ -164,6 +164,8 @@ public class Streams {
 
         map.putAll(PropertyUtils.loadProperties("./streams.properties"));
 
+        map.putAll(PropertyUtils.loadProperties("/security/credentials.properties"));
+
         map.putAll(new KafkaEnvUtil().to("KAFKA_"));
 
         final String instanceId = System.getenv("INSTANCE_ID");

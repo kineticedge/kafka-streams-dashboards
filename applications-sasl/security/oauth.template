@@ -1,0 +1,11 @@
+bootstrap.servers=sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+security.protocol=SASL_SSL
+ssl.truststore.location=/security/kafka.server.truststore.jks
+ssl.truststore.password=broker_secret
+sasl.mechanism=OAUTHBEARER
+sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
+sasl.oauthbearer.client.credentials.client.id={{USERNAME}}
+sasl.oauthbearer.client.credentials.client.secret={{PASSWORD}}
+sasl.login.callback.handler.class=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginCallbackHandler
+sasl.oauthbearer.token.endpoint.url=https://keycloak:8443/realms/master/protocol/openid-connect/token
+sasl.ouathbearer.jwt.retriever.class=org.apache.kafka.common.security.oauthbearer.ClientCredentialsJwtRetriever

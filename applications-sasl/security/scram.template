@@ -1,0 +1,4 @@
+ssl.truststore.location=/security/kafka.server.truststore.jks
+ssl.truststore.password=broker_secret
+sasl.mechanism=SCRAM-SHA-512
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="{{USERNAME}}" password="{{PASSWORD}}";

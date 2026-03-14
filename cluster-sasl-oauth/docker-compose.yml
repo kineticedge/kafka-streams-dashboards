@@ -14,19 +14,29 @@ volumes:
 services:
 
   keycloak:
-    image: keycloak/keycloak:24.0.4
+    #image: keycloak/keycloak:24.0.4
+    image: keycloak/keycloak:26.5.5
     container_name: ${COMPOSE_PROJECT_NAME}-keycloak
     hostname: keycloak
     healthcheck:
-      test: cat /proc/1/status | grep State
+      # grep for port 8080 (1F90)
+      test: grep -Eq ':[0]*1F90 .* 0A ' /proc/net/tcp /proc/net/tcp6 2>/dev/null
+      #test: cat /proc/1/status | grep State
+      #test: ["CMD", "cat", "/opt/keycloak/data/.ready"]
       start_period: 10s
-      interval: 5s
+      interval: 3s
       timeout: 5s
-      retries: 3
-    command: [ "start-dev", "--import-realm", "--https-key-store-password=broker_secret", "--https-key-store-file=/keycloak.keystore.jks", "--verbose" ]
+      retries: 10
+    command: [ "start-dev", "--https-key-store-password=broker_secret", "--https-key-store-file=/keycloak.keystore.jks", "--verbose"]
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: keycloak
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: keycloak
+      KC_METRICS_ENABLED: false
+      KC_TRACING_ENABLED: false
+      KC_FEATURES_DISABLED: admin-fine-grained-authz,token-exchange,impersonation,kerberos,authorization
+      KC_THEME_CACHE_ENABLED: false
+      KC_THEME_STATIC_MAX_AGE: 0
+      KC_DB: dev-file
     ports:
       - "8080:8080"
       - "8443:8443"
@@ -34,22 +44,29 @@ services:
       - ./secrets/keycloak.keystore.jks:/keycloak.keystore.jks
       - ./realms/:/opt/keycloak/data/import/
 
+
   keycloak-init:
-    image: keycloak/keycloak:24.0.4
+    image: alpine/curl:8.17.0
     container_name: ${COMPOSE_PROJECT_NAME}-keycloak-init
     hostname: keycloak-init
     depends_on:
       keycloak:
         condition: service_healthy
     restart: "no"
-    entrypoint: ["/bin/sh", "/opt/keycloak-init/keycloak-init.sh"]
+    volumes:
+      - ./keycloak-init.sh:/keycloak-init.sh:ro
+    entrypoint:
+      - /bin/sh
+      - -ec
+      - |
+        apk add --no-cache jq
+        /keycloak-init.sh
     environment:
       KEYCLOAK_URL: http://keycloak:8080
-      KEYCLOAK_REALM: master
       KEYCLOAK_ADMIN_USER: admin
       KEYCLOAK_ADMIN_PASSWORD: keycloak
-    volumes:
-      - ./keycloak-init.sh:/opt/keycloak-init/keycloak-init.sh:ro
+      KEYCLOAK_ADMIN_REALM: master
+      KEYCLOAK_REALM: master
 
   sasl-controller-0:
     image: apache/kafka:${VERSION}

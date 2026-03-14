@@ -8,7 +8,13 @@ gradle assemble > /dev/null
 
 MAIN="io.kineticedge.ksd.builder.Main"
 
-IS_SASL=$(docker inspect -f '{{.State.Running}}' ksdsc-sasl-broker-1 2>/dev/null || docker inspect -f '{{.State.Running}}' ksdsco-sasl-broker-1 2>/dev/null || echo "false")
+raw="$(docker inspect -f '{{.State.Running}}' ksdsc-sasl-broker-1 2>/dev/null \
+   || docker inspect -f '{{.State.Running}}' ksdsco-sasl-broker-1 2>/dev/null \
+   || echo false)"
+raw="$(echo "$raw" | tr -d '\n' | tr -d '\r')"
+
+
+IS_SASL=$( [ "$raw" = "true" ] && echo "true" || echo "false" )
 
 if [ "$IS_SASL" == "true" ]; then
   echo ""
@@ -19,6 +25,7 @@ if [ "$IS_SASL" == "true" ]; then
   export KAFKA_SASL_MECHANISM=PLAIN
   export KAFKA_SASL_JAAS_CONFIG="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kafka-admin\" password=\"kafka-admin-secret\";"
 fi
+
 
 java -cp "${CP}" $MAIN "$@"
 

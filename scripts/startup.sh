@@ -20,8 +20,8 @@ cd "$(dirname -- "$0")/.." || exit
 
 
 CLUSTERS=(
-    "cluster-1"
     "cluster"
+    "cluster-1"
     "cluster-native"
     "cluster-3ctrls"
     "cluster-hybrid"
@@ -34,15 +34,15 @@ CLUSTERS=(
 )
 
 CLUSTER_DESCRIPTIONS=(
-    "cluster            --  4 brokers, 1 raft controller, kafka-exporter"
+    "cluster            --  4 brokers, 1 raft controller"
     "cluster-1          --  1 node (broker and controller)"
     "cluster-native     --  4 brokers, 1 raft controller, apache/kafka-native images"
     "cluster-3ctrls     --  4 brokers, 3 raft controllers"
     "cluster-hybrid     --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers"
     "cluster-zk         --  4 brokers, 1 zookeeper controller"
     "cluster-lb         --  4 brokers, 1 raft controller, an nginx lb (9092)"
-    "cluster-cm         --  3 brokers, 1 raft controller, kafka-exporter, otel collector client-metrics reporter"
-    "cluster-sasl       --  3 brokers (SASL authentication), 1 raft controller, kafka-exporter, otel collector client-metrics reporter"
+    "cluster-cm         --  3 brokers, 1 raft controller, otel collector client-metrics reporter"
+    "cluster-sasl       --  3 brokers (SASL authentication), 1 raft controller, otel collector client-metrics reporter"
     "cluster-sasl-oauth --  3 brokers (SASL oauthbearer authentication), 1 raft controller"
     "cluster-ts         --  4 brokers, 1 raft controller, minio, and aiven remote storage for tiered storage"
 )
@@ -157,6 +157,7 @@ fi
 #if [[ "$CLUSTER" == "cluster-cm" || "$CLUSTER" == "cluster-sasl" ]]; then
 
 APPLICATIONS_DIR="applications"
+SECURITY=""
 
 if [[ "$CLUSTER" == "cluster-cm" ]]; then
   heading "enabling client metrics communicated to the brokers."
@@ -170,7 +171,7 @@ if [[ "$CLUSTER" == "cluster-sasl" ]]; then
   kafka-client-metrics --bootstrap-server localhost:19092 --command-config ./cluster-sasl/secrets/admin.conf --alter --name EVERYTHING --metrics org.apache.kafka.  --interval 10000
 
   APPLICATIONS_DIR="applications-sasl"
-
+  SECURITY=scram
   echo "creating the client side configuration needed to connect with scram"
   ./applications-sasl/create-credentials.sh scram
 
@@ -180,6 +181,7 @@ if [[ "$CLUSTER" == "cluster-sasl-oauth" ]]; then
   heading "creating acls (with full access) for applications."
   #./cluster-sasl-oauth/create-acls.sh
   APPLICATIONS_DIR="applications-sasl"
+  SECURITY=oauth
   echo "creating the client side configuration needed to connect with oauth"
   ./applications-sasl/create-credentials.sh oauth
 fi
@@ -201,6 +203,6 @@ fi
 
 
 
-(cd "$APPLICATIONS_DIR"; SECURITY=oauth docker compose up -d)
+(cd "$APPLICATIONS_DIR"; SECURITY=$SECURITY docker compose up -d)
 #(cd "$APPLICATIONS_DIR"; docker compose up -d publisher stream analytics-tumbling)
 #(cd "$APPLICATIONS_DIR"; docker compose up -d $(docker compose config --services | grep -v otel))

@@ -4,7 +4,7 @@ set -euo pipefail
 BROKER_CONTAINER="${BROKER_CONTAINER:-sasl-broker-1}"
 BOOTSTRAP_SERVER="${BOOTSTRAP_SERVER:-sasl-broker-1:9093}"
 CLIENT_ID="${CLIENT_ID:-app-ui}"
-CLIENT_SECRET="${CLIENT_SECRET:-app-ui-secret}"
+CLIENT_SECRET="${CLIENT_SECRET:-app-ui-oauth-password}"
 REALM="${REALM:-master}"
 KEYCLOAK_URL="${KEYCLOAK_URL:-http://keycloak:8080}"
 

@@ -4,8 +4,10 @@ TOKEN=$(curl -s -X POST "http://localhost:8080/realms/master/protocol/openid-con
      -H "Content-Type: application/x-www-form-urlencoded" \
      -d "grant_type=client_credentials" \
      -d "scope=kafka" \
-     -d "client_id=app2-client" \
-     -d "client_secret=app2-client-secret" | jq -r .access_token)
+     -d "client_id=analytics-session" \
+     -d "client_secret=analytics-session-oauth-password" | jq -r .access_token)
+
+
 
 echo $TOKEN
 

@@ -32,6 +32,8 @@ dependencies {
             strictly(kafka_version)
         }
     }
+    runtimeOnly("com.github.luben:zstd-jni:1.5.7-7")
+
     //implementation("io.micrometer:micrometer-core:1.13.5")
 }
 

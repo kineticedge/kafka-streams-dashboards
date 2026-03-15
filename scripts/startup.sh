@@ -74,7 +74,7 @@ display_menu() {
 
 if [ $# -eq 0 ]; then
   display_menu
-  tput setaf 3; printf "Enter the number of your choice: "; tput sgr 0
+  tput setaf 3; printf "Enter the selection of your choice: "; tput sgr 0
 
   read -p "" choice
   choice=$(echo "$choice" | tr '[:lower:]' '[:upper:]')

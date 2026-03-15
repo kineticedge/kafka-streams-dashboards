@@ -1,5 +1,4 @@
 import org.gradle.api.JavaVersion.VERSION_25
-//import org.gradle.api.JavaVersion.VERSION_24
 import org.gradle.jvm.tasks.Jar
 
 val logback_version: String by project
@@ -8,7 +7,6 @@ val jackson_version: String by project
 val apache_commons_version: String by project
 val kafka_version: String by project
 val slf4j_version: String by project
-val lombok_version: String by project
 
 val junit_pioneer_version: String by project
 val junit_version: String by project
@@ -24,8 +22,8 @@ plugins {
 // this allows for subprojects to use java plugin constructs
 // without then also causing the parent to have an empty jar file
 // generated.
-tasks.withType<Jar> {
-    onlyIf { !sourceSets["main"].allSource.isEmpty }
+tasks.named<Jar>("jar") {
+    enabled = false
 }
 
 allprojects {
@@ -104,30 +102,33 @@ subprojects.filter { it.name != "metrics-reporter" }.forEach {
 
 }
 
-
 subprojects {
 
-    if (file("${project.projectDir}/run.sh").exists()) {
+    if (layout.projectDirectory.file("run.sh").asFile.exists()) {
 
-        val createIntegrationClasspath: (String) -> Unit = { scriptName ->
-            val cp = extensions.getByName<JavaPluginExtension>("java").sourceSets["main"].runtimeClasspath.files.joinToString("\n") {
-                """export CP="${'$'}{CP}:$it""""
+        plugins.withId("java") {
+            val javaExtension = the<JavaPluginExtension>()
+            val runtimeClasspath = javaExtension.sourceSets.named("main").map { it.runtimeClasspath }
+            val scriptFile = layout.projectDirectory.file(".classpath.sh")
+
+            val postBuildScript = tasks.register("postBuildScript") {
+                inputs.files(runtimeClasspath)
+                outputs.file(scriptFile)
+
+                doLast {
+                    val cpLines = runtimeClasspath.get().files.joinToString("\n") { classpathEntry ->
+                        """export CP="${'$'}{CP}:$classpathEntry""""
+                    }
+
+                    val outputFile = scriptFile.asFile
+                    outputFile.writeText("export CP=\"\"\n$cpLines\n")
+                    outputFile.setExecutable(true)
+                }
             }
 
-            val file = file(scriptName)
-            file.writeText("export CP=\"\"\n$cp\n")
-
-            file.setExecutable(true)
-        }
-
-        val postBuildScript by tasks.registering {
-            doLast {
-                createIntegrationClasspath("./.classpath.sh")
+            tasks.named("build").configure {
+                finalizedBy(postBuildScript)
             }
-        }
-
-        tasks.named("build").configure {
-            finalizedBy(postBuildScript)
         }
     }
 }

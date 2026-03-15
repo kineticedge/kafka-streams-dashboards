@@ -4,7 +4,7 @@
 ## TL;TR
 * You will need to have installed Java 21 or later and Docker.
 * Setup and configuration all in the `./scripts/startup.sh` script; execute it from the root directory to get everything running.
-* Select `(1) cluster-1` or `(2) cluster` for your first exploration of this project.
+* Select `(1) cluster-1` or `(0) cluster` for your first exploration of this project.
 * Goto [localhost:3000](http://localhost:3000) to explore the dashboards.
   * you shouldn't need to log in, but if you need to the username is `admin` and the password is `grafana`.
 * Goto [localhost:8888](http://localhost:8888) to explore the contents of the aggregates.
@@ -43,46 +43,54 @@ windowing options makes it a lot easier to see and compare the metrics between t
 
 This project:
 * Extensively leverages Docker and Docker Compose.
-* Applications are built with Java 17 and run on a Java 17 JVM.
+* Applications are built with Java 25 and run on a Java 25 JVM.
+* Kafka leverages Confluent Community Edition containers, which run with a Java 17 JVM.
 * Kafka leverages Confluent Community Edition containers, which run with a Java 17 JVM.
 * Has Grafana dashboards for Kafka Cluster, Kafka Streams, Consumer, Producer, and JVM.
   * Supports a variety of cluster configurations to better showcase the Kafka Cluster metrics and validate dashboards are build
 with the various options.
 
 * Setup and Configuration all in the `./scripts/startup.sh` script; execute from root directory to get everything running. You
-will be prompted to select an Apache Kafka Cluster to start. Typically, I suggest `(2) cluster` is having more brokers is more
+will be prompted to select an Apache Kafka Cluster to start. Typically, I suggest `(0) cluster` is having more brokers is more
 realistic experience, but if you have limited memory/cpu on your machine, use `(1) cluster-1`.
 
 ```
 Select a cluster:
 
-    1. cluster-1       --  1 node (broker and controller)
-    2. cluster         --  4 brokers, 1 raft controller, kafka-exporter
-    3. cluster-native  --  4 brokers, 1 raft controller, apache/kafka-native images
-    4. cluster-3ctrls  --  4 brokers, 3 raft controllers
-    5. cluster-hybrid  --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers
-    6. cluster-zk      --  4 brokers, 1 zookeeper controller
-    7. cluster-lb      --  4 brokers, 1 raft controller, an nginx lb (9092)
-    8. cluster-cm      --  3 brokers, 1 raft controller, kafka-exporter, otel collector client-metrics reporter
-    9. cluster-sasl    --  3 brokers (SASL authentication), 1 raft controller, kafka-exporter, otel collector client-metrics reporter
+    0. cluster            --  4 brokers, 1 raft controller
+    1. cluster-1          --  1 node (broker and controller)
+    2. cluster-native     --  4 brokers, 1 raft controller, apache/kafka-native images
+    3. cluster-3ctrls     --  4 brokers, 3 raft controllers
+    4. cluster-hybrid     --  4 brokers, 1 dedicated raft controller, 2 brokers are also kraft controllers
+    5. cluster-zk         --  4 brokers, 1 zookeeper controller
+    6. cluster-lb         --  4 brokers, 1 raft controller, an nginx lb (9092)
+    7. cluster-cm         --  3 brokers, 1 raft controller, otel collector client-metrics reporter
+    8. cluster-sasl       --  3 brokers (SASL authentication), 1 raft controller, otel collector client-metrics reporter
+    9. cluster-sasl-oauth --  3 brokers (SASL oauthbearer authentication), 1 raft controller
+    A. cluster-ts         --  4 brokers, 1 raft controller, minio, and aiven remote storage for tiered storage
 
-Enter the number of your choice: _
+Enter the selection of your choice:
 ```
 
-The other options are for more advance scenarios. `(4) cluster-3ctrls` is a typical deployment (3+ brokers and 3 controllers).
-The hybrid `(5) cluster-hybrid` is to ensure that the Kafka Cluster dashboards correctly handle metrics "math" by having a node
-that is both a `broker` and `controller` while also having nodes that are just `broker` and just `controller`. The `(6) cluster-zk` is 
-to make sure the dashboards still support `zookeeper`. `(9) cluster-sasl` is to be able to check the `authentication` dashboard
+The other options are for more advance scenarios. `(3) cluster-3ctrls` is a typical deployment (3+ brokers and 3 controllers).
+The hybrid `(4) cluster-hybrid` is to ensure that the Kafka Cluster dashboards correctly handle metrics "math" by having a node
+that is both a `broker` and `controller` while also having nodes that are just `broker` and just `controller`. The `(5) cluster-zk` is 
+to make sure the dashboards still support `zookeeper`. `(8) cluster-sasl` is to be able to check the `authentication` dashboard
 provided in the Kafka Cluster dashboards, it is also to show how security works with setting up a Kafka Cluster. Be sure to generate
 the *certificates* [readme](./cluster-sasl/certificates/README.md). The last cluster `(7) cluster-lb` has an nginx proxy for each broker that allows you to navigate
 into it and use Linux's traffic-controller `tc` to add network latencies. The best way to learn if your dashboards are useful, is to 
 observe them when things are not going well; this provides that scenario.
 
-If you want to explore KIP-714 dashboards, be sure to use the `(8) cluster-cm` or `(9) cluster-sasl` dashboards.
+If you want to explore KIP-714 dashboards, be sure to use the `(7) cluster-cm` or `(8) cluster-sasl` dashboards.
 These include the server configuration and otel collector for the client metrics can make their way to prometheus.
 
-If you want to the native images at work, check out `(3) cluster-native`. Broker metrics are not available from the native images.
+If you want to the native images at work, check out `(2) cluster-native`. Broker metrics are not available from the native images.
 Use this images for quick deployments for integration testing or limited resource environments.
+
+Want to learn the complexities of setting up oauthentication, check out the `(9) cluster-sasl-oauth` cluster.
+It leverages Keycloak for the OAUTH2 authentication server.
+
+Finally, why not check out a cluster with `(A) tiered-storage`. It leverages the Aiven open-source tiered storage solution.
 
 ### Grafana Dashboard
 
@@ -108,7 +116,7 @@ Both the `purchase-order` and `aggregate` applications have a simple UI allowing
 
 ## Dashboards
 
-There are 12 Kafka Streams dashboards currently as part of this project. In addition, there are dashboards for Kafka Cluster,
+There are 15 Kafka Streams dashboards currently as part of this project. In addition, there are dashboards for Kafka Cluster,
 Producer, Consumer, and JVM.  This documentation is focused on the Kafka Stream dashboards, but feel free to explore the
 other dashboards, especially for learning or gaining ideas and examples for building dashboards for your own organizations.
 
@@ -284,7 +292,6 @@ These applications are build with the following open-source libraries.
 * kafka-streams
 * kafka-clients
 * jackson
-* lombok
 * slf4j-api
 * logback
 * quartz
@@ -293,16 +300,6 @@ These applications are build with the following open-source libraries.
 * apache-commons-lang3
 * jcommander
 * micrometer
-
-### Lombok
-
-While I do not use `lombok` for enterprise applications, it does come in handy for demonstration projects to minimize on the boiler-plate code that is shown.
-
-If you are using an IDE, like Intellij IDEA to explore codebase, you may need to enable annotation processing.
-
-* Intellij IDEA Setting
-
-  * Settings > Build, Execution, Deployment > Compiler > Annotation Processors - [X] Enable annotation processing
 
 ### Framework
 

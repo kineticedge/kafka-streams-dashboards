@@ -58,27 +58,77 @@ rules:
 - pattern: kafka.server<type=socket-server-metrics, clientSoftwareName=(.+), clientSoftwareVersion=(.+), listener=(.+), networkProcessor=(.+)><>connections
 - pattern: kafka.server<type=socket-server-metrics, listener=(.+), networkProcessor=(.+)><>(.+)
 - pattern: kafka.server<type=DelayedOperationPurgatory, name=PurgatorySize, delayedOperation=(.+)><>Value
-#
-# TIER Metrics
-- pattern: org.apache.kafka.storage.internals.log<type=RemoteStorageThreadPool, name=RemoteLogReaderTaskQueueSize><>Value
-- pattern: org.apache.kafka.storage.internals.log<type=RemoteStorageThreadPool, name=RemoteLogReaderAvgIdlePercent><>Value
-- pattern: kafka.log.remote<type=RemoteLogManager, name=remote-fetch-throttle-time-avg><>Value
-- pattern: kafka.log.remote<type=RemoteLogManager, name=remote-fetch-throttle-time-max><>Value
-- pattern: kafka.log.remote<type=RemoteLogManager, name=remote-copy-throttle-time-avg><>Value
-- pattern: kafka.log.remote<type=RemoteLogManager, name=remote-copy-throttle-time-max><>Value
-- pattern: kafka.server<type=DelayedRemoteFetchMetrics, name=ExpiresPerSec, topic=([-.\w]+)><>Value
-- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchBytesPerSec, topic=(.+)><>Value
-- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyBytesPerSec, topic=(.+)><>Value
-- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyRequestsPerSec, topic=(.+)><>Value
-- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyErrorsPerSec, topic=(.+)><>Value
+
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchBytesPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchBytesPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchBytesPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchBytesPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchRequestsPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchRequestsPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchRequestsPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchRequestsPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchErrorsPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchErrorsPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchErrorsPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteFetchErrorsPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyBytesPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyBytesPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyBytesPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyBytesPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyRequestsPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyRequestsPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyRequestsPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyRequestsPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyErrorsPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyErrorsPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyErrorsPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyErrorsPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteRequestsPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteRequestsPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteRequestsPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteRequestsPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteErrorsPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteErrorsPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteErrorsPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteErrorsPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BuildRemoteLogAuxStateRequestsPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BuildRemoteLogAuxStateRequestsPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BuildRemoteLogAuxStateRequestsPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BuildRemoteLogAuxStateRequestsPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BuildRemoteLogAuxStateErrorsPerSec><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BuildRemoteLogAuxStateErrorsPerSec><>OneMinuteRate
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BuildRemoteLogAuxStateErrorsPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=BrokerTopicMetrics, name=BuildRemoteLogAuxStateErrorsPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=DelayedRemoteFetchMetrics, name=ExpiresPerSec, topic=(.+)><>Count
+- pattern: kafka.server<type=DelayedRemoteFetchMetrics, name=ExpiresPerSec, topic=(.+)><>OneMinuteRate
+
+- pattern: kafka.server<type=DelayedRemoteListOffsetsMetrics, name=ExpiresPerSec, topic=(.+), partition=(.+)><>Count
+- pattern: kafka.server<type=DelayedRemoteListOffsetsMetrics, name=ExpiresPerSec, topic=(.+), partition=(.+)><>OneMinuteRate
+
 - pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyLagBytes, topic=(.+)><>Value
 - pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteCopyLagSegments, topic=(.+)><>Value
-- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteRequestsPerSec, topic=(.+)><>Value
-- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteErrorsPerSec, topic=(.+)><>Value
 - pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteLagBytes, topic=(.+)><>Value
-- pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteDeleteLagSegments, topic=(.+)><>Value
-- pattern: kafka.server<type=BrokerTopicMetrics, name=BuildRemoteLogAuxStateRequestsPerSec, topic=(.+)><>Value
-- pattern: kafka.server<type=BrokerTopicMetrics, name=BuildRemoteLogAuxStateErrorsPerSec, topic=(.+)><>Value
 - pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteLogSizeComputationTime, topic=(.+)><>Value
 - pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteLogSizeBytes, topic=(.+)><>Value
 - pattern: kafka.server<type=BrokerTopicMetrics, name=RemoteLogMetadataCount, topic=(.+)><>Value
+
+- pattern: org.apache.kafka.storage.internals.log<type=RemoteStorageThreadPool, name=RemoteLogReaderTaskQueueSize><>Value
+- pattern: org.apache.kafka.storage.internals.log<type=RemoteStorageThreadPool, name=RemoteLogReaderAvgIdlePercent><>Value
+
+- pattern: kafka.log.remote<type=RemoteLogManager, name=RemoteLogManagerTasksAvgIdlePercent><>Value
+- pattern: kafka.log.remote<type=RemoteLogManager, name=RemoteLogReaderFetchRateAndTimeMs><>Value
+
+- pattern: kafka.server<type=RemoteLogManager, name=remote-fetch-throttle-time-avg><>Value
+- pattern: kafka.server<type=RemoteLogManager, name=remote-fetch-throttle-time-max><>Value
+- pattern: kafka.server<type=RemoteLogManager, name=remote-copy-throttle-time-avg><>Value
+- pattern: kafka.server<type=RemoteLogManager, name=remote-copy-throttle-time-max><>Value

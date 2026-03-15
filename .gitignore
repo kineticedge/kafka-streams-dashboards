@@ -15,6 +15,7 @@ build
 
 /certificates/secrets/*
 
+/cluster-ts/ts-cache
 /cluster*/plugins
 /cluster-sasl/certificates/secrets/*
 /cluster-sasl/secrets/*.jks

@@ -195,7 +195,7 @@ create_client_if_missing "analytics-tumbling" "analytics-tumbling-oauth-password
 create_client_if_missing "analytics-hopping" "analytics-hopping-oauth-password"
 create_client_if_missing "analytics-sliding" "analytics-sliding-oauth-password"
 create_client_if_missing "analytics-session" "analytics-session-oauth-password"
-create_client_if_missing "analytics-none" "analytics-nonde-oauth-password"
+create_client_if_missing "analytics-none" "analytics-none-oauth-password"
 
 create_client_if_missing "app-ui" "app-ui-oauth-password"
 create_client_if_missing "cli" "cli-oauth-password"

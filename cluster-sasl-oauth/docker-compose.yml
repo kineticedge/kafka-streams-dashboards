@@ -33,6 +33,7 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: keycloak
       KC_METRICS_ENABLED: false
       KC_TRACING_ENABLED: false
+      KC_FEATURES: "jwt-authorization-grant:v1"
       KC_FEATURES_DISABLED: admin-fine-grained-authz,token-exchange,impersonation,kerberos,authorization
       KC_THEME_CACHE_ENABLED: false
       KC_THEME_STATIC_MAX_AGE: 0

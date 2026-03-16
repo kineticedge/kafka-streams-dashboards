@@ -277,9 +277,9 @@ public class BuildSystem {
     return new Store(
             Integer.toString(storeId),
             generateName(),
-            zip.zip(),
             zip.city(),
-            zip.state()
+            zip.state(),
+            zip.zip()
     );
   }
 

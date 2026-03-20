@@ -1,0 +1,98 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+services:
+  publisher:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-clients.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./publisher-1.0.tar:/app.tar
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/client-publisher.keystore.jks:/security/client-publisher.keystore.jks
+    environment:
+      BOOTSTRAP_SERVERS: ssl-broker-1:9093,ssl-broker-2:9093,ssl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SSL
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /security/kafka.server.truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      KAFKA_SSL_KEYSTORE_LOCATION: /security/client-publisher.keystore.jks
+      KAFKA_SSL_KEYSTORE_PASSWORD: broker_secret
+      KAFKA_SSL_KEY_PASSWORD: broker_secret
+      CLIENT_ID_PREFIX: "producer"
+      MAX_SKU: 100
+      PAUSE: 200
+      LINE_ITEM_COUNT: "1-4"
+      #JAVA_OPTS: >-
+      #  -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
+
+  stream:
+    image: ksd_app:latest
+    #hostname: stream
+    #container_name: stream
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    #ports:
+    #  - "7072:7072"
+    deploy:
+      replicas: 2
+    volumes:
+      - ./streams-1.0.tar:/app.tar
+      - ./streams.properties:/streams.properties
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/client-stream.keystore.jks:/security/client-stream.keystore.jks
+    environment:
+      BOOTSTRAP_SERVERS: ssl-broker-1:9093,ssl-broker-2:9093,ssl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SSL
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /security/kafka.server.truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      KAFKA_SSL_KEYSTORE_LOCATION: /security/client-stream.keystore.jks
+      KAFKA_SSL_KEYSTORE_PASSWORD: broker_secret
+      KAFKA_SSL_KEY_PASSWORD: broker_secret
+      CLIENT_ID_PREFIX: "stream"
+      #JAVA_OPTS: >-
+      #  -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
+
+
+  analytics-tumbling:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 1
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/client-stream.keystore.jks:/security/client-analytics.keystore.jks
+    environment:
+      BOOTSTRAP_SERVERS: ssl-broker-1:9093,ssl-broker-2:9093,ssl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SSL
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /security/kafka.server.truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      KAFKA_SSL_KEYSTORE_LOCATION: /security/client-analytics.keystore.jks
+      KAFKA_SSL_KEYSTORE_PASSWORD: broker_secret
+      KAFKA_SSL_KEY_PASSWORD: broker_secret
+      APPLICATION_ID: "analytics-tumbling"
+      CLIENT_ID_PREFIX: "analytics-tumbling"
+      WINDOW_TYPE: TUMBLING
+      COMMIT_INTERVAL: 100

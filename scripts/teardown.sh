@@ -6,6 +6,7 @@ alias dc='docker compose'
 
 (cd applications; dc down -v)
 (cd applications-sasl; dc down -v)
+(cd applications-ssl; dc down -v)
 (cd monitoring; dc down -v)
 (cd ui; dc down -v)
 
@@ -21,5 +22,6 @@ alias dc='docker compose'
 (cd cluster-cm; dc down -v)
 (cd cluster-ts; dc down -v)
 (cd cluster-sasl-oauth; dc down -v)
+(cd cluster-ssl-mtls; dc down -v)
 
 #docker network rm ksd

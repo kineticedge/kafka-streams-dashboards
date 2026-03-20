@@ -11,6 +11,13 @@ declare -a MACHINES=(
   "kafka"
   "client"
   "keycloak"
+  "ssl-controller-0"
+  "ssl-broker-1"
+  "ssl-broker-2"
+  "ssl-broker-3"
+  "client-publisher"
+  "client-stream"
+  "client-analytics"
   )
 
 #

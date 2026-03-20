@@ -66,6 +66,8 @@ openssl req -text -noout -verify -in ${req}
 [ $? -eq 1 ] && echo "unable to verify CA csr" && exit 1
 
 
+if [[ "$HOSTNAME" == *client* ]]; then
+
 cat <<EOF > ${cnf}
 [ext]
 subjectAltName=DNS:${i}, DNS:${i}.${INTERNAL_DOMAIN}, DNS:${i}.${EXTERNAL_DOMAIN}, DNS:localhost
@@ -73,6 +75,19 @@ extendedKeyUsage=critical,serverAuth,clientAuth
 basicConstraints=critical,CA:FALSE
 keyUsage=critical,digitalSignature,keyEncipherment
 EOF
+
+else
+
+cat <<EOF > ${cnf}
+[ext]
+subjectAltName=DNS:${i}, DNS:${i}.${INTERNAL_DOMAIN}, DNS:${i}.${EXTERNAL_DOMAIN}, DNS:localhost
+extendedKeyUsage=critical,serverAuth,clientAuth
+basicConstraints=critical,CA:FALSE
+keyUsage=critical,digitalSignature,keyEncipherment
+EOF
+
+fi
+
 
 
 subheading "sign csr (request) [ create certificate ]"

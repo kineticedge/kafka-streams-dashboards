@@ -37,6 +37,12 @@ shopt -u nullglob
 
 export JAVA_OPTS="${JAVA_OPTS_BASE} ${JAVA_OPTS}"
 
+if [[ "$OTEL_SERVICE_NAME" != "__UNDEFINED__" ]]; then
+  echo "adding '-javaagent:/opentelemetry-javaagent.jar' to JAVA_OPTS"
+  export JAVA_OPTS="${JAVA_OPTS} -javaagent:/opentelemetry-javaagent.jar"
+fi
+
+
 COMMAND="/app/${PROJECT}/bin/${APPLICATION}"
 
 #

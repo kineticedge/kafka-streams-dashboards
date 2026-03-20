@@ -39,13 +39,12 @@ ENV \
     OTEL_SERVICE_NAME="__UNDEFINED__" \
     OTEL_TRACES_SAMPLER="parentbased_traceidratio" \
     OTEL_TRACES_SAMPLER_ARG="0.05" \
-    JAVA_OPTS_BASE="-XX:+UseG1GC --enable-native-access=ALL-UNNAMED -javaagent:/jmx_prometheus_javaagent.jar=7071:/jmx-exporter-config.yml -javaagent:/jolokia-agent.jar=port=7072,host=* -javaagent:/opentelemetry-javaagent.jar"
+    JAVA_OPTS_BASE="-XX:+UseG1GC --enable-native-access=ALL-UNNAMED -javaagent:/jmx_prometheus_javaagent.jar=7071:/jmx-exporter-config.yml -javaagent:/jolokia-agent.jar=port=7072,host=*"
     #JAVA_OPTS="-javaagent:/jmx_prometheus_javaagent.jar=7071:/jmx-exporter-config.yml -javaagent:/jolokia-agent.jar=port=7072,host=*"
 
     # using "--enable-native-access=ALL-UNNAMED" due warning from RocksDB with Java 25
     #   java.lang.System::loadLibrary has been called by org.rocksdb.RocksDB in an unnamed module (file:/app/streams-1.0/lib/rocksdbjni-9.7.3.jar)
 
-#OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_RECEIVE_TELEMETRY_ENABLED
 
 COPY ./jmx-exporter-config.yml ./entrypoint.sh ./healthcheck-streams.sh ./healthcheck-clients.sh /
 

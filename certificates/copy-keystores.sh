@@ -25,3 +25,10 @@ cp ${SECRETS}/keycloak.keystore.jks 		    ../cluster-sasl-oauth/secrets
 # deployment, they could have different truststores.
 #
 cp ${SECRETS}/kafka.server.truststore.jks 	../applications-sasl/security
+
+
+cp ${SECRETS}/kafka.key 			              ../cluster-mtls/secrets
+cp ${SECRETS}/kafka.server.truststore.jks 	../cluster-mtls/secrets
+cp ${SECRETS}/ssl-*.jks 			              ../cluster-mtls/secrets
+cp ${SECRETS}/keycloak.keystore.jks 		    ../cluster-mtls/secrets
+

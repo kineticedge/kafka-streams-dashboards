@@ -31,6 +31,7 @@ CLUSTERS=(
     "cluster-sasl"
     "cluster-sasl-oauth"
     "cluster-ts"
+    "cluster-ssl-mtls"
 )
 
 CLUSTER_DESCRIPTIONS=(
@@ -45,6 +46,7 @@ CLUSTER_DESCRIPTIONS=(
     "cluster-sasl       --  3 brokers (SASL authentication), 1 raft controller, otel collector client-metrics reporter"
     "cluster-sasl-oauth --  3 brokers (SASL oauthbearer authentication), 1 raft controller"
     "cluster-ts         --  4 brokers, 1 raft controller, minio, and aiven remote storage for tiered storage"
+    "cluster-ssl-mtls   --  4 brokers (SSL authentication), 1 raft controller"
 )
 
 #display_menu() {
@@ -152,9 +154,11 @@ if [ "$CLUSTER" == "cluster-ts" ]; then
   ./cluster-ts/setup.sh
 fi
 
+
 (cd $CLUSTER; docker compose up -d --wait)
 
-#if [[ "$CLUSTER" == "cluster-cm" || "$CLUSTER" == "cluster-sasl" ]]; then
+
+
 
 APPLICATIONS_DIR="applications"
 SECURITY=""
@@ -186,10 +190,22 @@ if [[ "$CLUSTER" == "cluster-sasl-oauth" ]]; then
   ./applications-sasl/create-credentials.sh oauth
 fi
 
+if [[ "$CLUSTER" == "cluster-ssl-mtls" ]]; then
+  heading "creating acls (with full access) for applications."
+  ./cluster-ssl-mtls/create-acls.sh
+  APPLICATIONS_DIR="applications-ssl"
+  #echo "creating the client side configuration needed to connect with oauth"
+  #./applications-ssl/create-credentials.sh
+fi
+
+
+
+
 ./gradlew build -x test -P slimDist=true
 
 (cd builder; ./run.sh)
 (cd monitoring; docker compose up -d)
+
 #(cd monitoring; docker compose up -d $(docker compose config --services | grep -v tempo))
 
 
@@ -204,5 +220,7 @@ fi
 
 
 (cd "$APPLICATIONS_DIR"; SECURITY=$SECURITY docker compose up -d)
+
+
 #(cd "$APPLICATIONS_DIR"; docker compose up -d publisher stream analytics-tumbling)
 #(cd "$APPLICATIONS_DIR"; docker compose up -d $(docker compose config --services | grep -v otel))

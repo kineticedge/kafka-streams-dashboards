@@ -35,6 +35,24 @@ scrape_configs:
         regex: '(.*):(.*)'
         target_label: instance
         replacement: '$1'
+  - job_name: jmx-kafka
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - controller-0-jmx:7071
+          - broker-1-jmx:7071
+          - broker-2-jmx:7071
+          - broker-3-jmx:7071
+          - broker-4-jmx:7071
+        labels:
+          cluster_type: "kafka"
+          job: "jmx-kafka-core"
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        target_label: instance
+        replacement: '$1'
   - job_name: kafka-sr
     metrics_path: /metrics
     static_configs:

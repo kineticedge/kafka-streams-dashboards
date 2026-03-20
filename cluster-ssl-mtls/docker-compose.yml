@@ -1,0 +1,243 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+volumes:
+  ct0: {}
+  bk1: {}
+  bk2: {}
+  bk3: {}
+  bk4: {}
+
+services:
+
+
+
+  ssl-controller-0:
+    image: apache/kafka:${VERSION}
+    hostname: ssl-controller-0
+    container_name: ${COMPOSE_PROJECT_NAME}-ssl-controller-0
+    stop_grace_period: 120s
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.controller:type=KafkaController,name=ActiveControllerCount/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[01]([,}])'"
+        ]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ct0:/var/lib/kafka/data
+      - ../ja:/opt/ja
+      - ./config:/opt/config
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_LISTENERS: CONTROLLER_SSL://:9091
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER_SSL:SSL
+      #KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SSL,EXTERNAL_SSL:SSL,LOCALHOST:PLAINTEXT,CONTROLLER_SSL:SSL
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_PROCESS_ROLES: controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@ssl-controller-0:9091
+      KAFKA_NODE_ID: 0
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER_SSL
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      #KAFKA_SSL_KEYSTORE_FILENAME: ssl-controller-0.keystore.jks
+      KAFKA_SSL_KEYSTORE_LOCATION: /etc/kafka/secrets/ssl-controller-0.keystore.jks
+      #KAFKA_SSL_KEYSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_KEYSTORE_PASSWORD: broker_secret
+      #KAFKA_SSL_KEY_CREDENTIALS: kafka.key
+      KAFKA_SSL_KEY_PASSWORD: broker_secret
+      KAFKA_SSL_CLIENT_AUTH: required
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: broker_secret
+      #KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /etc/kafka/secrets/kafka.server.truststore.jks
+      #KAFKA_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
+     # KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+      KAFKA_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
+      KAFKA_SUPER_USERS: User:ANONYMOUS;User:CN=root;User:CN=ssl-controller-0;User:CN=ssl-broker-1;User:CN=ssl-broker-2;User:CN=ssl-broker-3;User:CN=ssl-schema-registry;User:CN=ssl-connect;User:CN=kafka-ui
+      KAFKA_OPTS: >-
+        -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml 
+        -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+        -Djavax.net.debug=ssl:trustmanager,session,handshake:verbose
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
+      #KAFKA_LISTENER_NAME_CONTROLLER_SSL_ENABLED_PROTOCOLS: TLSv1.2
+      #KAFKA_SSL_ENABLED_PROTOCOLS: TLSv1.2
+      #KAFKA_LISTENER_NAME_CONTROLLER_SSL_CLIENT_AUTH: none
+  # or just remove any ssl.client.auth / client.auth settings affecting CONTROLLER
+
+
+  ssl-broker-1:
+    image: apache/kafka:${VERSION}
+    hostname: ssl-broker-1
+    container_name: ${COMPOSE_PROJECT_NAME}-ssl-broker-1
+    stop_grace_period: 120s
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      ssl-controller-0:
+        condition: service_healthy
+    ports:
+      - "9092:19092"
+      - "19092:19092"
+    volumes:
+      - bk1:/var/lib/kafka/data
+      - ../ja:/opt/ja
+      - ./config:/opt/config
+      - ./secrets:/etc/kafka/secrets/
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SSL,EXTERNAL_SSL:SSL,LOCALHOST:PLAINTEXT,CONTROLLER_SSL:SSL
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://ssl-broker-1:9092,EXTERNAL_SSL://ssl-broker-1:9093,LOCALHOST://localhost:19092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@ssl-controller-0:9091
+      #KAFKA_SECURITY_INTER_BROKER_PROTOCOL: SSL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER_SSL
+      KAFKA_LISTENER_NAME_CONTROLLER__SSL_SSL_CLIENT_AUTH: required
+      #KAFKA_SECURITY_CONTROLLER_LISTENER_NAME: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      #KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 6
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_SSL_KEYSTORE_FILENAME: ssl-broker-1.keystore.jks
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_KEY_CREDENTIALS: kafka.key
+      KAFKA_SSL_CLIENT_AUTH: required
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
+      KAFKA_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+      KAFKA_SUPER_USERS: User:ANONYMOUS;User:CN=root;User:CN=ssl-controller-0;User:CN=ssl-broker-1;User:CN=ssl-broker-2;User:CN=ssl-broker-3;User:CN=ssl-schema-registry;User:CN=ssl-connect;User:CN=kafka-ui
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+      KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
+      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
+
+
+  ssl-broker-2:
+    image: apache/kafka:${VERSION}
+    hostname: ssl-broker-2
+    container_name: ${COMPOSE_PROJECT_NAME}-ssl-broker-2
+    stop_grace_period: 120s
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      ssl-controller-0:
+        condition: service_healthy
+    ports:
+      - "29092:29092"
+    volumes:
+      - bk2:/var/lib/kafka/data
+      - ../ja:/opt/ja
+      - ./config:/opt/config
+      - ./secrets:/etc/kafka/secrets/
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 2
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SSL,EXTERNAL_SSL:SSL,LOCALHOST:PLAINTEXT,CONTROLLER_SSL:SSL
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://ssl-broker-2:9092,EXTERNAL_SSL://ssl-broker-2:9093,LOCALHOST://localhost:29092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@ssl-controller-0:9091
+      #KAFKA_SECURITY_INTER_BROKER_PROTOCOL: SSL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER_SSL
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 6
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_SSL_KEYSTORE_FILENAME: ssl-broker-2.keystore.jks
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_KEY_CREDENTIALS: kafka.key
+      KAFKA_SSL_CLIENT_AUTH: required
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
+      KAFKA_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+      KAFKA_SUPER_USERS: User:ANONYMOUS;User:CN=root;User:CN=ssl-controller-0;User:CN=ssl-broker-1;User:CN=ssl-broker-2;User:CN=ssl-broker-3;User:CN=ssl-schema-registry;User:CN=ssl-connect;User:CN=kafka-ui
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+      KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
+      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
+
+  ssl-broker-3:
+    image: apache/kafka:${VERSION}
+    hostname: ssl-broker-3
+    container_name: ${COMPOSE_PROJECT_NAME}-ssl-broker-3
+    stop_grace_period: 120s
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      ssl-controller-0:
+        condition: service_healthy
+    ports:
+      - "39092:39092"
+    volumes:
+      - bk3:/var/lib/kafka/data
+      - ../ja:/opt/ja
+      - ./config:/opt/config
+      - ./secrets:/etc/kafka/secrets/
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 3
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SSL,EXTERNAL_SSL:SSL,LOCALHOST:PLAINTEXT,CONTROLLER_SSL:SSL
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://ssl-broker-3:9092,EXTERNAL_SSL://ssl-broker-3:9093,LOCALHOST://localhost:39092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@ssl-controller-0:9091
+      #KAFKA_SECURITY_INTER_BROKER_PROTOCOL: SSL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER_SSL
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 6
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_SSL_KEYSTORE_FILENAME: ssl-broker-3.keystore.jks
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_KEY_CREDENTIALS: kafka.key
+      KAFKA_SSL_CLIENT_AUTH: required
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: kafka.key
+      KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
+      KAFKA_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+      KAFKA_SUPER_USERS: User:ANONYMOUS;User:CN=root;User:CN=ssl-controller-0;User:CN=ssl-broker-1;User:CN=ssl-broker-2;User:CN=ssl-broker-3;User:CN=ssl-schema-registry;User:CN=ssl-connect;User:CN=kafka-ui
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+      KAFKA_AUTO_INCLUDE_JMX_REPORTER: 'false'
+      KAFKA_METRIC_REPORTERS: org.apache.kafka.common.metrics.JmxReporter
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"

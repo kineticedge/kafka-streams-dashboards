@@ -224,3 +224,4 @@ fi
 
 #(cd "$APPLICATIONS_DIR"; docker compose up -d publisher stream analytics-tumbling)
 #(cd "$APPLICATIONS_DIR"; docker compose up -d $(docker compose config --services | grep -v otel))
+

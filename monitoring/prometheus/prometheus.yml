@@ -2,6 +2,7 @@ global:
   scrape_interval: 2s
 
 scrape_configs:
+
   - job_name: zookeeper
     metrics_path: /metrics
     static_configs:
@@ -15,6 +16,7 @@ scrape_configs:
         regex: '(.*):(.*)'
         target_label: instance
         replacement: '$1'
+
   - job_name: kafka
     scrape_interval: 30s
     metrics_path: /metrics
@@ -30,51 +32,6 @@ scrape_configs:
         labels:
           cluster_type: "kafka"
           job: "kafka-core"
-    relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.*):(.*)'
-        target_label: instance
-        replacement: '$1'
-  - job_name: jmx-kafka
-    scrape_interval: 30s
-    metrics_path: /metrics
-    static_configs:
-      - targets:
-          - controller-0-jmx:7071
-          - broker-1-jmx:7071
-          - broker-2-jmx:7071
-          - broker-3-jmx:7071
-          - broker-4-jmx:7071
-        labels:
-          cluster_type: "kafka"
-          job: "jmx-kafka-core"
-    relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.*):(.*)'
-        target_label: instance
-        replacement: '$1'
-  - job_name: kafka-sr
-    metrics_path: /metrics
-    static_configs:
-      - targets:
-          - schema-registry:7071
-    relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.*):(.*)'
-        target_label: instance
-        replacement: '$1'
-  - job_name: sasl-kafka
-    metrics_path: /metrics
-    static_configs:
-      - targets:
-        - sasl-controller-0:7071
-        - sasl-broker-1:7071
-        - sasl-broker-2:7071
-        - sasl-broker-3:7071
-        - sasl-broker-4:7071
-        labels:
-          cluster_type: "kafka"
-          job: "sasl-kafka-core"
     relabel_configs:
       - source_labels: [__address__]
         regex: '(.*):(.*)'
@@ -97,184 +54,216 @@ scrape_configs:
         target_label: instance
         replacement: '$1'
 
-  - job_name: kafka-lag-exporter
-    scrape_interval: 5s
-    metrics_path: /metrics
-    static_configs:
-      - targets:
-          - kafka-lag-exporter:8000
-        labels:
-          job: "kafka-lag-exporter-kafka-core"
-    relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.*):(.*)'
-        target_label: instance
-        replacement: '$1'
-
-  - job_name: kafka_exporter
-    static_configs:
-      - targets:
-        - kafka-exporter:9308
-        labels:
-          job: "exporter_kafka-core"
-    relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.*):(.*)'
-        target_label: instance
-        replacement: '$1'
-
-  - job_name: sasl_kafka_exporter
-    static_configs:
-      - targets:
-          - sasl-kafka-exporter:9308
-        labels:
-          job: "exporter_sasl-kafka-core"
-    relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.*):(.*)'
-        target_label: instance
-        replacement: '$1'
-  - job_name: applications
-    scrape_interval: 2s
-    metrics_path: /metrics
-    file_sd_configs:
-      - files:
-          - /etc/prometheus/application_*.json
-    relabel_configs:
-# an alternate way to handle 'application', useful for kafka.streams and unable to pull application.id by customization jmx rule
-#      - source_labels: [__address__]
-#        regex: '[a-zA-Z0-9]+-([a-zA-Z0-9._~:-]+?)(-[0-9]+)?:[0-9]+'
-#        target_label: application
-#        replacement: '$1'
-      - source_labels: [__address__]
-        regex: '(.*):[0-9]+'
-        target_label: instance
-        replacement: '$1'
-  - job_name: micrometer_applications
-    scrape_interval: 2s
-    metrics_path: /metrics
-    file_sd_configs:
-      - files:
-          - /etc/prometheus/micrometer_application_*.json
-    relabel_configs:
-      # an alternate way to handle 'application', useful for kafka.streams and unable to pull application.id by custom micrometer metric
-#      - source_labels: [__address__]
-#        regex: '[a-z]-(.*)(-[0-9])?:.*'
-#        target_label: application
-#        replacement: '$1'
-      - source_labels: [__address__]
-        regex: '(.*):[0-9]+'
-        target_label: instance
-        replacement: '$1'
-    metric_relabel_configs:
-      - source_labels: [rocksdb_state_id,rocksdb_window_state_id,rocksdb_session_state_id,in_memory_state_id,in_memory_window_state_id,in_memory_lru_state_id,in_memory_suppression_state_id]
-        separator: '' # ; is the default, but since only one of the source labels is ever defined, we remove this separator
-        target_label: state_id
-        regex: '(.+)'
-        replacement: '$1'
-        action: replace
-      - source_labels: [rocksdb_state_id]
-        target_label: "store_type"
-        regex: ".+"
-        replacement: "rocksdb_state"
-        action: replace
-      - source_labels: [rocksdb_window_state_id]
-        target_label: "store_type"
-        regex: ".+"
-        replacement: "rocksdb_window_state"
-        action: replace
-      - source_labels: [rocksdb_session_state_id]
-        target_label: "store_type"
-        regex: ".+"
-        replacement: "rocksdb_session_state"
-        action: replace
-      - source_labels: [in_memory_state_id]
-        target_label: "store_type"
-        regex: ".+"
-        replacement: "in_memory_state"
-        action: replace
-      - source_labels: [in_memory_window_state_id]
-        target_label: "store_type"
-        regex: ".+"
-        replacement: "in_memory_window_state"
-        action: replace
-      - source_labels: [in_memory_lru_state_id]
-        target_label: "store_type"
-        regex: ".+"
-        replacement: "in_memory_lru_state"
-        action: replace
-      - source_labels: [in_memory_suppression_state_id]
-        target_label: "store_type"
-        regex: ".+"
-        replacement: "in_memory_suppression_state"
-        action: replace
   - job_name: 'opentelemetry'
     static_configs:
       - targets: ['otel:9091']
+
   - job_name: 'broker-opentelemetry'
     static_configs:
       - targets: ['broker-otel:9091']
-  - job_name: 'cadvisor'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['cadvisor:8080']
-    metric_relabel_configs:
-      - source_labels: [id]
-        target_label: id
-        regex: '/docker/(.*)'
-        replacement: '$1'
+
+
   - job_name: 'container-info'
     static_configs:
       - targets: ['container-info:9323']
 
 
-#  - job_name: XXXX
-#    dns_sd_configs:
-#      - names: ["127.0.0.11"] # https://prometheus.io/docs/prometheus/latest/configuration/configuration/#dns_sd_config
-#        port: 8001
-#        type: A
-#        refresh_interval: 5s
 
-#  - job_name: "ping"
-#    docker_sd_configs:
-#      - host: unix:///var/run/docker.sock # You can also use http/https to connect to the Docker daemon.
-##        filters:
-##          - name: label
-##            values: ["app=webserver"]
-#        refresh_interval: 2s
-#    metrics_path: /probe
-#    params:
-#      module: [icmp]  # Look for a HTTP 200 response.
-#    relabel_configs:
-#      - source_labels: [__meta_docker_container_label_com_docker_compose_service]
-#        target_label: container_service
-#      - source_labels: [__meta_docker_container_name]
-#        target_label: container_name
-#      - source_labels: [__meta_docker_network_ip]
-#        target_label: __param_target
-#      - source_labels: [__param_target]
-#        target_label: instance
-#      - target_label: __address__
-#        replacement: blackbox_exporter:9115  # The blackbox exporter's real hostname:port.
+  - job_name: publishers
+    scrape_interval: 2s
+    metrics_path: /metrics
+    dns_sd_configs:
+      - names:
+          - 'publisher'
+        type: 'A'
+        port: 7071
+    relabel_configs:
+      - source_labels: [__meta_dns_name]
+        target_label: service
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        replacement: '$1'
+        target_label: instance
+      - replacement: 'producers'
+        target_label: cluster_type
+      - replacement: 'publisher'
+        target_label: job
 
-#  - job_name: kafka-streams-docker
-#    docker_sd_configs:
-#      - host: unix:///var/run/docker.sock
-#        refresh_interval: 2s
-#        filters:
-#          - name: name
-#            values: [NAME]
-#    relabel_configs:
-#      # For more labels, see
-#      # https://github.com/grafana/loki/blob/main/docs/sources/clients/promtail/configuration.md#docker_sd_config
-#      - source_labels: ['__meta_docker_container_name']
-#        regex: '/(.*)'
-#        target_label: 'instance'
+  - job_name: streams
+    scrape_interval: 2s
+    metrics_path: /metrics
+    dns_sd_configs:
+      - names:
+          - 'stream'
+        type: 'A'
+        port: 7071
+    relabel_configs:
+      - source_labels: [__meta_dns_name]
+        target_label: service
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        replacement: '$1'
+        target_label: instance
+      - replacement: 'streams'
+        target_label: cluster_type
+      - replacement: 'streams'
+        target_label: job
+    metric_relabel_configs:
+      - source_labels: [__name__, client_id, instance]
+        regex: 'kafka_stream_application;(.*);(.*)'
+        separator: ';'
+        replacement: '$1@$2'
+        target_label: instance_display
 
+  - job_name: analytics
+    scrape_interval: 2s
+    metrics_path: /metrics
+    dns_sd_configs:
+      - names:
+          - 'analytics-sliding'
+          - 'analytics-tumbling'
+          - 'analytics-hopping'
+          - 'analytics-session'
+          - 'analytics-none'
+        type: 'A'
+        port: 7071
+    relabel_configs:
+      - source_labels: [__meta_dns_name]
+        target_label: service
+      - source_labels: [__address__]
+        regex: '(.*):(.*)'
+        replacement: '$1'
+        target_label: instance
+      - source_labels: [client_id, instance]
+        separator: '@'
+        target_label: instance_display
+      - replacement: 'streams'
+        target_label: cluster_type
+      - replacement: 'analytics'
+        target_label: job
+    metric_relabel_configs:
+      - source_labels: [__name__, client_id, instance]
+        regex: 'kafka_stream_application;(.*);(.*)'
+        separator: ';'
+        replacement: '$1@$2'
+        target_label: instance_display
+
+#  - job_name: 'cadvisor'
+#    scrape_interval: 5s
+#    static_configs:
+#      - targets: ['cadvisor:8080']
+#    metric_relabel_configs:
+#      - source_labels: [id]
+#        target_label: id
+#        regex: '/docker/(.*)'
+#        replacement: '$1'
+
+#  - job_name: micrometer_applications
 #    scrape_interval: 2s
-#    docker_sd_config:
+#    metrics_path: /metrics
+#    file_sd_configs:
+#      - files:
+#          - /etc/prometheus/micrometer_application_*.json
+#    relabel_configs:
+#      # an alternate way to handle 'application', useful for kafka.streams and unable to pull application.id by custom micrometer metric
+##      - source_labels: [__address__]
+##        regex: '[a-z]-(.*)(-[0-9])?:.*'
+##        target_label: application
+##        replacement: '$1'
+#      - source_labels: [__address__]
+#        regex: '(.*):[0-9]+'
+#        target_label: instance
+#        replacement: '$1'
+#    metric_relabel_configs:
+#      - source_labels: [rocksdb_state_id,rocksdb_window_state_id,rocksdb_session_state_id,in_memory_state_id,in_memory_window_state_id,in_memory_lru_state_id,in_memory_suppression_state_id]
+#        separator: '' # ; is the default, but since only one of the source labels is ever defined, we remove this separator
+#        target_label: state_id
+#        regex: '(.+)'
+#        replacement: '$1'
+#        action: replace
+#      - source_labels: [rocksdb_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "rocksdb_state"
+#        action: replace
+#      - source_labels: [rocksdb_window_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "rocksdb_window_state"
+#        action: replace
+#      - source_labels: [rocksdb_session_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "rocksdb_session_state"
+#        action: replace
+#      - source_labels: [in_memory_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "in_memory_state"
+#        action: replace
+#      - source_labels: [in_memory_window_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "in_memory_window_state"
+#        action: replace
+#      - source_labels: [in_memory_lru_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "in_memory_lru_state"
+#        action: replace
+#      - source_labels: [in_memory_suppression_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "in_memory_suppression_state"
+#        action: replace
+
+
+#  - job_name: kafka-lag-exporter
+#    scrape_interval: 5s
+#    metrics_path: /metrics
+#    static_configs:
+#      - targets:
+#          - kafka-lag-exporter:8000
+#        labels:
+#          job: "kafka-lag-exporter-kafka-core"
 #    relabel_configs:
 #      - source_labels: [__address__]
 #        regex: '(.*):(.*)'
+#        target_label: instance
+#        replacement: '$1'
+
+#  - job_name: kafka_exporter
+#    static_configs:
+#      - targets:
+#        - kafka-exporter:9308
+#        labels:
+#          job: "exporter_kafka-core"
+#    relabel_configs:
+#      - source_labels: [__address__]
+#        regex: '(.*):(.*)'
+#        target_label: instance
+#        replacement: '$1'
+
+#  - job_name: sasl_kafka_exporter
+#    static_configs:
+#      - targets:
+#          - sasl-kafka-exporter:9308
+#        labels:
+#          job: "exporter_sasl-kafka-core"
+#    relabel_configs:
+#      - source_labels: [__address__]
+#        regex: '(.*):(.*)'
+#        target_label: instance
+#        replacement: '$1'
+
+#  - job_name: applications
+#    scrape_interval: 2s
+#    metrics_path: /metrics
+#    file_sd_configs:
+#      - files:
+#          - /etc/prometheus/applications.json
+#    relabel_configs:
+#      - source_labels: [__address__]
+#        regex: '(.*):[0-9]+'
 #        target_label: instance
 #        replacement: '$1'

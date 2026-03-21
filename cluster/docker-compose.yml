@@ -75,6 +75,7 @@ services:
       # let this broker act as the load-balancer discovery of the cluster.
       - '9092:19092'
       - '17071:7071'
+      - '17072:7072'
     volumes:
       - bk1:/var/lib/kafka/data
       - ../ja:/opt/ja
@@ -118,6 +119,8 @@ services:
         condition: service_healthy
     ports:
       - '29092:29092'
+      - '27071:7071'
+      - '27072:7072'
     volumes:
       - bk2:/var/lib/kafka/data
       - ../ja:/opt/ja
@@ -161,6 +164,8 @@ services:
         condition: service_healthy
     ports:
       - '39092:39092'
+      - '37071:7071'
+      - '37072:7072'
     volumes:
       - bk3:/var/lib/kafka/data
       - ../ja:/opt/ja
@@ -204,6 +209,8 @@ services:
         condition: service_healthy
     ports:
       - '49092:49092'
+      - '47071:7071'
+      - '47072:7072'
     volumes:
       - bk4:/var/lib/kafka/data
       - ../ja:/opt/ja

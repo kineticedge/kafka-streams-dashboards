@@ -13,7 +13,7 @@ ARTIFACT_ID="stream"
 
 
 JAVA_HOME=$GRAALVM_HOME
-JAVA_OPTS="-agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image/${GROUP_ID}/${ARTIFACT_ID}"
+JAVA_OPTS="-agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image/"
 
 JAVA="${GRAALVM_HOME}/bin/java"
 

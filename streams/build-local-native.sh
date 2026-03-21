@@ -1,5 +1,11 @@
 #!/bin/bash
 
+
+
+#gradle mergeWithBaseline copyMergeMetadata
+
+
+
 . ./.classpath.sh
 
 MAIN="io.kineticedge.ksd.streams.Main"
@@ -8,11 +14,20 @@ APP="stream"
 GROUP_ID="io.kineticedge.ksd"
 ARTIFACT_ID="stream"
 
-METADATA_DIR="src/main/resources/META-INF/native-image/${GROUP_ID}/${ARTIFACT_ID}"
+#METADATA_DIR="src/main/resources/META-INF/native-image/${GROUP_ID}/${ARTIFACT_ID}"
+METADATA_DIR="src/main/resources/META-INF/native-image"
+
 REACHABILITY_METADATA="${METADATA_DIR}/reachability-metadata.json"
 
+#
+#native-image \
+#  --class-path "application.jar:clients-reachability-kafka411-reachability-metadata.jar:kafka-clients-reachability-1.0-reachability-metadata.jar" \
+#  --configuration-path reachability-metadata.json \
+#  com.example.MainClass MyAppName
+#
+
 $GRAALVM_HOME/bin/native-image \
-  -cp ${CP} \
+  -cp src/main/resources:${CP} \
   ${MAIN} -o ./${APP} \
   --no-fallback \
   --enable-http \

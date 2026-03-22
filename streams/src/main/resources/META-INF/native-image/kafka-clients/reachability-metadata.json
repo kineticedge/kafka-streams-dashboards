@@ -1,0 +1,1627 @@
+{
+    "reflection": [
+        {
+            "type": "apple.security.AppleProvider",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "boolean[]"
+        },
+        {
+            "type": "byte[]"
+        },
+        {
+            "type": "ch.qos.logback.classic.encoder.PatternLayoutEncoder",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ch.qos.logback.classic.spi.LogbackServiceProvider"
+        },
+        {
+            "type": "ch.qos.logback.classic.util.DefaultJoranConfigurator",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ch.qos.logback.core.ConsoleAppender",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ch.qos.logback.core.OutputStreamAppender",
+            "methods": [
+                {
+                    "name": "setEncoder",
+                    "parameterTypes": [
+                        "ch.qos.logback.core.encoder.Encoder"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ch.qos.logback.core.encoder.Encoder"
+        },
+        {
+            "type": "ch.qos.logback.core.encoder.LayoutWrappingEncoder",
+            "methods": [
+                {
+                    "name": "setParent",
+                    "parameterTypes": [
+                        "ch.qos.logback.core.spi.ContextAware"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ch.qos.logback.core.pattern.PatternLayoutEncoderBase",
+            "methods": [
+                {
+                    "name": "setPattern",
+                    "parameterTypes": [
+                        "java.lang.String"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ch.qos.logback.core.spi.ContextAware"
+        },
+        {
+            "type": "char[]"
+        },
+        {
+            "type": "com.fasterxml.jackson.databind.ext.Java7SupportImpl",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.github.luben.zstd.ZstdInputStreamNoFinalizer",
+            "jniAccessible": true,
+            "fields": [
+                {
+                    "name": "dstPos"
+                },
+                {
+                    "name": "srcPos"
+                }
+            ]
+        },
+        {
+            "type": "com.github.luben.zstd.ZstdOutputStreamNoFinalizer",
+            "jniAccessible": true,
+            "fields": [
+                {
+                    "name": "dstPos"
+                },
+                {
+                    "name": "srcPos"
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.AESCipher$General",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.ARCFOURCipher",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.ChaCha20Cipher$ChaCha20Poly1305",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.DESCipher",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.DESedeCipher",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.DHParameters",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.GaloisCounterMode$AESGCM",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.HKDFKeyDerivation$HKDFSHA384",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "javax.crypto.KDFParameters"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.HmacCore$HmacSHA256",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.HmacCore$HmacSHA384",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.HmacCore$HmacSHA512",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.HmacPKCS12PBECore$HmacPKCS12PBE_SHA256",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.PBEKeyFactory$PBEWithMD5AndDES",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.PBES2Core$HmacSHA256AndAES_256",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.PBES2Parameters$General",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.crypto.provider.TlsMasterSecretGenerator",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.management.GarbageCollectorMXBean"
+        },
+        {
+            "type": "com.sun.management.GcInfo"
+        },
+        {
+            "type": "com.sun.management.HotSpotDiagnosticMXBean"
+        },
+        {
+            "type": "com.sun.management.ThreadMXBean"
+        },
+        {
+            "type": "com.sun.management.UnixOperatingSystemMXBean"
+        },
+        {
+            "type": "com.sun.management.VMOption"
+        },
+        {
+            "type": "com.sun.management.internal.DiagnosticCommandArgumentInfo",
+            "jniAccessible": true,
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.String",
+                        "java.lang.String",
+                        "java.lang.String",
+                        "java.lang.String",
+                        "boolean",
+                        "boolean",
+                        "boolean",
+                        "int"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.management.internal.DiagnosticCommandArgumentInfo[]"
+        },
+        {
+            "type": "com.sun.management.internal.DiagnosticCommandInfo",
+            "jniAccessible": true,
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.String",
+                        "java.lang.String",
+                        "java.lang.String",
+                        "boolean",
+                        "java.util.List"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "com.sun.management.internal.DiagnosticCommandInfo[]"
+        },
+        {
+            "type": "com.sun.management.internal.GarbageCollectorExtImpl"
+        },
+        {
+            "type": "com.sun.management.internal.HotSpotDiagnostic"
+        },
+        {
+            "type": "com.sun.management.internal.HotSpotThreadImpl"
+        },
+        {
+            "type": "com.sun.management.internal.OperatingSystemImpl"
+        },
+        {
+            "type": "com.sun.management.internal.VirtualThreadSchedulerImpls$VirtualThreadSchedulerImpl"
+        },
+        {
+            "type": "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "double[]"
+        },
+        {
+            "type": "float[]"
+        },
+        {
+            "type": "int[]"
+        },
+        {
+            "type": "java.io.Closeable"
+        },
+        {
+            "type": "java.io.Serializable"
+        },
+        {
+            "type": "java.lang.AutoCloseable"
+        },
+        {
+            "type": "java.lang.Boolean",
+            "jniAccessible": true,
+            "fields": [
+                {
+                    "name": "TYPE"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "getBoolean",
+                    "parameterTypes": [
+                        "java.lang.String"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "java.lang.Byte",
+            "fields": [
+                {
+                    "name": "TYPE"
+                }
+            ]
+        },
+        {
+            "type": "java.lang.Character",
+            "fields": [
+                {
+                    "name": "TYPE"
+                }
+            ]
+        },
+        {
+            "type": "java.lang.Deprecated"
+        },
+        {
+            "type": "java.lang.Double",
+            "fields": [
+                {
+                    "name": "TYPE"
+                }
+            ]
+        },
+        {
+            "type": "java.lang.Float",
+            "fields": [
+                {
+                    "name": "TYPE"
+                }
+            ]
+        },
+        {
+            "type": "java.lang.Integer",
+            "fields": [
+                {
+                    "name": "TYPE"
+                }
+            ]
+        },
+        {
+            "type": "java.lang.Iterable"
+        },
+        {
+            "type": "java.lang.Long",
+            "fields": [
+                {
+                    "name": "TYPE"
+                }
+            ]
+        },
+        {
+            "type": "java.lang.OutOfMemoryError",
+            "jniAccessible": true
+        },
+        {
+            "type": "java.lang.Short",
+            "fields": [
+                {
+                    "name": "TYPE"
+                }
+            ]
+        },
+        {
+            "type": "java.lang.StackTraceElement"
+        },
+        {
+            "type": "java.lang.String"
+        },
+        {
+            "type": "java.lang.String[]"
+        },
+        {
+            "type": "java.lang.Void",
+            "fields": [
+                {
+                    "name": "TYPE"
+                }
+            ]
+        },
+        {
+            "type": "java.lang.management.BufferPoolMXBean"
+        },
+        {
+            "type": "java.lang.management.ClassLoadingMXBean"
+        },
+        {
+            "type": "java.lang.management.CompilationMXBean"
+        },
+        {
+            "type": "java.lang.management.LockInfo"
+        },
+        {
+            "type": "java.lang.management.MemoryMXBean"
+        },
+        {
+            "type": "java.lang.management.MemoryManagerMXBean"
+        },
+        {
+            "type": "java.lang.management.MemoryPoolMXBean"
+        },
+        {
+            "type": "java.lang.management.MemoryUsage"
+        },
+        {
+            "type": "java.lang.management.MonitorInfo"
+        },
+        {
+            "type": "java.lang.management.PlatformLoggingMXBean"
+        },
+        {
+            "type": "java.lang.management.RuntimeMXBean"
+        },
+        {
+            "type": "java.lang.management.ThreadInfo"
+        },
+        {
+            "type": "java.math.BigDecimal"
+        },
+        {
+            "type": "java.math.BigInteger"
+        },
+        {
+            "type": "java.net.SocketException",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.String"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "java.net.UnixDomainSocketAddress",
+            "methods": [
+                {
+                    "name": "of",
+                    "parameterTypes": [
+                        "java.lang.String"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "java.security.AccessControlContext"
+        },
+        {
+            "type": "java.security.AccessController",
+            "methods": [
+                {
+                    "name": "getContext",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "java.security.AlgorithmParametersSpi"
+        },
+        {
+            "type": "java.security.KeyStoreSpi"
+        },
+        {
+            "type": "java.security.interfaces.RSAPrivateKey"
+        },
+        {
+            "type": "java.security.interfaces.RSAPublicKey"
+        },
+        {
+            "type": "java.util.AbstractCollection"
+        },
+        {
+            "type": "java.util.AbstractList"
+        },
+        {
+            "type": "java.util.AbstractMap"
+        },
+        {
+            "type": "java.util.Arrays",
+            "jniAccessible": true,
+            "methods": [
+                {
+                    "name": "asList",
+                    "parameterTypes": [
+                        "java.lang.Object[]"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "java.util.Arrays$ArrayList"
+        },
+        {
+            "type": "java.util.Collection"
+        },
+        {
+            "type": "java.util.Collections$SingletonMap"
+        },
+        {
+            "type": "java.util.Date"
+        },
+        {
+            "type": "java.util.List"
+        },
+        {
+            "type": "java.util.Map"
+        },
+        {
+            "type": "java.util.RandomAccess"
+        },
+        {
+            "type": "javax.management.MBeanOperationInfo"
+        },
+        {
+            "type": "javax.management.MBeanServerBuilder",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "javax.management.ObjectName"
+        },
+        {
+            "type": "javax.management.StandardEmitterMBean"
+        },
+        {
+            "type": "javax.management.openmbean.CompositeData"
+        },
+        {
+            "type": "javax.management.openmbean.CompositeData[]"
+        },
+        {
+            "type": "javax.management.openmbean.OpenMBeanOperationInfoSupport"
+        },
+        {
+            "type": "javax.management.openmbean.TabularData"
+        },
+        {
+            "type": "javax.security.auth.Subject",
+            "methods": [
+                {
+                    "name": "callAs",
+                    "parameterTypes": [
+                        "javax.security.auth.Subject",
+                        "java.util.concurrent.Callable"
+                    ]
+                },
+                {
+                    "name": "current",
+                    "parameterTypes": [
+                        
+                    ]
+                },
+                {
+                    "name": "doAs",
+                    "parameterTypes": [
+                        "javax.security.auth.Subject",
+                        "java.security.PrivilegedExceptionAction"
+                    ]
+                },
+                {
+                    "name": "getSubject",
+                    "parameterTypes": [
+                        "java.security.AccessControlContext"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "jdk.management.VirtualThreadSchedulerMXBean"
+        },
+        {
+            "type": "jdk.management.jfr.ConfigurationInfo"
+        },
+        {
+            "type": "jdk.management.jfr.EventTypeInfo"
+        },
+        {
+            "type": "jdk.management.jfr.FlightRecorderMXBean"
+        },
+        {
+            "type": "jdk.management.jfr.FlightRecorderMXBeanImpl"
+        },
+        {
+            "type": "jdk.management.jfr.RecordingInfo"
+        },
+        {
+            "type": "jdk.management.jfr.SettingDescriptorInfo"
+        },
+        {
+            "type": "long[]"
+        },
+        {
+            "type": "net.jpountz.lz4.LZ4HCJNICompressor",
+            "fields": [
+                {
+                    "name": "INSTANCE"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "int"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "net.jpountz.lz4.LZ4JNICompressor",
+            "fields": [
+                {
+                    "name": "INSTANCE"
+                }
+            ]
+        },
+        {
+            "type": "net.jpountz.lz4.LZ4JNISafeDecompressor",
+            "fields": [
+                {
+                    "name": "INSTANCE"
+                }
+            ]
+        },
+        {
+            "type": "net.jpountz.xxhash.StreamingXXHash32JNI$Factory",
+            "fields": [
+                {
+                    "name": "INSTANCE"
+                }
+            ]
+        },
+        {
+            "type": "net.jpountz.xxhash.StreamingXXHash64JNI$Factory",
+            "fields": [
+                {
+                    "name": "INSTANCE"
+                }
+            ]
+        },
+        {
+            "type": "net.jpountz.xxhash.XXHash32JNI",
+            "fields": [
+                {
+                    "name": "INSTANCE"
+                }
+            ]
+        },
+        {
+            "type": "net.jpountz.xxhash.XXHash64JNI",
+            "fields": [
+                {
+                    "name": "INSTANCE"
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.clients.consumer.CooperativeStickyAssignor",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.clients.consumer.RangeAssignor",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.clients.consumer.RoundRobinAssignor",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.clients.consumer.StickyAssignor",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.metrics.JmxReporter",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.authenticator.AbstractLogin$DefaultLoginCallbackHandler",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.authenticator.DefaultLogin",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.authenticator.SaslClientCallbackHandler",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.oauthbearer.ClientCredentialsJwtRetriever",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever"
+        },
+        {
+            "type": "org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginCallbackHandler",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.oauthbearer.internals.OAuthBearerRefreshingLogin",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.oauthbearer.internals.OAuthBearerSaslClient$OAuthBearerSaslClientFactory",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.oauthbearer.internals.OAuthBearerSaslClientCallbackHandler",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.plain.PlainLoginModule",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.scram.ScramLoginModule",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.security.scram.internals.ScramSaslClient$ScramSaslClientFactory",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.serialization.StringDeserializer",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.serialization.StringSerializer",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.apache.kafka.common.utils.AppInfoParser$AppInfo"
+        },
+        {
+            "type": "org.apache.kafka.common.utils.AppInfoParser$AppInfoMBean"
+        },
+        {
+            "type": "org.apache.kafka.shaded.com.google.protobuf.ExtensionRegistry",
+            "methods": [
+                {
+                    "name": "getEmptyRegistry",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "org.brotli.dec.BrotliInputStream"
+        },
+        {
+            "type": "org.osgi.framework.BundleEvent"
+        },
+        {
+            "type": "org.slf4j.simple.SimpleServiceProvider"
+        },
+        {
+            "type": "short[]"
+        },
+        {
+            "type": "sun.management.ClassLoadingImpl"
+        },
+        {
+            "type": "sun.management.CompilationImpl"
+        },
+        {
+            "type": "sun.management.ManagementFactoryHelper$1"
+        },
+        {
+            "type": "sun.management.ManagementFactoryHelper$PlatformLoggingImpl"
+        },
+        {
+            "type": "sun.management.MemoryImpl"
+        },
+        {
+            "type": "sun.management.MemoryManagerImpl"
+        },
+        {
+            "type": "sun.management.MemoryPoolImpl"
+        },
+        {
+            "type": "sun.management.RuntimeImpl"
+        },
+        {
+            "type": "sun.management.VMManagementImpl",
+            "jniAccessible": true,
+            "fields": [
+                {
+                    "name": "compTimeMonitoringSupport"
+                },
+                {
+                    "name": "currentThreadCpuTimeSupport"
+                },
+                {
+                    "name": "objectMonitorUsageSupport"
+                },
+                {
+                    "name": "otherThreadCpuTimeSupport"
+                },
+                {
+                    "name": "remoteDiagnosticCommandsSupport"
+                },
+                {
+                    "name": "synchronizerUsageSupport"
+                },
+                {
+                    "name": "threadAllocatedMemorySupport"
+                },
+                {
+                    "name": "threadContentionMonitoringSupport"
+                }
+            ]
+        },
+        {
+            "type": "sun.security.pkcs12.PKCS12KeyStore",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.pkcs12.PKCS12KeyStore$DualFormatPKCS12",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.DSA$SHA224withDSA",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.DSA$SHA256withDSA",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.JavaKeyStore$DualFormatJKS",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.JavaKeyStore$JKS",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.NativePRNG",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.security.SecureRandomParameters"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.NativePRNG$NonBlocking",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.security.SecureRandomParameters"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.SHA",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.SHA2$SHA224",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.SHA2$SHA256",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.SHA5$SHA384",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.SHA5$SHA512",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.X509Factory",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.provider.certpath.PKIXCertPathValidator",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.rsa.PSSParameters",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.rsa.RSAKeyFactory$Legacy",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.rsa.RSAPSSSignature",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.rsa.RSASignature$SHA224withRSA",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.rsa.RSASignature$SHA256withRSA",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.ssl.KeyManagerFactoryImpl$SunX509",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.ssl.SSLContextImpl$DefaultSSLContext",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.ssl.SSLContextImpl$TLS13Context",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.ssl.TrustManagerFactoryImpl$PKIXFactory",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.AuthorityInfoAccessExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.AuthorityKeyIdentifierExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.BasicConstraintsExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.CRLDistributionPointsExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.CertificatePoliciesExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.ExtendedKeyUsageExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.KeyUsageExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.NetscapeCertTypeExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.PrivateKeyUsageExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.SubjectAlternativeNameExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.security.x509.SubjectKeyIdentifierExtension",
+            "methods": [
+                {
+                    "name": "<init>",
+                    "parameterTypes": [
+                        "java.lang.Boolean",
+                        "java.lang.Object"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sun.text.resources.cldr.FormatData"
+        },
+        {
+            "type": "sun.text.resources.cldr.FormatData_en"
+        },
+        {
+            "type": "sun.text.resources.cldr.FormatData_en_US"
+        },
+        {
+            "type": "sun.util.resources.cldr.CalendarData"
+        },
+        {
+            "type": "sun.util.resources.cldr.TimeZoneNames"
+        },
+        {
+            "type": "sun.util.resources.cldr.TimeZoneNames_en"
+        },
+        {
+            "type": "sun.util.resources.cldr.TimeZoneNames_en_US"
+        }
+    ],
+    "resources": [
+        {
+            "glob": "META-INF/maven/org.xerial.snappy/snappy-java/pom.properties"
+        },
+        {
+            "glob": "META-INF/services/ch.qos.logback.classic.spi.Configurator"
+        },
+        {
+            "glob": "META-INF/services/java.net.spi.InetAddressResolverProvider"
+        },
+        {
+            "glob": "META-INF/services/java.net.spi.URLStreamHandlerProvider"
+        },
+        {
+            "glob": "META-INF/services/java.nio.channels.spi.SelectorProvider"
+        },
+        {
+            "glob": "META-INF/services/java.time.zone.ZoneRulesProvider"
+        },
+        {
+            "glob": "META-INF/services/javax.security.auth.spi.LoginModule"
+        },
+        {
+            "glob": "META-INF/services/javax.xml.parsers.SAXParserFactory"
+        },
+        {
+            "glob": "META-INF/services/org.slf4j.spi.SLF4JServiceProvider"
+        },
+        {
+            "glob": "client.keystore.jks"
+        },
+        {
+            "glob": "com/github/dockerjava/zerodep/shaded/org/apache/hc/client5/version.properties"
+        },
+        {
+            "glob": "darwin/aarch64/libzstd-jni-1.5.6-10.dylib"
+        },
+        {
+            "glob": "docker-java.properties"
+        },
+        {
+            "glob": "kafka.key"
+        },
+        {
+            "glob": "kafka.keystore.jks"
+        },
+        {
+            "glob": "kafka.server.truststore.jks"
+        },
+        {
+            "glob": "kafka/kafka-version.properties"
+        },
+        {
+            "glob": "keycloak-setup.sh"
+        },
+        {
+            "glob": "logback-test.xml"
+        },
+        {
+            "glob": "logback.xml"
+        },
+        {
+            "glob": "net/jpountz/util/darwin/aarch64/liblz4-java.dylib"
+        },
+        {
+            "glob": "org-xerial-snappy.properties"
+        },
+        {
+            "glob": "org/publicsuffix/list/effective_tld_names.dat"
+        },
+        {
+            "glob": "org/xerial/snappy/VERSION"
+        },
+        {
+            "glob": "org/xerial/snappy/native/Mac/aarch64/libsnappyjava.dylib"
+        },
+        {
+            "module": "java.base",
+            "glob": "jdk/internal/icu/impl/data/icudt76b/nfc.nrm"
+        },
+        {
+            "module": "java.base",
+            "glob": "jdk/internal/icu/impl/data/icudt76b/nfkc.nrm"
+        },
+        {
+            "module": "java.base",
+            "glob": "jdk/internal/icu/impl/data/icudt76b/uprops.icu"
+        },
+        {
+            "module": "java.base",
+            "glob": "sun/net/idn/uidna.spp"
+        },
+        {
+            "module": "java.base",
+            "glob": "sun/security/util/resources/security_en.properties"
+        },
+        {
+            "module": "java.base",
+            "glob": "sun/security/util/resources/security_en_US.properties"
+        },
+        {
+            "module": "jdk.jfr",
+            "glob": "jdk/jfr/internal/query/view.ini"
+        },
+        {
+            "bundle": "sun.security.util.resources.security"
+        }
+    ]
+}

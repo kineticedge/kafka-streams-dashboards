@@ -3,22 +3,38 @@ FROM ghcr.io/graalvm/native-image-community:25 AS builder
 
 RUN mkdir -p /app/config/META-INF/native-image/io.kineticedge.ksd/stream
 
-COPY ./src/main/resources/META-INF/native-image/io.kineticedge.ksd/stream/reachability-metadata.json \
-  /app/config/META-INF/native-image/io.kineticedge.ksd/stream/reachability-metadata.json
+
+COPY ./src/main/resources/META-INF/native-image /app/config/META-INF/native-image
+
 
 #COPY ./src/main/resources/META-INF/native-image/io.kineticedge.ksd/stream/reachability-metadata.json /app/config/reachability-metadata.json
+
 COPY ./build/distributions/streams-1.0.tar ./streams-1.0.tar
 
 
 RUN tar xfv ./streams-1.0.tar
 
+##
+## TODO
+##
+## support x86 too - net/jpountz/util/linux/amd64/liblz4-java.so
+
 RUN mkdir -p /app/native-libs && \
     cd /app/native-libs && \
-    jar xf /app/streams-1.0/lib/rocksdbjni-9.7.3.jar librocksdbjni-linux-aarch64.so
+    jar xf /app/streams-1.0/lib/rocksdbjni-10.1.3.jar librocksdbjni-linux-aarch64.so && \
+    jar xf /app/streams-1.0/lib/lz4-java-1.10.1.jar net/jpountz/util/linux/aarch64/liblz4-java.so && \
+    mv net/jpountz/util/linux/aarch64/liblz4-java.so . && \
+    rm -rf net && \
+    jar xf /app/streams-1.0/lib/zstd-jni-1.5.6-10.jar linux/aarch64/libzstd-jni-1.5.6-10.so && \
+    mv linux/aarch64/libzstd-jni-1.5.6-10.so . && \
+    rm -rf linux && \
+    jar xf /app/streams-1.0/lib/snappy-java-1.1.10.7.jar org/xerial/snappy/native/Linux/aarch64/libsnappyjava.so && \
+    mv org/xerial/snappy/native/Linux/aarch64/libsnappyjava.so . && \
+    rm -rf org
 
 RUN CLASSPATH=$(echo streams-1.0/lib/*.jar | tr ' ' ':') &&  \
   native-image \
-  -cp "/app/config:${CLASSPATH}" io.kineticedge.ksd.streams.Main -o ./stream \
+  -cp "/app/config:${CLASSPATH}" io.kineticedge.ksd.streams.Main -o ./build/stream \
   --no-fallback \
   --enable-http \
   --enable-https \

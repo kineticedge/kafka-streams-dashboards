@@ -4,56 +4,113 @@ global:
 scrape_configs:
 
   - job_name: zookeeper
+    scrape_interval: 30s
     metrics_path: /metrics
-    static_configs:
-      - targets:
-          - zookeeper:7071
-        labels:
-          cluster_type: "zookeeper"
-          job: "kafka-zookeeper"
+    dns_sd_configs:
+      - names:
+          - 'zookeeper'
+        type: 'A'
+        port: 7071
     relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.*):(.*)'
+      - source_labels: [__meta_dns_name]
         target_label: instance
-        replacement: '$1'
+      - replacement: 'zookeeper'
+        target_label: cluster_type
+      - replacement: 'kafka-zookeeper'
+        target_label: job
 
   - job_name: kafka
     scrape_interval: 30s
     metrics_path: /metrics
-    static_configs:
-      - targets:
-        - controller-0:7071
-        - controller-1:7071
-        - controller-2:7071
-        - broker-1:7071
-        - broker-2:7071
-        - broker-3:7071
-        - broker-4:7071
-        labels:
-          cluster_type: "kafka"
-          job: "kafka-core"
+    dns_sd_configs:
+      - names:
+          - 'controller-0'
+          - 'controller-1'
+          - 'controller-2'
+          - 'broker-1'
+          - 'broker-2'
+          - 'broker-3'
+          - 'broker-4'
+        type: 'A'
+        port: 7071
     relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.*):(.*)'
+      - source_labels: [__meta_dns_name]
         target_label: instance
-        replacement: '$1'
+      - replacement: 'kafka'
+        target_label: cluster_type
+
+  - job_name: kafka-sasl
+    scrape_interval: 30s
+    metrics_path: /metrics
+    dns_sd_configs:
+      - names:
+          - 'sasl-controller-0'
+          - 'sasl-controller-1'
+          - 'sasl-controller-2'
+          - 'sasl-broker-1'
+          - 'sasl-broker-2'
+          - 'sasl-broker-3'
+          - 'sasl-broker-4'
+        type: 'A'
+        port: 7071
+    relabel_configs:
+      - source_labels: [__meta_dns_name]
+        target_label: instance
+      - replacement: 'kafka'
+        target_label: cluster_type
+
+  - job_name: kafka-ssl
+    scrape_interval: 30s
+    metrics_path: /metrics
+    dns_sd_configs:
+      - names:
+          - 'sasl-controller-0'
+          - 'sasl-controller-1'
+          - 'sasl-controller-2'
+          - 'sasl-broker-1'
+          - 'sasl-broker-2'
+          - 'sasl-broker-3'
+          - 'sasl-broker-4'
+        type: 'A'
+        port: 7071
+    relabel_configs:
+      - source_labels: [__meta_dns_name]
+        target_label: instance
+      - replacement: 'kafka'
+        target_label: cluster_type
 
   - job_name: koffset
     scrape_interval: 5s
     metrics_path: /metrics
     params:
       primary: ["true"]
-    static_configs:
-      - targets:
-          - koffset:8080
-        labels:
-          job: "koffset-kafka-core"
+    dns_sd_configs:
+      - names:
+          - 'koffset'
+        type: 'A'
+        port: 8080
     relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.*):(.*)'
+      - source_labels: [__meta_dns_name]
         target_label: instance
-        replacement: '$1'
+      - replacement: 'kafka'
+        target_label: cluster_type
 
+#  - job_name: koffset
+#    scrape_interval: 5s
+#    metrics_path: /metrics
+#    params:
+#      primary: ["true"]
+#    static_configs:
+#      - targets:
+#          - koffset:8080
+#        labels:
+#          job: "koffset-kafka-core"
+#    relabel_configs:
+#      - source_labels: [__address__]
+#        regex: '(.*):(.*)'
+#        target_label: instance
+#        replacement: '$1'
+#
   - job_name: 'opentelemetry'
     static_configs:
       - targets: ['otel:9091']
@@ -62,12 +119,9 @@ scrape_configs:
     static_configs:
       - targets: ['broker-otel:9091']
 
-
   - job_name: 'container-info'
     static_configs:
       - targets: ['container-info:9323']
-
-
 
   - job_name: publishers
     scrape_interval: 2s
@@ -95,6 +149,7 @@ scrape_configs:
     dns_sd_configs:
       - names:
           - 'stream'
+          - 'stream-native'
         type: 'A'
         port: 7071
     relabel_configs:

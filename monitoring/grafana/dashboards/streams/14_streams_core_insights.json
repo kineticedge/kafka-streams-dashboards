@@ -313,7 +313,7 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "editorMode": "code",
-          "expr": "count(\n  group by (instance) (kafka_stream_application{job=\"$job\", application_id=\"$application\"})\n)",
+          "expr": "count(\n  group by (instance) (kafka_stream_client_state{job=\"$job\", application_id=\"$application\"})\n)",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -1654,12 +1654,12 @@
           "text": "streams",
           "value": "streams"
         },
-        "definition": "label_values(kafka_stream_application{cluster_type=\"streams\"},job)",
+        "definition": "label_values(kafka_stream_client_state{cluster_type=\"streams\"},job)",
         "name": "job",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_stream_application{cluster_type=\"streams\"},job)",
+          "query": "label_values(kafka_stream_client_state{cluster_type=\"streams\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -1671,12 +1671,12 @@
           "text": "pickup-order-handler",
           "value": "pickup-order-handler"
         },
-        "definition": "label_values(kafka_stream_application{job=\"$job\"},application_id)",
+        "definition": "label_values(kafka_stream_client_state{job=\"$job\"},application_id)",
         "name": "application",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_stream_application{job=\"$job\"},application_id)",
+          "query": "label_values(kafka_stream_client_state{job=\"$job\"},application_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -1688,14 +1688,14 @@
           "text": "All",
           "value": "$__all"
         },
-        "definition": "label_values(kafka_stream_application{cluster_type=\"streams\", job=\"$job\", application_id=\"$application\"},instance)",
+        "definition": "label_values(kafka_stream_client_state{cluster_type=\"streams\", job=\"$job\", application_id=\"$application\"},instance)",
         "hide": 2,
         "includeAll": true,
         "name": "instance",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_stream_application{cluster_type=\"streams\", job=\"$job\", application_id=\"$application\"},instance)",
+          "query": "label_values(kafka_stream_client_state{cluster_type=\"streams\", job=\"$job\", application_id=\"$application\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

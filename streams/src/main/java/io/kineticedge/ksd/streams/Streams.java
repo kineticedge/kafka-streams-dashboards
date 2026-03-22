@@ -213,10 +213,8 @@ public class Streams {
             @Override
             public Meter.Id map(Meter.Id id) {
                 // Use Stream.concat to build the final tag list in one pipeline
-                var tags = Stream.concat(
-                        id.getTags().stream().filter(t -> !t.getKey().equals("kafka.version")),
-                        Stream.of(Tag.of("application_id", options.getApplicationId())
-                        )
+                var tags = id.getTags().stream().filter(t -> !t.getKey().equals("kafka.version")
+//                var tags = Stream.concat(id.getTags().stream().filter(t -> !t.getKey().equals("kafka.version")), Stream.of(Tag.of("application_id", options.getApplicationId()))
                 ).collect(Collectors.toList());
                 return new Meter.Id(id.getName(), Tags.of(tags), id.getBaseUnit(), id.getDescription(), id.getType());
             }

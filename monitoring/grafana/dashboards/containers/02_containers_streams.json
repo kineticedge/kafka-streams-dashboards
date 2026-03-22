@@ -585,14 +585,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "query_result(container_info{id=~\"^[a-f0-9]{64}$\", project=~\"$project\"} * on (name) group_left() (label_replace(kafka_stream_application{}, \"name\", \"$1\", \"instance\", \"(.+)\")))",
+        "definition": "query_result(container_info{id=~\"^[a-f0-9]{64}$\", project=~\"$project\"} * on (name) group_left() (label_replace(kafka_stream_client_state{}, \"name\", \"$1\", \"instance\", \"(.+)\")))",
         "includeAll": false,
         "label": "Docker Compose Service",
         "name": "service",
         "options": [],
         "query": {
           "qryType": 3,
-          "query": "query_result(container_info{id=~\"^[a-f0-9]{64}$\", project=~\"$project\"} * on (name) group_left() (label_replace(kafka_stream_application{}, \"name\", \"$1\", \"instance\", \"(.+)\")))",
+          "query": "query_result(container_info{id=~\"^[a-f0-9]{64}$\", project=~\"$project\"} * on (name) group_left() (label_replace(kafka_stream_client_state{}, \"name\", \"$1\", \"instance\", \"(.+)\")))",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

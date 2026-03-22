@@ -149,7 +149,6 @@ scrape_configs:
     dns_sd_configs:
       - names:
           - 'stream'
-          - 'stream-native'
         type: 'A'
         port: 7071
     relabel_configs:
@@ -169,6 +168,66 @@ scrape_configs:
         separator: ';'
         replacement: '$1@$2'
         target_label: instance_display
+
+
+#  - job_name: streams-micrometer
+#    scrape_interval: 2s
+#    metrics_path: /metrics
+#    dns_sd_configs:
+#      - names:
+#          - 'stream'
+#          - 'stream-native'
+#        type: 'A'
+#        port: 8080
+#    relabel_configs:
+#      - source_labels: [__address__]
+#        regex: '(.*):[0-9]+'
+#        target_label: instance
+#        replacement: '$1'
+#      - replacement: 'streams'
+#        target_label: cluster_type
+#    metric_relabel_configs:
+#      - source_labels: [rocksdb_state_id,rocksdb_window_state_id,rocksdb_session_state_id,in_memory_state_id,in_memory_window_state_id,in_memory_lru_state_id,in_memory_suppression_state_id]
+#        separator: '' # ; is the default, but since only one of the source labels is ever defined, we remove this separator
+#        target_label: state_id
+#        regex: '(.+)'
+#        replacement: '$1'
+#        action: replace
+#      - source_labels: [rocksdb_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "rocksdb_state"
+#        action: replace
+#      - source_labels: [rocksdb_window_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "rocksdb_window_state"
+#        action: replace
+#      - source_labels: [rocksdb_session_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "rocksdb_session_state"
+#        action: replace
+#      - source_labels: [in_memory_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "in_memory_state"
+#        action: replace
+#      - source_labels: [in_memory_window_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "in_memory_window_state"
+#        action: replace
+#      - source_labels: [in_memory_lru_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "in_memory_lru_state"
+#        action: replace
+#      - source_labels: [in_memory_suppression_state_id]
+#        target_label: "store_type"
+#        regex: ".+"
+#        replacement: "in_memory_suppression_state"
+#        action: replace
 
   - job_name: analytics
     scrape_interval: 2s
@@ -202,6 +261,10 @@ scrape_configs:
         separator: ';'
         replacement: '$1@$2'
         target_label: instance_display
+
+
+
+
 
 #  - job_name: 'cadvisor'
 #    scrape_interval: 5s

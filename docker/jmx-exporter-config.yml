@@ -126,15 +126,32 @@ rules:
 #
 # stream metrics
 #
-#- pattern: *:*
+  #- pattern: *:*
 - pattern: kafka.streams<type=kafka-metrics-count><>(.+):.+
-  # in 1.0.1 _info gets sanitized, use _infor - https://github.com/prometheus/jmx_exporter/issues/982
-- pattern: "kafka.streams<type=stream-metrics, client-id=(.+)><>(application-id): (.+)"
-  name: kafka_stream_application
-  value: 1
+#
+# New Kafka Streams 4.2 metric with application.id within selection, making it easy to bring in for
+# use in selections.
+#
+- pattern: kafka.streams<type=stream-metrics, process-id=(.*), application-id=(.*), client-id=(.*)><>(.+):.+
+  name: kafka_stream_$4
   labels:
-    client_id: $1
-    "$2": "$3"
+    process_id: "$1"
+    application_id: "$2"
+    client_id: "$3"
+  type: GAUGE
+#
+# USE THIS IF YOU ARE NOT USING KAFKA STREAMS 4.2 or LATER
+#  This grabs the non-metric attribute of the application-id, and pulls it out as a label.
+#  But with Kafka Streams 4.2, 'client-state' makes this unnecessary.
+#
+#- pattern: "kafka.streams<type=stream-metrics, client-id=(.+)><>(application-id): (.+)"
+#  #name: kafka_stream_application
+#  name: kafka_stream_client_state
+#  value: 1
+#  labels:
+#    client_id: $1
+#    "$2": "$3"
+#
 - pattern: kafka.streams<type=stream-record-cache-metrics, thread-id=(.+), task-id=(.+), record-cache-id=(.+)><>(.+):.+
   name: kafka_stream_record_cache_$4
   labels:

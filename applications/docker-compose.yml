@@ -49,6 +49,8 @@ services:
     # provides network privileges to allow 'tc' to be used
     cap_add:
       - NET_ADMIN
+    ports:
+      - "7072:7072"
     volumes:
       - ./streams-1.0.tar:/app.tar
       - ./streams.properties:/streams.properties
@@ -97,6 +99,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
     deploy:
       replicas: 1
     cap_add:
@@ -124,6 +129,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
     deploy:
       replicas: 1
     cap_add:
@@ -151,6 +159,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
     deploy:
       replicas: 1
     cap_add:
@@ -178,6 +189,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
     deploy:
       replicas: 1
     cap_add:
@@ -205,6 +219,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
     deploy:
       replicas: 1
     cap_add:

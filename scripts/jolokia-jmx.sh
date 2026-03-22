@@ -14,7 +14,8 @@
 
 set -euo pipefail
 
-JOLOKIA_URL="${JOLOKIA_URL:-http://localhost:17072/jolokia}"
+#JOLOKIA_URL="${JOLOKIA_URL:-http://localhost:17072/jolokia}"
+JOLOKIA_URL="${JOLOKIA_URL:-http://localhost:7072/jolokia}"
 
 # Check if jq is available
 if ! command -v jq &> /dev/null; then

@@ -34,7 +34,7 @@ RUN mkdir -p /app/native-libs && \
 
 RUN CLASSPATH=$(echo streams-1.0/lib/*.jar | tr ' ' ':') &&  \
   native-image \
-  -cp "/app/config:${CLASSPATH}" io.kineticedge.ksd.streams.Main -o ./build/stream \
+  -cp "/app/config:${CLASSPATH}" io.kineticedge.ksd.streams.Main -o ./stream \
   --no-fallback \
   --enable-http \
   --enable-https \
@@ -55,7 +55,7 @@ FROM debian:12-slim AS runner
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     zlib1g && \
-    rm -rf /var/lib/apt/lists/* \
+    rm -rf /var/lib/apt/lists/*
 
 USER 1001
 

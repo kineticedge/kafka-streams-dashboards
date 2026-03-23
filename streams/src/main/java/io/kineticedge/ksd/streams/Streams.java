@@ -212,11 +212,9 @@ public class Streams {
 
             @Override
             public Meter.Id map(Meter.Id id) {
-                // Use Stream.concat to build the final tag list in one pipeline
-                var tags = id.getTags().stream().filter(t -> !t.getKey().equals("kafka.version")
-//                var tags = Stream.concat(id.getTags().stream().filter(t -> !t.getKey().equals("kafka.version")), Stream.of(Tag.of("application_id", options.getApplicationId()))
-                ).collect(Collectors.toList());
-                return new Meter.Id(id.getName(), Tags.of(tags), id.getBaseUnit(), id.getDescription(), id.getType());
+                // Don't modify tags here - it breaks the Kafka->Micrometer metric binding
+                // Instead, remove kafka_version label in Prometheus metric_relabel_configs
+                return id;
             }
         });
 

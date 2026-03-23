@@ -169,8 +169,7 @@ scrape_configs:
         replacement: '$1@$2'
         target_label: instance_display
 
-
-#  - job_name: streams-micrometer
+#  - job_name: streams
 #    scrape_interval: 2s
 #    metrics_path: /metrics
 #    dns_sd_configs:
@@ -180,13 +179,18 @@ scrape_configs:
 #        type: 'A'
 #        port: 8080
 #    relabel_configs:
+#      - source_labels: [__meta_dns_name]
+#        target_label: service
 #      - source_labels: [__address__]
 #        regex: '(.*):[0-9]+'
-#        target_label: instance
 #        replacement: '$1'
+#        target_label: instance
 #      - replacement: 'streams'
 #        target_label: cluster_type
 #    metric_relabel_configs:
+#      # Remove the kafka_version label from all metrics (it's always the same value)
+#      - regex: 'kafka_version'
+#        action: labeldrop
 #      - source_labels: [rocksdb_state_id,rocksdb_window_state_id,rocksdb_session_state_id,in_memory_state_id,in_memory_window_state_id,in_memory_lru_state_id,in_memory_suppression_state_id]
 #        separator: '' # ; is the default, but since only one of the source labels is ever defined, we remove this separator
 #        target_label: state_id

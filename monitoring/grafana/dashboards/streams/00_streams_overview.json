@@ -3273,15 +3273,37 @@
     "list": [
       {
         "current": {
-          "text": "analytics",
-          "value": "analytics"
+          "text": "^[^_]+$",
+          "value": "^[^_]+$"
         },
-        "definition": "label_values(kafka_stream_client_state{cluster_type=\"streams\"},job)",
+        "label": "source",
+        "name": "source",
+        "options": [
+          {
+            "selected": true,
+            "text": "jmx",
+            "value": "^[^_]+$"
+          },
+          {
+            "selected": false,
+            "text": "micrometer",
+            "value": ".*_micrometer"
+          }
+        ],
+        "query": "jmx : ^[^_]+$ , micrometer : .*_micrometer",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "streams",
+          "value": "streams"
+        },
+        "definition": "label_values(kafka_stream_client_state{cluster_type=\"streams\", job=~\"$source\"},job)",
         "name": "job",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_stream_client_state{cluster_type=\"streams\"},job)",
+          "query": "label_values(kafka_stream_client_state{cluster_type=\"streams\", job=~\"$source\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

@@ -218,7 +218,11 @@ if [[ "$CLUSTER" == "cluster-ts" ]]; then
 fi
 
 
+# make sure stream is up first
+# TODO need to fix healthcheck
+(cd "$APPLICATIONS_DIR"; SECURITY=$SECURITY docker compose up -d stream --wait)
 
+sleep .5
 (cd "$APPLICATIONS_DIR"; SECURITY=$SECURITY docker compose up -d)
 
 

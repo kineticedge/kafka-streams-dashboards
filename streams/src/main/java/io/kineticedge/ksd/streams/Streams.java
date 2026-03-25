@@ -13,7 +13,15 @@ import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
+import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmInfoMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmThreadDeadlockMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
 import io.micrometer.core.instrument.binder.kafka.KafkaStreamsMetrics;
+import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
+import io.micrometer.core.instrument.binder.system.UptimeMetrics;
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.config.MeterFilterReply;
 import io.micrometer.prometheusmetrics.PrometheusConfig;
@@ -225,21 +233,24 @@ public class Streams {
 
         kafkaStreamsMetrics.bindTo(prometheusMeterRegistry);
 
+        //TODO -- add closable call to
+        new JvmMetrics(prometheusMeterRegistry);
+
 //        prometheusMeterRegistry.forEachMeter(meter -> {
 //            System.out.println("meter: " + meter.getId());
 //        });
 
-        prometheusMeterRegistry.gauge(
-                "kafka_stream_application",
-                Tags.empty(),
-                //Tags.of(Tag.of("application.id", options.getApplicationId())),
-                streams,
-                s -> switch (s.state()) {
-                    case RUNNING -> 1.0;
-                    case REBALANCING -> 0.5;
-                    default -> 0.0;
-                }
-        );
+//        prometheusMeterRegistry.gauge(
+//                "kafka_stream_application",
+//                Tags.empty(),
+//                //Tags.of(Tag.of("application.id", options.getApplicationId())),
+//                streams,
+//                s -> switch (s.state()) {
+//                    case RUNNING -> 1.0;
+//                    case REBALANCING -> 0.5;
+//                    default -> 0.0;
+//                }
+//        );
 
         Metrics.globalRegistry.add(prometheusMeterRegistry);
 

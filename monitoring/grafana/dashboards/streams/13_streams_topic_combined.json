@@ -1293,36 +1293,45 @@
   "templating": {
     "list": [
       {
-        "allValue": ".+",
+        "current": {
+          "text": "^[^_]+$",
+          "value": "^[^_]+$"
+        },
+        "label": "source",
+        "name": "source",
+        "options": [
+          {
+            "selected": true,
+            "text": "jmx",
+            "value": "^[^_]+$"
+          },
+          {
+            "selected": false,
+            "text": "micrometer",
+            "value": ".*_micrometer"
+          }
+        ],
+        "query": "jmx : ^[^_]+$ , micrometer : .*_micrometer",
+        "type": "custom"
+      },
+      {
         "current": {
           "selected": false,
-          "text": "kafka-core",
-          "value": "kafka-core"
+          "text": "All",
+          "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
-        "definition": "label_values(kafka_stream_client_state{cluster_type=\"kafka\"},job)",
-        "hide": 0,
+        "definition": "label_values(kafka_stream_client_state{cluster_type=\"streams\", job=~\"$source\"},job)",
         "includeAll": true,
-        "label": "kafka cluster",
-        "multi": false,
-        "name": "kafka_cluster",
+        "name": "job",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kafka_stream_client_state{cluster_type=\"kafka\"},job)",
+          "query": "label_values(kafka_stream_client_state{cluster_type=\"streams\", job=~\"$source\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".+",

@@ -21,11 +21,11 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 31,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -43,6 +43,9 @@
               "type": "auto"
             },
             "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -111,7 +114,7 @@
                   "steps": [
                     {
                       "color": "semi-dark-orange",
-                      "value": null
+                      "value": 0
                     }
                   ]
                 }
@@ -129,19 +132,11 @@
       "id": 44,
       "options": {
         "cellHeight": "md",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true,
         "showRowNums": false,
         "sortBy": []
       },
-      "pluginVersion": "11.4.0-205587",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -150,7 +145,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "label_replace(kafka_stream_processor_node_process_total{job=~\"${job}\"} * on (instance) group_left(application_id) kafka_stream_client_state{application_id=~\"${application}\"} , \"subtopology\", \"$1\", \"task_id\", \"(.*)_.*\")",
+          "expr": "label_replace(kafka_stream_processor_node_process_total{job=~\"${job}\"} * on (job, instance) group_left(application_id) kafka_stream_client_state{job=~\"${job}\", application_id=~\"${application}\"} , \"subtopology\", \"$1\", \"task_id\", \"(.*)_.*\")",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -180,7 +175,6 @@
               "Time": 5,
               "Value": 10,
               "application_id": 1,
-              "job": 0,
               "cluster_type": 7,
               "instance": 2,
               "job": 6,
@@ -207,11 +201,11 @@
                 "aggregations": [],
                 "operation": "groupby"
               },
-              "job": {
+              "instance": {
                 "aggregations": [],
                 "operation": "groupby"
               },
-              "instance": {
+              "job": {
                 "aggregations": [],
                 "operation": "groupby"
               },
@@ -278,6 +272,9 @@
               "type": "auto"
             },
             "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -414,7 +411,7 @@
                   "steps": [
                     {
                       "color": "semi-dark-orange",
-                      "value": null
+                      "value": 0
                     }
                   ]
                 }
@@ -436,14 +433,6 @@
       "id": 46,
       "options": {
         "cellHeight": "md",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true,
         "showRowNums": false,
         "sortBy": [
@@ -453,7 +442,7 @@
           }
         ]
       },
-      "pluginVersion": "11.4.0-205587",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -462,7 +451,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum (kafka_stream_processor_node_process_total{task_id=~\"([0-9]+)_(.+)\", job=~\"${job}\"} * on (instance) group_left(application_id) kafka_stream_client_state{application_id=~\"$application\", instance=~\"$instance\"}) without()",
+          "expr": "sum (kafka_stream_processor_node_process_total{task_id=~\"([0-9]+)_(.+)\", job=~\"${job}\"} * on (job, instance) group_left(application_id) kafka_stream_client_state{job=~\"${job}\", application_id=~\"$application\", instance=~\"$instance\"}) without()",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -491,7 +480,6 @@
               "Time": 5,
               "Value": 9,
               "application_id": 1,
-              "job": 0,
               "cluster_type": 7,
               "instance": 2,
               "job": 6,
@@ -525,11 +513,11 @@
                 "aggregations": [],
                 "operation": "groupby"
               },
-              "job": {
+              "instance": {
                 "aggregations": [],
                 "operation": "groupby"
               },
-              "instance": {
+              "job": {
                 "aggregations": [],
                 "operation": "groupby"
               },
@@ -579,49 +567,59 @@
       "type": "table"
     }
   ],
+  "preload": false,
   "refresh": "1m",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 42,
   "tags": [
     "streams"
   ],
   "templating": {
     "list": [
+
       {
-        "allValue": ".+",
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "^[^_]+$",
+          "value": "^[^_]+$"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
-        "definition": "label_values(kafka_stream_client_state{cluster_type=\"streams\"}, job)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "job",
-        "multi": false,
-        "name": "job",
-        "options": [],
-        "query": {
-          "query": "label_values(kafka_stream_client_state{cluster_type=\"streams\"}, job)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "label": "source",
+        "name": "source",
+        "options": [
+          {
+            "selected": true,
+            "text": "jmx",
+            "value": "^[^_]+$"
+          },
+          {
+            "selected": false,
+            "text": "micrometer",
+            "value": ".*_micrometer"
+          }
+        ],
+        "query": "jmx : ^[^_]+$ , micrometer : .*_micrometer",
+        "type": "custom"
       },
       {
         "allValue": ".+",
         "current": {
-          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(kafka_stream_client_state{cluster_type=\"streams\", job=~\"$source\"},job)",
+        "includeAll": true,
+        "name": "job",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kafka_stream_client_state{cluster_type=\"streams\", job=~\"$source\"},job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+
+      {
+        "current": {
           "text": "All",
           "value": "$__all"
         },
@@ -630,9 +628,7 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_stream_client_state{job=~\"${job}\", application_id=~\".+\"}, application_id)",
-        "hide": 0,
         "includeAll": true,
-        "multi": false,
         "name": "application",
         "options": [],
         "query": {
@@ -641,14 +637,11 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
         "allValue": ".*",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -657,10 +650,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_stream_client_state{cluster_type=\"streams\", job=~\"${job}\", application_id=~\"$application\"}, instance)",
-        "hide": 0,
         "includeAll": true,
         "label": "instance",
-        "multi": false,
         "name": "instance",
         "options": [],
         "query": {
@@ -669,17 +660,12 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-1m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -695,23 +681,10 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "1m",
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
   "timezone": "",
   "title": "01 - Topology",
   "uid": "streams_topology",
-  "version": 1,
-  "weekStart": ""
+  "version": 1
 }

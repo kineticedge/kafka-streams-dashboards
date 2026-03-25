@@ -889,7 +889,28 @@
   "templating": {
     "list": [
       {
-        "allValue": ".+",
+        "current": {
+          "text": "^[^_]+$",
+          "value": "^[^_]+$"
+        },
+        "label": "source",
+        "name": "source",
+        "options": [
+          {
+            "selected": true,
+            "text": "jmx",
+            "value": "^[^_]+$"
+          },
+          {
+            "selected": false,
+            "text": "micrometer",
+            "value": ".*_micrometer"
+          }
+        ],
+        "query": "jmx : ^[^_]+$ , micrometer : .*_micrometer",
+        "type": "custom"
+      },
+      {
         "current": {
           "text": "All",
           "value": "$__all"
@@ -898,13 +919,13 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=~\"streams|producers|consumers\"},job)",
+        "definition": "label_values(kafka_producer_connection_count{job=~\"$source\"},job)",
         "includeAll": true,
         "label": "job",
         "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=~\"streams|producers|consumers\"},job)",
+          "query": "label_values(kafka_producer_connection_count{job=~\"$source\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -921,13 +942,13 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_producer_app_infor_start_time_ms{job=~\"$job\"},instance)",
+        "definition": "label_values(kafka_producer_connection_count{job=~\"$job\"},instance)",
         "includeAll": true,
         "label": "instance",
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_producer_app_infor_start_time_ms{job=~\"$job\"},instance)",
+          "query": "label_values(kafka_producer_connection_count{job=~\"$job\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,

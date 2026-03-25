@@ -43,11 +43,19 @@ val dockerRmiPrev by tasks.registering(Exec::class) {
 val dockerBuild by tasks.registering(Exec::class) {
     inputs.files("Dockerfile")
     dependsOn(dockerTagPrev)
-    commandLine("/usr/local/bin/docker", "build", "-t", "ksd_app:latest", ".")
+    //commandLine("/usr/local/bin/docker", "build", "-t", "ksd_app:latest", ".")
+    commandLine("/usr/local/bin/docker", "buildx", "build", "--platform", "linux/arm64", "-t", "ksd_app:latest", ".")
 }
 dockerBuild.configure {
     finalizedBy(dockerRmiPrev)
 }
+
+val dockerBuildFips by tasks.registering(Exec::class) {
+    inputs.files("Dockerfile")
+    dependsOn(dockerTagPrev)
+    commandLine("/usr/local/bin/docker", "buildx", "build", "-f", "./Dockerfile.other", "--platform", "linux/amd64", "-t", "ksd_app:other-latest", ".")
+}
+
 
 
 tasks.named("build") {

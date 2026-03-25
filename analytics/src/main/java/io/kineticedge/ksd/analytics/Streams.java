@@ -13,7 +13,15 @@ import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
+import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmInfoMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmThreadDeadlockMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
 import io.micrometer.core.instrument.binder.kafka.KafkaStreamsMetrics;
+import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
+import io.micrometer.core.instrument.binder.system.UptimeMetrics;
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.config.MeterFilterReply;
 import io.micrometer.prometheusmetrics.PrometheusConfig;
@@ -158,31 +166,30 @@ public class Streams {
         return MeterFilterReply.NEUTRAL;
       }
 
-      @Override
-      public Meter.Id map(Meter.Id id) {
-        // Use Stream.concat to build the final tag list in one pipeline
-        var tags = Stream.concat(
-                id.getTags().stream().filter(t -> !t.getKey().equals("kafka.version")),
-                Stream.of(Tag.of("application_id", options.getApplicationId())
-                )
-        ).collect(Collectors.toList());
-        return new Meter.Id(id.getName(), Tags.of(tags), id.getBaseUnit(), id.getDescription(), id.getType());
-      }
     });
+
+    new UptimeMetrics().bindTo(prometheusMeterRegistry);
+    new ClassLoaderMetrics().bindTo(prometheusMeterRegistry);
+    new JvmMemoryMetrics().bindTo(prometheusMeterRegistry);
+    new JvmGcMetrics().bindTo(prometheusMeterRegistry);
+    new ProcessorMetrics().bindTo(prometheusMeterRegistry);
+    new JvmThreadMetrics().bindTo(prometheusMeterRegistry);
+    new JvmThreadDeadlockMetrics().bindTo(prometheusMeterRegistry);
+    new JvmInfoMetrics().bindTo(prometheusMeterRegistry);
 
     final KafkaStreamsMetrics kafkaStreamsMetrics = new KafkaStreamsMetrics(streams);
     kafkaStreamsMetrics.bindTo(Metrics.globalRegistry);
-    Metrics.globalRegistry.gauge(
-            "kafka_stream_application",
-            Tags.empty(),
-            //Tags.of(Tag.of("application.id", options.getApplicationId())),
-            streams,
-            s -> switch (s.state()) {
-              case RUNNING -> 1.0;
-              case REBALANCING -> 0.5;
-              default -> 0.0;
-            }
-    );
+//    Metrics.globalRegistry.gauge(
+//            "kafka_stream_application",
+//            Tags.empty(),
+//            //Tags.of(Tag.of("application.id", options.getApplicationId())),
+//            streams,
+//            s -> switch (s.state()) {
+//              case RUNNING -> 1.0;
+//              case REBALANCING -> 0.5;
+//              default -> 0.0;
+//            }
+//    );
     Metrics.globalRegistry.add(prometheusMeterRegistry);
 
     final StateObserver observer = new StateObserver(streams, options.getWindowType());

@@ -22,11 +22,11 @@
     ]
   },
   "description": "Kafka Consumer Java client metrics",
-  "editable": false,
+  "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 16,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -46,6 +46,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -62,6 +63,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -78,111 +80,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "msg/s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 30,
-        "w": 12,
-        "x": 0,
-        "y": 0
-      },
-      "id": 8,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "last"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.1.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum by (client_id_truncated, topic_truncated) (label_replace(label_replace(kafka_consumer_fetch_manager_records_consumed_rate{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\", topic=~\"${topic}\"}, \"topic_truncated\", \"${1}\", \"topic\", \"(.{0,64})(.*)\"), \"client_id_truncated\", \"${1}\", \"client_id\", \"^(.*?)(-consumer$|$)\"))",
-          "instant": false,
-          "interval": "",
-          "legendFormat": "{{topic_truncated}} ({{client_id_truncated}})",
-          "refId": "B"
-        }
-      ],
-      "title": "Consumed Rate",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -195,9 +93,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 16,
+        "h": 12,
         "w": 12,
-        "x": 12,
+        "x": 0,
         "y": 0
       },
       "id": 5,
@@ -213,11 +111,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.3",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -254,6 +153,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -270,6 +170,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -286,7 +187,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -299,10 +200,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 14,
+        "h": 12,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 0
       },
       "id": 7,
       "options": {
@@ -319,11 +220,12 @@
           "sortDesc": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.3",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -341,19 +243,148 @@
       ],
       "title": "Consumer Lag By Partition",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "msg/s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum by (client_id_truncated, topic_truncated) (label_replace(label_replace(kafka_consumer_fetch_manager_records_consumed_rate{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\", client_id!~\"^.+-restore-consumer$\", topic=~\"${topic}\"}, \"topic_truncated\", \"${1}\", \"topic\", \"(.{0,64})(.*)\"), \"client_id_truncated\", \"${1}\", \"client_id\", \"^(.*?)(-consumer$|$)\"))",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{topic_truncated}} ({{client_id_truncated}})",
+          "refId": "B"
+        }
+      ],
+      "title": "Consumed Rate",
+      "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "2s",
-  "schemaVersion": 38,
+  "schemaVersion": 42,
   "tags": [
     "consumer"
   ],
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "^[^_]+$",
+          "value": "^[^_]+$"
+        },
+        "label": "source",
+        "name": "source",
+        "options": [
+          {
+            "selected": true,
+            "text": "jmx",
+            "value": "^[^_]+$"
+          },
+          {
+            "selected": false,
+            "text": "micrometer",
+            "value": ".*_micrometer"
+          }
+        ],
+        "query": "jmx : ^[^_]+$ , micrometer : .*_micrometer",
+        "type": "custom"
+      },
+      {
         "allValue": ".+",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -361,30 +392,22 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(jvm_runtime_info{cluster_type=~\"streams|producer|consumer\"},job)",
-        "hide": 0,
+        "definition": "label_values(kafka_consumer_connection_count{cluster_type=~\"streams|consumer\", job=~\"$source\"},job)",
         "includeAll": true,
         "label": "job",
-        "multi": false,
         "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(jvm_runtime_info{cluster_type=~\"streams|producer|consumer\"},job)",
+          "query": "label_values(kafka_consumer_connection_count{cluster_type=~\"streams|consumer\", job=~\"$source\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -392,30 +415,22 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\"},instance)",
-        "hide": 0,
+        "definition": "label_values(kafka_consumer_connection_count{job=~\"$job\"},instance)",
         "includeAll": true,
         "label": "instance",
-        "multi": false,
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\"},instance)",
+          "query": "label_values(kafka_consumer_connection_count{job=~\"$job\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -423,30 +438,22 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
-        "hide": 0,
+        "definition": "label_values(kafka_consumer_connection_count{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
         "includeAll": true,
         "label": "client-id",
-        "multi": false,
         "name": "client_id",
         "options": [],
         "query": {
-          "query": "label_values(kafka_consumer_app_infor_start_time_ms{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
+          "query": "label_values(kafka_consumer_connection_count{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\"},client_id)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".+",
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -455,10 +462,8 @@
           "uid": "prometheus"
         },
         "definition": "label_values(kafka_consumer_fetch_manager_records_consumed_rate{job=~\"$job\", instance=~\"$instance\", client_id=~\"$client_id\", topic=~\".+\"},topic)",
-        "hide": 0,
         "includeAll": true,
         "label": "topic",
-        "multi": false,
         "name": "topic",
         "options": [],
         "query": {
@@ -467,12 +472,7 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       }
     ]
   },
@@ -493,23 +493,10 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "1m",
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
   "timezone": "",
   "title": "08 - Consumer Lag",
   "uid": "consumer_lag",
-  "version": 8,
-  "weekStart": ""
+  "version": 4
 }

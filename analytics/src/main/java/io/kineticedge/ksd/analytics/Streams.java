@@ -63,6 +63,7 @@ import org.apache.kafka.streams.state.SessionStore;
 import org.apache.kafka.streams.state.TimestampedKeyValueStore;
 import org.apache.kafka.streams.state.ValueAndTimestamp;
 import org.apache.kafka.streams.state.WindowStore;
+import org.jspecify.annotations.NullMarked;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -87,6 +88,7 @@ public class Streams {
   //private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
   private static final DateTimeFormatter TIME_FORMATTER_SSS = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 
+
   private Map<String, Object> properties(final Options options) {
     final Map<String, Object> defaults = Map.ofEntries(
             Map.entry(ProducerConfig.LINGER_MS_CONFIG, 100),
@@ -100,7 +102,7 @@ public class Streams {
 
             Map.entry(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE),
             Map.entry(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, "TRACE"),
-            Map.entry(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class.getName()),
+            Map.entry(StreamsConfig.DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class.getName()),
             Map.entry(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG, RocksDBConfigSetter.class.getName()),
 
             Map.entry(StreamsConfig.METRIC_REPORTER_CLASSES_CONFIG, JmxReporter.class.getName()),
@@ -155,9 +157,8 @@ public class Streams {
     });
 
     final PrometheusMeterRegistry prometheusMeterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-
     prometheusMeterRegistry.config().meterFilter(new MeterFilter() {
-      @Override
+      @NullMarked
       public MeterFilterReply accept(io.micrometer.core.instrument.Meter.Id id) {
         if (id.getName().contains("number.open.files")) {
           log.debug("removing problematic metric {}", id.getName());
@@ -165,32 +166,13 @@ public class Streams {
         }
         return MeterFilterReply.NEUTRAL;
       }
-
     });
-
-    new UptimeMetrics().bindTo(prometheusMeterRegistry);
-    new ClassLoaderMetrics().bindTo(prometheusMeterRegistry);
-    new JvmMemoryMetrics().bindTo(prometheusMeterRegistry);
-    new JvmGcMetrics().bindTo(prometheusMeterRegistry);
-    new ProcessorMetrics().bindTo(prometheusMeterRegistry);
-    new JvmThreadMetrics().bindTo(prometheusMeterRegistry);
-    new JvmThreadDeadlockMetrics().bindTo(prometheusMeterRegistry);
-    new JvmInfoMetrics().bindTo(prometheusMeterRegistry);
+    new JvmMetrics(prometheusMeterRegistry);
 
     final KafkaStreamsMetrics kafkaStreamsMetrics = new KafkaStreamsMetrics(streams);
-    kafkaStreamsMetrics.bindTo(Metrics.globalRegistry);
-//    Metrics.globalRegistry.gauge(
-//            "kafka_stream_application",
-//            Tags.empty(),
-//            //Tags.of(Tag.of("application.id", options.getApplicationId())),
-//            streams,
-//            s -> switch (s.state()) {
-//              case RUNNING -> 1.0;
-//              case REBALANCING -> 0.5;
-//              default -> 0.0;
-//            }
-//    );
-    Metrics.globalRegistry.add(prometheusMeterRegistry);
+    kafkaStreamsMetrics.bindTo(prometheusMeterRegistry);
+
+    //Metrics.globalRegistry.add(prometheusMeterRegistry);
 
     final StateObserver observer = new StateObserver(streams, options.getWindowType());
     final Server servletDeployment = new Server(observer, prometheusMeterRegistry, options.getPort());

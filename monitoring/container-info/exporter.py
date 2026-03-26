@@ -80,9 +80,20 @@ def get_container_metrics_from_cgroup(cid, name, project, service):
     lines = []
 
     # details = get_container_details(cid)
-    # pid = details["State"]["Pid"]
-    # #print(f"pid={pid}, cid={cid}, name={name}, project={project}, service={service}, pid={pid}, base_path={base_path}")
-    # print(f"map={details}")
+    # # Get IP address from container network settings
+    # ip_address = "unknown"
+    # try:
+    #     networks = details.get("NetworkSettings", {}).get("Networks", {})
+    #     if networks:
+    #         # Get the first network's IP address
+    #         first_network = next(iter(networks.values()))
+    #         ip_address = first_network.get("IPAddress", "unknown")
+    # except Exception as e:
+    #     print(f"Error getting IP for {service}: {e}")
+    #
+    # # Emit service@ip metric
+    # service_at_ip = f"{service}@{ip_address}"
+    # lines.append(f'container_service_endpoint{{id="{cid}", name="{name}", project="{project}", service="{service}", ip="{ip_address}", endpoint="{service_at_ip}"}} 1')
 
     pid = get_pid(cid);
     print(f"pid={pid}, cid={cid}, name={name}, project={project}, service={service}, pid={pid}, base_path={base_path}")
@@ -256,8 +267,20 @@ def generate_metrics():
         project = labels.get("com.docker.compose.project", "standalone")
         service = labels.get("com.docker.compose.service", "none")
 
+        # Get IP address for service@ip label
+        ip_address = "unknown"
+        try:
+            networks = c.get("NetworkSettings", {}).get("Networks", {})
+            if networks:
+                first_network = list(networks.values())[0]
+                ip_address = first_network.get("IPAddress", "unknown")
+        except (IndexError, KeyError, AttributeError) as e:
+            print(f"Error getting IP for {service}: {e}")
+
+        service_at_ip = f"{service}@{ip_address}"
+
         lines.append(
-            f'container_info{{id="{cid}",name="{name}",project="{project}",service="{service}",image="{image}"}} 1'
+            f'container_info{{id="{cid}",name="{name}",project="{project}",service="{service}",image="{image}",endpoint="{service_at_ip}"}} 1'
         )
 
         lines.extend(get_container_metrics_from_cgroup(cid, name, project, service))

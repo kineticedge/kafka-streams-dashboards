@@ -206,8 +206,30 @@ public class Streams {
             return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_APPLICATION;
         });
 
-        final PrometheusMeterRegistry prometheusMeterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+//        final PrometheusMeterRegistry prometheusMeterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+//
+//        prometheusMeterRegistry.config().meterFilter(new MeterFilter() {
+//            @Override
+//            public MeterFilterReply accept(io.micrometer.core.instrument.Meter.Id id) {
+//                if (id.getName().contains("number.open.files")) {
+//                    log.debug("removing problematic metric {}", id.getName());
+//                    return MeterFilterReply.DENY;
+//                }
+//                return MeterFilterReply.NEUTRAL;
+//            }
+//
+//            @Override
+//            public Meter.Id map(Meter.Id id) {
+//                // Don't modify tags here - it breaks the Kafka->Micrometer metric binding
+//                // Instead, remove kafka_version label in Prometheus metric_relabel_configs
+//                return id;
+//            }
+//        });
+//
+//
+//        Metrics.addRegistry(prometheusMeterRegistry);
 
+        final PrometheusMeterRegistry prometheusMeterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
         prometheusMeterRegistry.config().meterFilter(new MeterFilter() {
             @Override
             public MeterFilterReply accept(io.micrometer.core.instrument.Meter.Id id) {
@@ -217,24 +239,14 @@ public class Streams {
                 }
                 return MeterFilterReply.NEUTRAL;
             }
-
-            @Override
-            public Meter.Id map(Meter.Id id) {
-                // Don't modify tags here - it breaks the Kafka->Micrometer metric binding
-                // Instead, remove kafka_version label in Prometheus metric_relabel_configs
-                return id;
-            }
         });
-
-
-        Metrics.addRegistry(prometheusMeterRegistry);
+        new JvmMetrics(prometheusMeterRegistry);
 
         final KafkaStreamsMetrics kafkaStreamsMetrics = new KafkaStreamsMetrics(streams);
 
         kafkaStreamsMetrics.bindTo(prometheusMeterRegistry);
 
         //TODO -- add closable call to
-        new JvmMetrics(prometheusMeterRegistry);
 
 //        prometheusMeterRegistry.forEachMeter(meter -> {
 //            System.out.println("meter: " + meter.getId());

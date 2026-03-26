@@ -112,7 +112,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (name, id) (\n  container_memory_bytes{key=\"anon\", id=~\"^[a-f0-9]{64}$\", project=~\"$project\", service=~\"$service\", name=~\"$container\"} \n)",
+          "expr": "sum by (name, id) (\n  container_memory_bytes{key=\"anon\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"} \n)",
           "interval": "",
           "legendFormat": "{{name}}",
           "range": true,
@@ -213,7 +213,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (name, id) (\n  container_memory_bytes{key=\"usage\", id=~\"^[a-f0-9]{64}$\", project=~\"$project\", service=~\"$service\", name=~\"$container\"} \n)",
+          "expr": "sum by (name, id) (\n  container_memory_bytes{key=\"usage\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"} \n)",
           "interval": "",
           "legendFormat": "{{name}}",
           "range": true,
@@ -314,7 +314,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (name, id) (\n  container_memory_bytes{key=\"kernel_stack\", id=~\"^[a-f0-9]{64}$\", project=~\"$project\", service=~\"$service\", name=~\"$container\"} \n)",
+          "expr": "sum by (name, id) (\n  container_memory_bytes{key=\"kernel_stack\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"} \n)",
           "interval": "",
           "legendFormat": "{{name}}",
           "range": true,
@@ -422,7 +422,7 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "editorMode": "code",
-          "expr": "sum by (name, component) (\n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"heap\"}\n             * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"01_jvm_heap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"heap\"} - jvm_memory_used_bytes{area=\"heap\"})\n             * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"02_jvm_heap_free\", \"\", \"\"\n  )\n\n  or \n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"nonheap\"}\n             * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"03_jvm_nonheap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"nonheap\"} - jvm_memory_used_bytes{area=\"nonheap\"})\n             * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"04_jvm_nonheap_free\", \"\", \"\"\n  )\n\n\n\n  ############################################################\n  # 03 — ROCKSDB BLOCK CACHE\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (rocksdb_shared_cache_block_cache_usage{} * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"05_rocksdb_block_cache\", \"\", \"\"\n  )\n\n  ############################################################\n  # 04 — ROCKSDB INDEX/FILTER\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_estimate_table_readers_mem{} * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"06_rocksdb_index_filter\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 05 — ROCKSDB MEMTABLES\n  ############################################################\n\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_size_all_mem_tables{} * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"07_rocksdb_memtables\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 06 — UNMAPPED PAGE CACHE\n  ############################################################\n\n  or\n\n  label_replace(\n    (\n      container_memory_bytes{key=\"file\", id=~\"^[a-f0-9]{64}$\", project=~\"$project\", service=~\"$service\", name=~\"$container\"}\n      - ignoring(key)\n        container_memory_bytes{key=\"file_mapped\", id=~\"^[a-f0-9]{64}$\", project=~\"$project\", service=~\"$service\", name=~\"$container\"}\n    ),\n    \"component\", \"08_unmapped_page_cache\", \"\", \"\"\n  )\n\n)",
+          "expr": "sum by (name, component) (\n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"heap\"}\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"01_jvm_heap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"heap\"} - jvm_memory_used_bytes{area=\"heap\"})\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"02_jvm_heap_free\", \"\", \"\"\n  )\n\n  or \n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"nonheap\"}\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"03_jvm_nonheap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"nonheap\"} - jvm_memory_used_bytes{area=\"nonheap\"})\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"04_jvm_nonheap_free\", \"\", \"\"\n  )\n\n\n\n  ############################################################\n  # 03 — ROCKSDB BLOCK CACHE\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (rocksdb_shared_cache_block_cache_usage{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"05_rocksdb_block_cache\", \"\", \"\"\n  )\n\n  ############################################################\n  # 04 — ROCKSDB INDEX/FILTER\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_estimate_table_readers_mem{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"06_rocksdb_index_filter\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 05 — ROCKSDB MEMTABLES\n  ############################################################\n\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_size_all_mem_tables{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"07_rocksdb_memtables\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 06 — UNMAPPED PAGE CACHE\n  ############################################################\n\n  or\n\n  label_replace(\n    (\n      container_memory_bytes{key=\"file\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"}\n      - ignoring(key)\n        container_memory_bytes{key=\"file_mapped\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"}\n    ),\n    \"component\", \"08_unmapped_page_cache\", \"\", \"\"\n  )\n\n)",
           "hide": false,
           "interval": "",
           "legendFormat": "{{name}}  - {{component}}",
@@ -522,7 +522,7 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "editorMode": "code",
-          "expr": "sum by (name, component) (\n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"heap\"}\n             * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"01_jvm_heap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"heap\"} - jvm_memory_used_bytes{area=\"heap\"})\n             * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"02_jvm_heap_free\", \"\", \"\"\n  )\n\n  or \n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"nonheap\"}\n             * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"03_jvm_nonheap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"nonheap\"} - jvm_memory_used_bytes{area=\"nonheap\"})\n             * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"04_jvm_nonheap_free\", \"\", \"\"\n  )\n\n\n\n  ############################################################\n  # 03 — ROCKSDB BLOCK CACHE\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (rocksdb_shared_cache_block_cache_usage{} * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"05_rocksdb_block_cache\", \"\", \"\"\n  )\n\n  ############################################################\n  # 04 — ROCKSDB INDEX/FILTER\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_estimate_table_readers_mem{} * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"06_rocksdb_index_filter\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 05 — ROCKSDB MEMTABLES\n  ############################################################\n\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_size_all_mem_tables{} * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"07_rocksdb_memtables\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 06 — UNMAPPED PAGE CACHE\n  ############################################################\n\n  or\n\n  label_replace(\n    (\n      container_memory_bytes{key=\"file\", id=~\"^[a-f0-9]{64}$\", project=~\"$project\", service=~\"$service\", name=~\"$container\"}\n      - ignoring(key)\n        container_memory_bytes{key=\"file_mapped\", id=~\"^[a-f0-9]{64}$\", project=~\"$project\", service=~\"$service\", name=~\"$container\"}\n    ),\n    \"component\", \"08_unmapped_page_cache\", \"\", \"\"\n  )\n\n  or \n\n  label_replace(\n    (\n      label_replace(\n          (java_lang_threading_threadcount{} * 1048576)\n             * on (instance) group_left(name) label_replace(container_info{project=~\"$project\", service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"13_jvm_thread_est\", \"\", \"\"\n  )\n\n)",
+          "expr": "sum by (name, component) (\n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"heap\"}\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"01_jvm_heap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"heap\"} - jvm_memory_used_bytes{area=\"heap\"})\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"02_jvm_heap_free\", \"\", \"\"\n  )\n\n  or \n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"nonheap\"}\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"03_jvm_nonheap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"nonheap\"} - jvm_memory_used_bytes{area=\"nonheap\"})\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"04_jvm_nonheap_free\", \"\", \"\"\n  )\n\n\n\n  ############################################################\n  # 03 — ROCKSDB BLOCK CACHE\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (rocksdb_shared_cache_block_cache_usage{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"05_rocksdb_block_cache\", \"\", \"\"\n  )\n\n  ############################################################\n  # 04 — ROCKSDB INDEX/FILTER\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_estimate_table_readers_mem{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"06_rocksdb_index_filter\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 05 — ROCKSDB MEMTABLES\n  ############################################################\n\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_size_all_mem_tables{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"07_rocksdb_memtables\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 06 — UNMAPPED PAGE CACHE\n  ############################################################\n\n  or\n\n  label_replace(\n    (\n      container_memory_bytes{key=\"file\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"}\n      - ignoring(key)\n        container_memory_bytes{key=\"file_mapped\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"}\n    ),\n    \"component\", \"08_unmapped_page_cache\", \"\", \"\"\n  )\n\n  or \n\n  label_replace(\n    (\n      label_replace(\n          (java_lang_threading_threadcount{} * 1048576)\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"13_jvm_thread_est\", \"\", \"\"\n  )\n\n)",
           "hide": false,
           "interval": "",
           "legendFormat": "{{name}}  - {{component}}",
@@ -543,32 +543,26 @@
   "templating": {
     "list": [
       {
-        "allValue": ".*",
-        "allowCustomValue": false,
         "current": {
-          "text": [
-            "ksda"
-          ],
-          "value": [
-            "ksda"
-          ]
+          "text": "^[^_]+$",
+          "value": "^[^_]+$"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
-        "definition": "label_values(container_info{id=~\"^[a-f0-9]{64}$\"},project)",
-        "includeAll": false,
-        "label": "Docker Compose Project",
-        "name": "project",
-        "options": [],
-        "query": {
-          "qryType": 1,
-          "query": "label_values(container_info{id=~\"^[a-f0-9]{64}$\"},project)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 1,
-        "type": "query"
+        "label": "source",
+        "name": "source",
+        "options": [
+          {
+            "selected": true,
+            "text": "jmx",
+            "value": "^[^_]+$"
+          },
+          {
+            "selected": false,
+            "text": "micrometer",
+            "value": ".*_micrometer"
+          }
+        ],
+        "query": "jmx : ^[^_]+$ , micrometer : .*_micrometer",
+        "type": "custom"
       },
       {
         "allValue": ".*",
@@ -585,14 +579,14 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "query_result(container_info{id=~\"^[a-f0-9]{64}$\", project=~\"$project\"} * on (name) group_left() (label_replace(kafka_stream_client_state{}, \"name\", \"$1\", \"instance\", \"(.+)\")))",
+        "definition": "query_result(container_info{id=~\"^[a-f0-9]{64}$\"} * on (endpoint) group_left() (label_replace(kafka_stream_client_state{job=~\"$source\"}, \"endpoint\", \"$1\", \"instance\", \"(.+)\")))",
         "includeAll": false,
         "label": "Docker Compose Service",
         "name": "service",
         "options": [],
         "query": {
           "qryType": 3,
-          "query": "query_result(container_info{id=~\"^[a-f0-9]{64}$\", project=~\"$project\"} * on (name) group_left() (label_replace(kafka_stream_client_state{}, \"name\", \"$1\", \"instance\", \"(.+)\")))",
+          "query": "query_result(container_info{id=~\"^[a-f0-9]{64}$\"} * on (endpoint) group_left() (label_replace(kafka_stream_client_state{job=~\"$source\"}, \"endpoint\", \"$1\", \"instance\", \"(.+)\")))",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -614,7 +608,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(container_info{id=~\"^[a-f0-9]{64}$\", project=~\"$project\", service=~\"$service\"},name)",
+        "definition": "label_values(container_info{id=~\"^[a-f0-9]{64}$\", service=~\"$service\"},name)",
         "includeAll": true,
         "label": "Container name",
         "multi": true,
@@ -622,7 +616,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(container_info{id=~\"^[a-f0-9]{64}$\", project=~\"$project\", service=~\"$service\"},name)",
+          "query": "label_values(container_info{id=~\"^[a-f0-9]{64}$\", service=~\"$service\"},name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -647,7 +641,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "01 - Containers - Kafka Streams",
+  "title": "02 - Containers - Kafka Streams",
   "uid": "containers_ks",
   "version": 6
 }

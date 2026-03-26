@@ -64,13 +64,13 @@ scrape_configs:
     metrics_path: /metrics
     dns_sd_configs:
       - names:
-          - 'sasl-controller-0'
-          - 'sasl-controller-1'
-          - 'sasl-controller-2'
-          - 'sasl-broker-1'
-          - 'sasl-broker-2'
-          - 'sasl-broker-3'
-          - 'sasl-broker-4'
+          - 'ssl-controller-0'
+          - 'ssl-controller-1'
+          - 'ssl-controller-2'
+          - 'ssl-broker-1'
+          - 'ssl-broker-2'
+          - 'ssl-broker-3'
+          - 'ssl-broker-4'
         type: 'A'
         port: 7071
     relabel_configs:

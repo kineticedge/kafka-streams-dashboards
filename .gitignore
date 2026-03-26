@@ -24,6 +24,8 @@ build
 /applications-sasl/security/*.jks
 /applications-sasl/security/*.properties
 
+/applications-ssl/security/*.jks
+/applications-ssl/security/*.p12
 
 target
 

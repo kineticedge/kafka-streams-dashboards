@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 28,
+  "id": 18,
   "links": [],
   "panels": [
     {
@@ -87,7 +87,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -163,7 +163,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -247,7 +247,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -331,7 +331,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -407,7 +407,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -492,7 +492,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -590,7 +590,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -688,7 +688,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -814,7 +814,7 @@
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -873,9 +873,30 @@
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Time": true
+              "Time": true,
+              "Value #A": false
             },
+            "includeByName": {},
+            "indexByName": {},
             "renameByName": {}
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": "0"
+                  }
+                },
+                "fieldName": "Value #A"
+              }
+            ],
+            "match": "any",
+            "type": "include"
           }
         }
       ],
@@ -962,7 +983,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -1089,7 +1110,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.5",
       "targets": [
         {
           "datasource": {
@@ -1985,8 +2006,8 @@
       {
         "allValue": ".+",
         "current": {
-          "text": "kafka-core",
-          "value": "kafka-core"
+          "text": "kafka",
+          "value": "kafka"
         },
         "datasource": {
           "type": "prometheus",
@@ -2053,5 +2074,5 @@
   "timezone": "browser",
   "title": "15 - Tiered Storage",
   "uid": "kafka_cluster_tiered_storage",
-  "version": 6
+  "version": 1
 }

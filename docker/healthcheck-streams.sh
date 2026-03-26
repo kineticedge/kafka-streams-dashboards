@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#curl -s http://localhost:7072/jolokia/read/kafka.streams:type=kafka-metrics-count | sed -E "s/.*\{\"count\":([0-9\.]+)\}.*/\1/"
+STATE=$(curl -s "http://localhost:7072/jolokia/read/kafka.streams:type=stream-metrics,client-id=*/state" | jq -r '.value | to_entries | .[0].value.state')
 
-COUNT=$(curl -s http://localhost:7072/jolokia/read/kafka.streams:type=kafka-metrics-count | jq -r ".value.count")
-
-[ "$COUNT" = "null" ] && echo 1
-
-[ "$COUNT" -ge 1 ]
+[ "$STATE" = "RUNNING" ]

@@ -148,6 +148,8 @@ services:
       CLIENT_ID_PREFIX: "analytics-tumbling"
       WINDOW_TYPE: TUMBLING
       COMMIT_INTERVAL: 100
+      KAFKA_PROCESSING_GUARANTEE: exactly_once_v2
+
       OTEL_SERVICE_NAME: ANALYTICS_TUMBLING
 
   analytics-hopping:

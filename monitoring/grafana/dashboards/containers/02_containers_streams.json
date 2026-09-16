@@ -1,0 +1,647 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 27,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum by (name, id) (\n  container_memory_bytes{key=\"anon\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"} \n)",
+          "interval": "",
+          "legendFormat": "{{name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Container - Working Set",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 18,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum by (name, id) (\n  container_memory_bytes{key=\"usage\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"} \n)",
+          "interval": "",
+          "legendFormat": "{{name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Container - Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum by (name, id) (\n  container_memory_bytes{key=\"kernel_stack\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"} \n)",
+          "interval": "",
+          "legendFormat": "{{name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Container - Kernel Stack",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 16,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 14,
+      "maxPerRow": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "repeat": "container",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "expr": "sum by (name, component) (\n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"heap\"}\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"01_jvm_heap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"heap\"} - jvm_memory_used_bytes{area=\"heap\"})\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"02_jvm_heap_free\", \"\", \"\"\n  )\n\n  or \n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"nonheap\"}\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"03_jvm_nonheap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"nonheap\"} - jvm_memory_used_bytes{area=\"nonheap\"})\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"04_jvm_nonheap_free\", \"\", \"\"\n  )\n\n\n\n  ############################################################\n  # 03 — ROCKSDB BLOCK CACHE\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (rocksdb_shared_cache_block_cache_usage{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"05_rocksdb_block_cache\", \"\", \"\"\n  )\n\n  ############################################################\n  # 04 — ROCKSDB INDEX/FILTER\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_estimate_table_readers_mem{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"06_rocksdb_index_filter\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 05 — ROCKSDB MEMTABLES\n  ############################################################\n\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_size_all_mem_tables{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"07_rocksdb_memtables\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 06 — UNMAPPED PAGE CACHE\n  ############################################################\n\n  or\n\n  label_replace(\n    (\n      container_memory_bytes{key=\"file\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"}\n      - ignoring(key)\n        container_memory_bytes{key=\"file_mapped\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"}\n    ),\n    \"component\", \"08_unmapped_page_cache\", \"\", \"\"\n  )\n\n)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{name}}  - {{component}}",
+          "range": true,
+          "refId": "E"
+        }
+      ],
+      "title": "Container & JVM Memory Breakdown - $container",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 24,
+        "x": 0,
+        "y": 35
+      },
+      "id": 19,
+      "maxPerRow": 2,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.1",
+      "repeat": "container",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "expr": "sum by (name, component) (\n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"heap\"}\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"01_jvm_heap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"heap\"} - jvm_memory_used_bytes{area=\"heap\"})\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"02_jvm_heap_free\", \"\", \"\"\n  )\n\n  or \n\n  label_replace(\n    (\n      label_replace(\n          jvm_memory_used_bytes{area=\"nonheap\"}\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"03_jvm_nonheap_used\", \"\", \"\"\n  )\n\n  or\n\n  label_replace(\n    (\n      label_replace(\n          (jvm_memory_committed_bytes{area=\"nonheap\"} - jvm_memory_used_bytes{area=\"nonheap\"})\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\",\n          \"$1\",\n          \"instance\",\n          \"(.*)\")\n    ),\n    \"component\", \"04_jvm_nonheap_free\", \"\", \"\"\n  )\n\n\n\n  ############################################################\n  # 03 — ROCKSDB BLOCK CACHE\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (rocksdb_shared_cache_block_cache_usage{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"05_rocksdb_block_cache\", \"\", \"\"\n  )\n\n  ############################################################\n  # 04 — ROCKSDB INDEX/FILTER\n  ############################################################\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_estimate_table_readers_mem{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"06_rocksdb_index_filter\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 05 — ROCKSDB MEMTABLES\n  ############################################################\n\n\n  or\n  label_replace(\n    (\n      label_replace(\n        (kafka_stream_state_size_all_mem_tables{} * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\")),\n        \"name\", \n        \"$1\", \n        \"instance\", \n        \"(.*)\")\n    ),\n    \"component\", \"07_rocksdb_memtables\", \"\", \"\"\n  )\n\n\n  ############################################################\n  # 06 — UNMAPPED PAGE CACHE\n  ############################################################\n\n  or\n\n  label_replace(\n    (\n      container_memory_bytes{key=\"file\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"}\n      - ignoring(key)\n        container_memory_bytes{key=\"file_mapped\", id=~\"^[a-f0-9]{64}$\", service=~\"$service\", name=~\"$container\"}\n    ),\n    \"component\", \"08_unmapped_page_cache\", \"\", \"\"\n  )\n\n  or \n\n  label_replace(\n    (\n      label_replace(\n          (java_lang_threading_threadcount{} * 1048576)\n             * on (instance) group_left(name) label_replace(container_info{service=~\"$service\", name=~\"$container\"}, \"instance\", \"$1\", \"name\", \"(.*)\"),\n          \"name\", \n          \"$1\", \n          \"instance\", \n          \"(.*)\")\n    ),\n    \"component\", \"13_jvm_thread_est\", \"\", \"\"\n  )\n\n)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{name}}  - {{component}}",
+          "range": true,
+          "refId": "E"
+        }
+      ],
+      "title": "Container & JVM Memory Breakdown - $container",
+      "type": "barchart"
+    }
+  ],
+  "preload": false,
+  "refresh": "10s",
+  "schemaVersion": 42,
+  "tags": [
+    "containers"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "^[^_]+$",
+          "value": "^[^_]+$"
+        },
+        "label": "source",
+        "name": "source",
+        "options": [
+          {
+            "selected": true,
+            "text": "jmx",
+            "value": "^[^_]+$"
+          },
+          {
+            "selected": false,
+            "text": "micrometer",
+            "value": ".*_micrometer"
+          }
+        ],
+        "query": "jmx : ^[^_]+$ , micrometer : .*_micrometer",
+        "type": "custom"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": false,
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "query_result(container_info{id=~\"^[a-f0-9]{64}$\"} * on (endpoint) group_left() (label_replace(kafka_stream_client_state{job=~\"$source\"}, \"endpoint\", \"$1\", \"instance\", \"(.+)\")))",
+        "includeAll": false,
+        "label": "Docker Compose Service",
+        "name": "service",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(container_info{id=~\"^[a-f0-9]{64}$\"} * on (endpoint) group_left() (label_replace(kafka_stream_client_state{job=~\"$source\"}, \"endpoint\", \"$1\", \"instance\", \"(.+)\")))",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/.*,service=\"(.+)\".+/",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "label_values(container_info{id=~\"^[a-f0-9]{64}$\", service=~\"$service\"},name)",
+        "includeAll": true,
+        "label": "Container name",
+        "multi": true,
+        "name": "container",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(container_info{id=~\"^[a-f0-9]{64}$\", service=~\"$service\"},name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h"
+    ]
+  },
+  "timezone": "browser",
+  "title": "02 - Containers - Kafka Streams",
+  "uid": "containers_ks",
+  "version": 6
+}

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+open -na "Google Chrome" --args --guest --new-window "http://localhost:3000/d/streams_statestore_putfetch/streams-statestore-put-fetch?orgId=1&refresh=1s"

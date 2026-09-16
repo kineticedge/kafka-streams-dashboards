@@ -1,0 +1,12 @@
+
+[package]
+name = "consumer"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.3", features = ["derive"] }
+rdkafka = { version = "0.37", features = ["cmake-build", "ssl"] }
+tokio = { version = "1", features = ["full"] }
+futures = "0.3"
+

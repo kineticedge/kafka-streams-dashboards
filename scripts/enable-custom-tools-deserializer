@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# depending on the ownership of your confluent based installation of Apache Kafka, you may need to run this as root.
+
+#
+# absolute path on the filesystem to this project
+#
+DIR=$(pwd "$(dirname "$(dirname "$0")")")
+
+echo ""
+echo "adding custom tools jar to confluent's installation so it can be used by the command line tools"
+echo ""
+echo "making it a symbolic link so it can be modified and rebuilt w/out the need to copy it again"
+echo ""
+echo ""
+
+ln -s $DIR/tools/build/libs/tools-1.0.jar /usr/local/confluent/share/java/kafka/kineticedge-tools-1.0.jar
+
+

@@ -1,0 +1,292 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+services:
+  publisher:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-clients.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # provides network privileges to allow 'tc' to be used
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./publisher-1.0.tar:/app.tar
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-publisher.properties:/security/credentials.properties
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      CLIENT_ID_PREFIX: "producer"
+      MAX_SKU: 100
+      PAUSE: 200
+      LINE_ITEM_COUNT: "1-4"
+      OTEL_SERVICE_NAME: PUBLISHER
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
+
+  stream:
+    image: ksd_app:latest
+    #hostname: stream
+    #container_name: stream
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    #ports:
+    #  - "7072:7072"
+    deploy:
+      replicas: 2
+    # provides network privileges to allow 'tc' to be used
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./streams-1.0.tar:/app.tar
+      - ./streams.properties:/streams.properties
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-streams.properties:/security/credentials.properties
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      CLIENT_ID_PREFIX: "stream"
+      OTEL_SERVICE_NAME: STREAMS
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
+
+  analytics-sliding:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-analytics-sliding.properties:/security/credentials.properties
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      APPLICATION_ID: "analytics-sliding"
+      CLIENT_ID_PREFIX: "analytics-sliding"
+      WINDOW_TYPE: SLIDING
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_SLIDING
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
+
+  analytics-tumbling:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-analytics-tumbling.properties:/security/credentials.properties
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      APPLICATION_ID: "analytics-tumbling"
+      CLIENT_ID_PREFIX: "analytics-tumbling"
+      WINDOW_TYPE: TUMBLING
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_TUMBLING
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
+
+  analytics-hopping:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-analytics-hopping.properties:/security/credentials.properties
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      APPLICATION_ID: "analytics-hopping"
+      CLIENT_ID_PREFIX: "analytics-hopping"
+      WINDOW_TYPE: HOPPING
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_HOPPING
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
+
+  analytics-session:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-analytics-session.properties:/security/credentials.properties
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      APPLICATION_ID: "analytics-session"
+      CLIENT_ID_PREFIX: "analytics-session"
+      WINDOW_TYPE: SESSION
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_SESSION
+      #
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
+
+  analytics-none:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+      - ./security/kafka.server.truststore.jks:/security/kafka.server.truststore.jks
+      - ./security/credentials-${SECURITY}-analytics-none.properties:/security/credentials.properties
+    environment:
+      BOOTSTRAP_SERVERS: sasl-broker-1:9093,sasl-broker-2:9093,sasl-broker-3:9093
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      APPLICATION_ID: "analytics-none"
+      CLIENT_ID_PREFIX: "analytics-none"
+      WINDOW_TYPE: NONE
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_NONE
+      #
+      JAVA_OPTS: >-
+        -Djavax.net.ssl.trustStore=/security/kafka.server.truststore.jks
+        -Djavax.net.ssl.trustStorePassword=broker_secret
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=https://keycloak:8443/realms/master/protocol/openid-connect/token,https://keycloak:8443/realms/master/protocol/openid-connect/certs
+
+  nginx:
+    image: nginx:1.27.4
+    container_name: ksda-nginx
+    hostname: nginx
+    stop_grace_period: 30s
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      stream:
+        condition: service_healthy
+      analytics-none:
+        condition: service_healthy
+      analytics-tumbling:
+        condition: service_healthy
+      analytics-hopping:
+        condition: service_healthy
+      analytics-sliding:
+        condition: service_healthy
+      analytics-session:
+        condition: service_healthy
+    ports:
+      - "8888:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/proxy_headers.conf:/etc/nginx/proxy_headers.conf
+      - ./nginx/html:/etc/nginx/html
+
+  # tracing collector agent
+  otel:
+    image: otel/opentelemetry-collector:0.122.0
+    container_name: ksda-otel
+    hostname: otel
+    healthcheck:
+      # not a true health check, container public.ecr.aws/aws-observability/aws-otel-collector has /healthcheck
+      # would be nice if otel incorporated this into their container.
+      test: [ "CMD", "/otelcol", "components" ]
+      #test: [ "CMD", "/healthcheck" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./otelcol/config.yaml:/etc/otelcol/config.yaml

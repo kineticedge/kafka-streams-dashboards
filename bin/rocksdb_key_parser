@@ -1,0 +1,23 @@
+#!/bin/sh
+
+while IFS= read LINE; do
+
+# VALUE - remove first 16
+# KEY = remove last 8, 16
+
+LEFT=$(echo $LINE | awk '{print $1}')
+RIGHT=$(echo $LINE | awk '{print $3}')
+
+KEY_KEY=$(echo ${LEFT} | xxd -r -p)
+
+VALUE_TIMESTAMP=$(date -r $(echo $(printf "%d" 0x${RIGHT:2:16}) / 1000 | bc))
+VALUE=$(echo ${RIGHT:18} | xxd -r -p)
+
+#echo "${KEY_KEY} - $VALUE_TIMESTAMP $VALUE"
+echo ""
+echo "key          = $KEY_KEY"
+echo "timestamp    = $VALUE_TIMESTAMP"
+echo "value        = $VALUE"
+
+done
+

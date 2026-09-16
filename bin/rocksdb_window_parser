@@ -1,0 +1,39 @@
+#!/bin/sh
+
+while IFS= read LINE; do
+
+# VALUE - remove first 16
+# KEY = remove last 8, 16
+
+
+LEFT=$(echo $LINE | awk '{print $1}')
+RIGHT=$(echo $LINE | awk '{print $3}')
+
+# A windowed key is stores as with padding to ensure that Kafka Streams can leverage RocksDB scanning
+#
+# the last 4 bytes is the sequence, usually 0
+# the 8 bytes prior to that is the epoch
+#
+# Note that 1 byte is 2 charcters when encoded in hex (so (4+8)*2= 24 characters to ignore for getting actual windowed key
+#
+K=${LEFT::${#LEFT}-24}
+W=${LEFT:${#LEFT}-24:16}
+#S=${LEFT:${#LEFT}-8}
+KEY_KEY=$(echo ${K} | xxd -r -p)
+KEY_WINDOW=$(date -r $(echo $(printf "%d" 0x${W}) / 1000 | bc))
+#KEY_SEQ=$(printf "%d" 0x${S})
+
+# Value contains timestamp and value, deconstruct it accordingly.
+VALUE_TIMESTAMP=$(date -r $(echo $(printf "%d" 0x${RIGHT:2:16}) / 1000 | bc))
+VALUE=$(echo ${RIGHT:18} | xxd -r -p)
+
+#echo "${KEY_KEY}:${KEY_WINDOW} - $VALUE_TIMESTAMP : $VALUE"
+
+echo ""
+echo "key          = $KEY_KEY"
+echo "window_start = $KEY_WINDOW"
+echo "timestamp    = $VALUE_TIMESTAMP"
+echo "value        = $VALUE"
+
+done
+

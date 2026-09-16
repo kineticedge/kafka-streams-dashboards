@@ -1,0 +1,333 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 24,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 19,
+      "options": {
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "kafka_cluster"
+        ]
+      },
+      "pluginVersion": "10.2.0-138700",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Kafka Cluster",
+      "type": "dashlist"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 24,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 22,
+      "options": {
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "streams"
+        ]
+      },
+      "pluginVersion": "10.2.0-138700",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Kafka Streams",
+      "type": "dashlist"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 23,
+      "options": {
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "producer"
+        ]
+      },
+      "pluginVersion": "10.2.0-138700",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Kafka Producers",
+      "type": "dashlist"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 16,
+        "y": 11
+      },
+      "id": 24,
+      "options": {
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "consumer"
+        ]
+      },
+      "pluginVersion": "10.2.0-138700",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Kafka Consumers",
+      "type": "dashlist"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 0,
+        "y": 19
+      },
+      "id": 20,
+      "options": {
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "jvm"
+        ]
+      },
+      "pluginVersion": "10.2.0-138700",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "JVM",
+      "type": "dashlist"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 11
+      },
+      "id": 30,
+      "options": {
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "clients"
+        ]
+      },
+      "pluginVersion": "10.2.0-138700",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Kafka Consumers (client metrics)",
+      "type": "dashlist"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 8,
+        "y": 24
+      },
+      "id": 33,
+      "options": {
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "containers"
+        ]
+      },
+      "pluginVersion": "10.2.0-138700",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Containers",
+      "type": "dashlist"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "tags": [
+    "home"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-1m",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true,
+    "refresh_intervals": [],
+    "time_options": []
+  },
+  "timezone": "",
+  "title": "Home",
+  "uid": "home",
+  "version": 1,
+  "weekStart": ""
+}

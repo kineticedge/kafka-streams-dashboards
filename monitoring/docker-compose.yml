@@ -1,0 +1,162 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+volumes:
+  prometheus: {}
+  grafana: {}
+  tempo: {}
+  kafka-ui: {}
+
+services:
+
+#  cadvisor:
+#    image: gcr.io/cadvisor/cadvisor:latest
+#    hostname: cadvisor
+#    container_name: ksdm-cadvisor
+#    healthcheck:
+#      test: ["CMD", "wget", "-qO-", "http://localhost:8080/metrics"]
+#      start_period: 5s
+#      interval: 5s
+#      timeout: 3s
+#      retries: 3
+#    ports:
+#      - "8099:8080"
+#    volumes:
+#      - /:/rootfs:ro
+#      - /var/run:/var/run:rw
+#      - /sys:/sys:ro
+#      - /var/lib/docker/:/var/lib/docker:ro
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  container-info:
+    build: ./container-info
+    hostname: container-info
+    container_name: ksdm-container-info
+    pid: "host"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9323/metrics')"]
+      start_period: 5s
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    user: root
+    ports:
+      - "9323:9323"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  prometheus:
+    image: prom/prometheus:v3.10.0
+    hostname: prometheus
+    container_name: ksdm-prometheus
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:9090/"]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    privileged: true
+
+    # web: enable-admin-api and enable-lifecycle
+    # other command options are the default (but need to be supplied in full to add the others)
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+      - "--web.enable-admin-api"
+      - "--web.enable-lifecycle"
+      - "--web.enable-remote-write-receiver"
+      # not actual setting...- "--query.staleness-delta=60s"
+    ports:
+      - "9099:9090"
+    volumes:
+      - prometheus:/prometheus
+#      - ./prometheus:/etc/prometheus
+      - ./prometheus:/etc/prometheus
+      #- ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      #- ./prometheus/applications.json:/etc/prometheus/applications.json
+#      - ./prometheus/application_analytics.json:/etc/prometheus/application_analytics.json
+#      - ./prometheus/application_publisher.json:/etc/prometheus/application_publisher.json
+#      - ./prometheus/application_sasl_streams.json:/etc/prometheus/application_sasl_streams.json
+#      - ./prometheus/application_sasl_analytics.json:/etc/prometheus/application_sasl_analytics.json
+      #- ./prometheus/micrometer_application_streams.json:/etc/prometheus/micrometer_application_streams.json
+      #- ./prometheus/micrometer_application_analytics.json:/etc/prometheus/micrometer_application_analytics.json
+
+  grafana:
+    image: grafana/grafana:12.3.5
+    #image: grafana/grafana:main
+    hostname: grafana
+    container_name: ksdm-grafana
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "--tries=1", "http://localhost:3000/api/health" ]
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    #      tempo:
+    #        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_DEFAULT_APP_MODE: development
+      #GF_INSTALL_PLUGINS: "grafana-piechart-panel"
+      #GF_INSTALL_PLUGINS: "grafana-piechart-panel,ke-kafkastreamstopology-panel"
+    volumes:
+      - grafana:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      #- ./grafana/contactpoints.yml:/etc/grafana/provisioning/alerting/contactpoints.yml
+      - ./grafana/prometheus.yml:/etc/grafana/provisioning/datasources/prometheus.yml
+      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      #- ./plugins:/var/lib/grafana/plugins
+
+  tempo:
+    image: grafana/tempo:2.6.1
+    #image: grafana/tempo:2.8.2
+    hostname: tempo
+    container_name: ksdm-tempo
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--tries=1", "http://localhost:3200/status"]
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    command: ["-config.file=/etc/tempo/config.yml"]
+    ports:
+      - "3200:3200"
+    volumes:
+      #- tempo:/tmp/tempo
+      - ./tempo/config.yml:/etc/tempo/config.yml
+
+  koffset:
+    hostname: koffset
+    #image: ghcr.io/kineticedge/koffset-exporter:0.0.1
+    image: koffset-exporter:latest
+    container_name: ${COMPOSE_PROJECT_NAME}-koffset
+    healthcheck:
+      test: wget --spider http://localhost:8080/healthz || exit 1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "8899:8080"
+    environment:
+      KOFFSET_KAFKA_BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+
+  kafka-lag-exporter:
+    hostname: kafka-lag-exporter
+    image: seglo/kafka-lag-exporter:0.8.2
+    container_name: ${COMPOSE_PROJECT_NAME}-kafka-lag-exporter
+    platform: linux/amd64
+    volumes:
+      - ./kafka-lag-exporter.conf:/opt/docker/conf/application.conf

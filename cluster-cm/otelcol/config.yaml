@@ -1,0 +1,46 @@
+
+receivers:
+  opencensus: {}
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:55681
+
+processors:
+  batch:
+    send_batch_max_size: 100
+    send_batch_size: 10
+    timeout: 10s
+
+exporters:
+  debug:
+    verbosity: detailed
+    sampling_initial: 5
+    sampling_thereafter: 200
+  prometheus:
+    enable_open_metrics: true
+    endpoint: "0.0.0.0:9091"
+    send_timestamps: true
+    metric_expiration: 180m
+    namespace: kafka-clients
+    resource_to_telemetry_conversion:
+      enabled: true
+    #const_labels:
+    #  foo: bar
+  otlphttp:
+    endpoint: "http://tempo:4318"
+    tls:
+      insecure: true
+
+service:
+  extensions: [health_check]
+  pipelines:
+    metrics:
+      receivers: [otlp]
+#      processors: [batch]
+      exporters: [debug, prometheus]
+
+extensions:
+  health_check: {}

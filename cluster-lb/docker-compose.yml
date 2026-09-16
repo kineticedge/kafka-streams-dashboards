@@ -1,0 +1,297 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+volumes:
+  ct0: {}
+  bk1: {}
+  bk2: {}
+  bk3: {}
+  bk4: {}
+
+services:
+
+  controller-0:
+    image: ${IMAGE}:${VERSION}
+    hostname: controller-0
+    container_name: ${COMPOSE_PROJECT_NAME}-controller-0
+    stop_grace_period: 120s
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.controller:type=KafkaController,name=ActiveControllerCount/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[01]([,}])'"
+        ]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ct0:/var/lib/kafka/data
+      - ../ja:/opt/ja
+      - ./config:/opt/config
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_LISTENERS: CONTROLLER://:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_PROCESS_ROLES: controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@controller-0:9093
+      KAFKA_NODE_ID: 0
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
+
+  broker-1:
+    image: ${IMAGE}:${VERSION}
+    hostname: broker-1
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-1
+    stop_grace_period: 120s
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      controller-0:
+        condition: service_healthy
+    ports:
+      - '19092:19092'
+      - '17071:7071'
+    volumes:
+      - bk1:/var/lib/kafka/data
+      - ../ja:/opt/ja
+      - ./config:/opt/config
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-1-lb:9092,INTERNAL://broker-1:9094,PLAINTEXT_HOST://localhost:19092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@controller-0:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 4
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
+
+  broker-2:
+    image: ${IMAGE}:${VERSION}
+    hostname: broker-2
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-2
+    stop_grace_period: 120s
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      controller-0:
+        condition: service_healthy
+    ports:
+      - '29092:29092'
+    volumes:
+      - bk2:/var/lib/kafka/data
+      - ../ja:/opt/ja
+      - ./config:/opt/config
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 2
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-2-lb:9092,INTERNAL://broker-2:9094,PLAINTEXT_HOST://localhost:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@controller-0:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 4
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
+
+  broker-3:
+    image: ${IMAGE}:${VERSION}
+    hostname: broker-3
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-3
+    stop_grace_period: 120s
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      controller-0:
+        condition: service_healthy
+    ports:
+      - '39092:39092'
+    volumes:
+      - bk3:/var/lib/kafka/data
+      - ../ja:/opt/ja
+      - ./config:/opt/config
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 3
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-3-lb:9092,INTERNAL://broker-3:9094,PLAINTEXT_HOST://localhost:39092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@controller-0:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 4
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
+
+  broker-4:
+    image: ${IMAGE}:${VERSION}
+    hostname: broker-4
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-4
+    stop_grace_period: 120s
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- 'http://localhost:7072/jolokia/read/kafka.server:type=KafkaServer,name=BrokerState/Value' | grep -Eq '\"value\"[[:space:]]*:[[:space:]]*[34]([,}])'"
+        ]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      controller-0:
+        condition: service_healthy
+    ports:
+      - '49092:49092'
+    volumes:
+      - bk4:/var/lib/kafka/data
+      - ../ja:/opt/ja
+      - ./config:/opt/config
+      - ./secrets:/etc/kafka/secrets
+    environment:
+      CLUSTER_ID: "0000000000000000000000"
+      KAFKA_NODE_ID: 4
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-4-lb:9092,INTERNAL://broker-4:9094,PLAINTEXT_HOST://localhost:49092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@controller-0:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_NUM_PARTITIONS: 4
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
+      KAFKA_METRIC_REPORTERS:
+      KAFKA_OPTS: -javaagent:/opt/ja/jmx_prometheus_javaagent.jar=7071:/opt/config/kafka-config.yml -javaagent:/opt/ja/jolokia-jvm.jar=port=7072,host=*
+      KAFKA_LOG4J_OPTS: "-Dlog4j2.configurationFile=file:/opt/config/log4j2.yaml"
+
+  broker-1-lb:
+    build: ./nginx
+    hostname: broker-1-lb
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-1-lb
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      broker-1:
+        condition: service_healthy
+    volumes:
+      - ./nginx/broker-1.conf:/etc/nginx/nginx.conf
+
+  broker-2-lb:
+    build: ./nginx
+    hostname: broker-2-lb
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-2-lb
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      broker-2:
+        condition: service_healthy
+    volumes:
+      - ./nginx/broker-2.conf:/etc/nginx/nginx.conf
+
+  broker-3-lb:
+    build: ./nginx
+    hostname: broker-3-lb
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-3-lb
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      broker-3:
+        condition: service_healthy
+    volumes:
+      - ./nginx/broker-3.conf:/etc/nginx/nginx.conf
+
+  broker-4-lb:
+    build: ./nginx
+    hostname: broker-4-lb
+    container_name: ${COMPOSE_PROJECT_NAME}-broker-4-lb
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      broker-4:
+        condition: service_healthy
+    volumes:
+      - ./nginx/broker-4.conf:/etc/nginx/nginx.conf
+

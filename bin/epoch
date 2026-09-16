@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#epoch=$(expr $1 / 1000)
+#shift
+#date -u -r $epoch
+
+date -u -r $(($1 / 1000))

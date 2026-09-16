@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.apache.kafka.clients.consumer" level="WARN"/>
+    <logger name="org.apache.kafka.clients.producer" level="WARN"/>
+    <logger name="org.apache.kafka.clients.consumer.internals" level="WARN"/>
+    <logger name="org.apache.kafka.clients.producer.internals" level="WARN"/>
+
+    <logger name="org.apache.kafka.clients.consumer.ConsumerConfig" level="WARN"/>
+    <logger name="org.apache.kafka.clients.producer.ProducerConfig" level="WARN"/>
+
+    <logger name="io.kineticedge.ksd" level="DEBUG"/>
+    <logger name="io.kineticedge.ksd.builder" level="INFO"/>
+
+    <root level="WARN">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>

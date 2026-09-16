@@ -1,0 +1,290 @@
+networks:
+  default:
+    external: true
+    name: ksd
+
+services:
+  publisher:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-clients.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    # provides network privileges to allow 'tc' to be used
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./publisher-1.0.tar:/app.tar
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+    environment:
+      #BOOTSTRAP_SERVERS: kroxylicious:9990
+      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+      CLIENT_ID_PREFIX: "producer"
+      MAX_SKU: 1000
+      PAUSE: 100
+      LINE_ITEM_COUNT: "1-6"
+      OTEL_SERVICE_NAME: PUBLISHER
+      KAFKA_COMPRESSION_TYPE: lz4
+
+  stream:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+#    restart: on-failure
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 800M
+#    mem_limit: 1g
+    # provides network privileges to allow 'tc' to be used
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "7072:7072"
+    volumes:
+      - ./streams-1.0.tar:/app.tar
+      - ./streams.properties:/streams.properties
+      - ./scripts:/scripts
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+    environment:
+      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+      CLIENT_ID_PREFIX: "stream"
+      OTEL_SERVICE_NAME: STREAMS
+      #MALLOC_ARENA_MAX: 2
+      #JDK_JAVA_OPTIONS: "-XX:NativeMemoryTracking=summary"
+      #JDK_JAVA_OPTIONS: "-XX:+UseCompactObjectHeaders"
+      #JDK_JAVA_OPTIONS: "-Xss512k -Xshare:off -XX:MaxDirectMemorySize=128m "
+
+  stream-native:
+    image: stream-native:latest
+    profiles: ["native"]
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 800M
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./streams.properties:/streams.properties
+      - ./scripts:/scripts
+    environment:
+      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+      CLIENT_ID_PREFIX: "stream"
+      OTEL_SERVICE_NAME: STREAMS
+
+  analytics-sliding:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      #- ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+    environment:
+      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+      APPLICATION_ID: "analytics-sliding"
+      CLIENT_ID_PREFIX: "analytics-sliding"
+      WINDOW_TYPE: SLIDING
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_SLIDING
+
+  analytics-tumbling:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      #- ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+    environment:
+      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+      APPLICATION_ID: "analytics-tumbling"
+      CLIENT_ID_PREFIX: "analytics-tumbling"
+      WINDOW_TYPE: TUMBLING
+      COMMIT_INTERVAL: 100
+      KAFKA_PROCESSING_GUARANTEE: exactly_once_v2
+
+      OTEL_SERVICE_NAME: ANALYTICS_TUMBLING
+
+  analytics-hopping:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      #- ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+    environment:
+      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+      APPLICATION_ID: "analytics-hopping"
+      CLIENT_ID_PREFIX: "analytics-hopping"
+      WINDOW_TYPE: HOPPING
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_HOPPING
+
+  analytics-session:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      #- ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+    environment:
+      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+      APPLICATION_ID: "analytics-session"
+      CLIENT_ID_PREFIX: "analytics-session"
+      WINDOW_TYPE: SESSION
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_SESSION
+
+  analytics-none:
+    image: ksd_app:latest
+    stop_grace_period: 120s
+    healthcheck:
+      test: /healthcheck-streams.sh || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
+    deploy:
+      replicas: 1
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./analytics-1.0.tar:/app.tar
+      - ./analytics.properties:/analytics.properties
+      - ./scripts:/scripts
+      #- ./stores:/tmp/kafka-streams
+      - ./jmx-exporter-config.yml:/jmx-exporter-config.yml
+    environment:
+      BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
+      APPLICATION_ID: "analytics-none"
+      CLIENT_ID_PREFIX: "analytics-none"
+      WINDOW_TYPE: NONE
+      COMMIT_INTERVAL: 100
+      OTEL_SERVICE_NAME: ANALYTICS_NONE
+
+  nginx:
+    image: nginx:1.27.4
+    container_name: ksda-nginx
+    hostname: nginx
+    stop_grace_period: 30s
+    healthcheck:
+      test: curl -s http://localhost:80 || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      stream:
+        condition: service_healthy
+      analytics-none:
+        condition: service_healthy
+      analytics-tumbling:
+        condition: service_healthy
+      analytics-hopping:
+        condition: service_healthy
+      analytics-sliding:
+        condition: service_healthy
+      analytics-session:
+        condition: service_healthy
+    ports:
+      - "8888:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/proxy_headers.conf:/etc/nginx/proxy_headers.conf
+      - ./nginx/html:/etc/nginx/html
+
+  # tracing collector agent
+  otel:
+    image: otel/opentelemetry-collector:0.133.0
+    container_name: ksda-otel
+    hostname: otel
+    healthcheck:
+      # not a true health check, container public.ecr.aws/aws-observability/aws-otel-collector has /healthcheck
+      # would be nice if otel incorporated this into their container.
+      test: [ "CMD", "/otelcol", "components" ]
+      #test: [ "CMD", "/healthcheck" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./otelcol/config.yaml:/etc/otelcol/config.yaml
